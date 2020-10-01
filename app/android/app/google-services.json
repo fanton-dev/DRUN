@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "668619921208",
+    "firebase_url": "https://drun-delivery.firebaseio.com",
+    "project_id": "drun-delivery",
+    "storage_bucket": "drun-delivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668619921208:android:6fc52fdac87161523013cd",
+        "android_client_info": {
+          "package_name": "com.fanton.DRUN"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "668619921208-iqmm8aq52butajljn3hpsv1nnlp244gb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fanton.DRUN",
+            "certificate_hash": "6541fc61f41ffa247398e0567eb07a346990b209"
+          }
+        },
+        {
+          "client_id": "668619921208-b2m7gg4jjcvab6c1cfa9jd3fbcbd2jna.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuCRsG2QZ4apERuVPH7QyEQymLZGgtpBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "668619921208-b2m7gg4jjcvab6c1cfa9jd3fbcbd2jna.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "668619921208-sdkvc3oislhpgt17aa3chf9jlpr2o8j3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fsinchatforjordan.drun"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
