@@ -23,6 +23,8 @@ from __future__ import absolute_import
 from typing import List
 from threading import Thread
 
+from .server import create_app
+from .common import common_variables
 from ..drone import DroneServerThread
 
 
@@ -34,7 +36,13 @@ class APIServerThread(Thread):
     """
 
     def __init__(self, drone_ts: List[DroneServerThread], port: int) -> None:
+        self.drone_ts = drone_ts
+        self.ports_assigned = [port]
+        common_variables.set_drone_ts(self.drone_ts)
+        common_variables.set_ports_assigned(self.ports_assigned)
+
         super(APIServerThread, self).__init__()
 
     def run(self) -> None:
-        pass
+        app = create_app()
+        app.run(host='0.0.0.0', port=self.ports_assigned[0], debug=False)

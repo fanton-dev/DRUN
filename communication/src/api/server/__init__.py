@@ -25,6 +25,10 @@ from __future__ import absolute_import
 
 from flask import Flask
 
+from .blueprints.drones import drones_blueprint
+from .blueprints.orders import orders_blueprint
+from .blueprints.users import users_blueprint
+
 
 def create_app(name: str = __name__) -> Flask:
     """Initializes the Flask server.
@@ -34,3 +38,15 @@ def create_app(name: str = __name__) -> Flask:
     Returns:
         Flask: API Server object.
     """
+    
+        app = Flask(
+        name,
+        template_folder="templates",
+        instance_relative_config=True
+    )
+
+    blueprints = (drones_blueprint, orders_blueprint, users_blueprint)
+    for blueprint in blueprints:
+        app.register_blueprint(blueprint)
+
+    return app
