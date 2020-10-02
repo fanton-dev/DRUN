@@ -31,7 +31,7 @@ class ControlThread(Thread):
     Args:
         input_mode (List[str]): Input methods to be invoked.
         output_mode (List[str]): Output methods to be invoked.
-        current_controls (List[Dict]): Cross-thread controls data.
+        current_controls (Controls): Cross-thread controls data.
         current_image (np.ndarray): Cross-thread image data.
         current_location (List[float]): Cross-thread location data.
         orders (List[Order]): List of orders the drone should deliver.
@@ -43,7 +43,7 @@ class ControlThread(Thread):
             self,
             input_mode: List[str],
             output_mode: List[str],
-            current_controls: List[Dict],
+            current_controls: Controls,
             current_image: np.array,
             current_location: List[float],
             orders: List[Order],
