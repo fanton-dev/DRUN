@@ -33,6 +33,9 @@ class Controls:
     def loads(str):
         return Controls(eval(str))
 
+    def items(self):
+        return self.controls.items()
+
 class Control:
 
     def __init__(self, key, state):

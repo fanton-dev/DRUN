@@ -3,6 +3,8 @@
 from __future__ import absolute_import
 from .controls import Controls
 
+from pyardrone import ARDrone
+
 def debug_output(current_controls: Controls, fps: float = 0.1) -> None:
     """Prints current controls in the stdout at a given rate.
     Args:
@@ -36,7 +38,16 @@ def drone_output(current_controls: Controls) -> None:
     Args:
         current_controls (Controls): Cross-thread controls data.
     """
+    drone = ARDrone()
+    drone.navdata_ready.wait()
+    
+    directions = { 
+        action: 1 if control.state else 0 
+        for (action, control) in current_controls.items() 
+        if action not in ['takeoff', 'land'] 
+    }
 
+    drone.move(**directions)
 
 def airsim_output(current_controls: Controls) -> None:
     """Connects using the AirSim client and sends controls from the buffer.
