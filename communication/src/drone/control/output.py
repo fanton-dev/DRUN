@@ -1,7 +1,7 @@
 "Output methods for the ControlThread, reading from current_controls."
 
 from __future__ import absolute_import
-from controls import Controls
+from .controls import Controls
 
 def debug_output(current_controls: Controls, fps: float = 0.1) -> None:
     """Prints current controls in the stdout at a given rate.

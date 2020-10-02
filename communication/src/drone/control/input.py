@@ -1,7 +1,9 @@
 "Input methods for the ControlThread, modifying current_controls."
 
 from __future__ import absolute_import
-from controls import Controls
+from typing import List
+
+from .controls import Controls
 
 import numpy as np
 from pynput import keyboard

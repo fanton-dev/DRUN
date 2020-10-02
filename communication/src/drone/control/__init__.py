@@ -7,7 +7,9 @@ Parrot AR drone connected to the internet.
 
 from __future__ import absolute_import
 from threading import Thread
-from typing import List, Dict
+from typing import List
+
+from .controls import Controls
 
 import numpy as np
 
