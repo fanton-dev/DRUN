@@ -182,3 +182,7 @@ class DRUNAirSimClient(MultirotorClient):
         self.set_pose(position=position, orientation=orientation)
         self.set_time(start_datetime=start_datetime)
         self.set_weather(*weather)
+
+    def get_collisions(self):
+        """Returns collision data for the drone."""
+        return self.simGetCollisionInfo()
