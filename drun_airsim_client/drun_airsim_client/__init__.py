@@ -112,3 +112,7 @@ class DRUNAirSimClient(MultirotorClient):
     def takeoff(self):
         """Starts an drone flight; takes off the drone."""
         self.takeoffAsync().join()
+
+    def land(self):
+        """Lands the drone."""
+        self.landAsync().join()
