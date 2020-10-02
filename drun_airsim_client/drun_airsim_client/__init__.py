@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 from airsim import (
     MultirotorClient,
+    WeatherParameter
 )
 
 
@@ -42,3 +43,31 @@ class DRUNAirSimClient(MultirotorClient):
             update_interval_secs=60,
             move_sun=True
         )
+
+    def set_weather(
+            self,
+            rain=0.0,
+            snow=0.0,
+            leafs=0.0,
+            dust=0.0,
+            fog=0.0
+    ) -> None:
+        """Sets AirSim weather properties.
+
+        Args:
+            rain (float, optional): Rain percentage. Defaults to 0.0.
+            snow (float, optional): Snow percentage. Defaults to 0.0.
+            leafs (float, optional): Leafs percentage. Defaults to 0.0.
+            dust (float, optional): Dust percentage. Defaults to 0.0.
+            fog (float, optional): Fog percentage. Defaults to 0.0.
+        """
+
+        self.simEnableWeather(True)
+        self.simSetWeatherParameter(WeatherParameter.Rain, rain)
+        self.simSetWeatherParameter(WeatherParameter.Roadwetness, rain)
+        self.simSetWeatherParameter(WeatherParameter.Snow, snow)
+        self.simSetWeatherParameter(WeatherParameter.RoadSnow, snow)
+        self.simSetWeatherParameter(WeatherParameter.MapleLeaf, leafs)
+        self.simSetWeatherParameter(WeatherParameter.RoadLeaf, leafs)
+        self.simSetWeatherParameter(WeatherParameter.Dust, dust)
+        self.simSetWeatherParameter(WeatherParameter.Fog, fog)
