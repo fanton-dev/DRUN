@@ -24,8 +24,8 @@ class ImageThread(Thread):
     """Custom thread class for handling image input/output.
 
     Args:
-        input_mode (List[str]): Input methods to be involked.
-        output_mode (List[str]): Output methods to be involked.
+        input_mode (List[str]): Input methods to be invoked.
+        output_mode (List[str]): Output methods to be invoked.
         current_image (np.ndarray): Cross-thread image data.
         ip_address (str): IP address of the remote device.
         port (List[int]): TCP port for communication.

@@ -1,7 +1,7 @@
 """Ethereum client module.
 
 This module provides all the basic functionalities need for communicating with
-a ethereum surver like Geth, Ganachi, etc.
+a ethereum server like Geth, Ganachi, etc.
 """
 
 from __future__ import absolute_import
@@ -20,7 +20,7 @@ class EthereumClient:
     def make_transaction(
             self,
             address_sender: str,
-            address_reciever: str,
+            address_receiver: str,
             private_key_sender: str,
             value: float
     ) -> str:
@@ -28,12 +28,12 @@ class EthereumClient:
 
         Args:
             address_sender (str): Public wallet key of the sender.
-            address_reciever (str): Public wallet key of the reciever.
+            address_receiver (str): Public wallet key of the receiver.
             private_key (str): Private key of the sender.
-            value (float): Amount of "ehrer" funds to be transfered.
+            value (float): Amount of "ehrer" funds to be transferred.
 
         Raises:
-            ValueError: Inssuficient funds error.
+            ValueError: Insufficient funds error.
 
         Returns:
             str: Transaction hash.
@@ -44,7 +44,7 @@ class EthereumClient:
 
         Args:
             account_address (str): Account address the funds will be given.
-            value (float): Amount of "ehrer" funds to be transfered.
+            value (float): Amount of "ehrer" funds to be transferred.
 
         Returns:
             str: Transaction hash.

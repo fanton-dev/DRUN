@@ -4,6 +4,14 @@ from __future__ import absolute_import
 from typing import List, Dict
 
 
+def debug_output(current_controls: List[Dict], fps: float = 0.1) -> None:
+    """Prints current controls in the stdout at a given rate.
+    Args:
+        current_controls (List[Dict]): Cross-thread controls data.
+        fps (float): Rate data to be printed at. Defaults to 0.1.
+    """
+
+
 def network_output(current_controls: List[Dict], port: int) -> None:
     """Creates a socket on a given port and forwards control data through it.
     Args:

@@ -13,7 +13,7 @@ This module contains a Flask server with th following paths:
         Returns information of orders processed by the server.
 
     - PUT "/users/create"
-        Creates etherium keys and links them to the Firebase UUID passed.
+        Creates ethereum keys and links them to the Firebase UUID passed.
 
 Usage:
     from server import create_app
@@ -32,14 +32,16 @@ from .blueprints.users import users_blueprint
 
 def create_app(name: str = __name__) -> Flask:
     """Initializes the Flask server.
+
     Args:
         name (str, optional): Name of the server. Defaults to __name__.
         config (str, optional): Configuration file. Defaults to "flask.cfg".
+
     Returns:
         Flask: API Server object.
     """
-    
-        app = Flask(
+
+    app = Flask(
         name,
         template_folder="templates",
         instance_relative_config=True

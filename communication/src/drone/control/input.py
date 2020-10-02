@@ -1,4 +1,4 @@
-"Input methods for the ControlThread, modifing current_controls."
+"Input methods for the ControlThread, modifying current_controls."
 
 from __future__ import absolute_import
 from typing import List, Dict
@@ -21,7 +21,7 @@ def network_input(
         ip_address: str,
         port: int
 ) -> None:
-    """Connects to a given socket and recieves control data from it.
+    """Connects to a given socket and receives control data from it.
 
     Args:
         current_controls (List[Dict]): Cross-thread controls data.

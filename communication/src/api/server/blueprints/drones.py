@@ -16,7 +16,10 @@ Usage:
 from __future__ import absolute_import
 from typing import Tuple, List, Dict
 
-from flask import Blueprint
+from flask import Blueprint, request, jsonify
+
+from ....drone import DroneServerThread
+from ...common import common_variables
 
 
 drones_blueprint = Blueprint("drones", __name__)
@@ -36,7 +39,7 @@ def connect() -> Tuple[str, int]:
 
     Response:
         Tuple[str, int]: Response status.
-        200, [port1, port2, port3] - Drone thread created sucessfully.
+        200, [port1, port2, port3] - Drone thread created successfully.
         400, "Bad Request" - Missing information in request.
     """
 
@@ -53,7 +56,7 @@ def disconnect() -> Tuple[str, int]:
 
     Response:
         Tuple[str, int]: Response status.
-        200, "OK" - Drone disconnected created sucessfully.
+        200, "OK" - Drone disconnected created successfully.
         400, "Bad Request" - Incorrect drone_id.
     """
 

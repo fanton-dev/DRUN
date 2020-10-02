@@ -22,8 +22,8 @@ class LocationThread(Thread):
     """Custom thread class for handling controls input/output.
 
     Args:
-        input_mode (List[str]): Input methods to be involked.
-        output_mode (List[str]): Output methods to be involked.
+        input_mode (List[str]): Input methods to be invoked.
+        output_mode (List[str]): Output methods to be invoked.
         current_controls (List[Dict]): Cross-thread controls data.
         current_image (np.ndarray): Cross-thread image data.
         current_location (List[float]): Cross-thread location data.

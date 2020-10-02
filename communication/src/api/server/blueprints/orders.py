@@ -27,9 +27,9 @@ def create() -> Tuple[str, int]:
     1.
     This path takes the order information and creates an Order object.
     2.
-    Then it tries processing two etherium payments - one from the wallet
-    of the reciever to the wallet of the sender with a price specified in the
-    order.price_customer variable and the other - from the reciever to a
+    Then it tries processing two ethereum payments - one from the wallet
+    of the receiver to the wallet of the sender with a price specified in the
+    order.price_customer variable and the other - from the receiver to a
     server wallet with the amount specified in order.price_delivery.
     3.
     The order information is added to the "orders" database table.
@@ -40,16 +40,16 @@ def create() -> Tuple[str, int]:
     Request:
         drone_id (str): UUID of the drone.
         sender_id (str): UUID of the sender.
-        reciever_id (str): UUID of the reciever.
-        price_customer (float): Price the reciever should pay the sender.
+        receiver_id (str): UUID of the receiver.
+        price_customer (float): Price the receiver should pay the sender.
         sender_location (List[float]): Coordinates X and Y of the sender.
-        reciever_location (List[float]): Coordinates X and Y of the reciever.
+        receiver_location (List[float]): Coordinates X and Y of the receiver.
 
     Response:
         Tuple[str, int]: Response status.
-        200, "OK" - Order created sucessfully.
+        200, "OK" - Order created successfully.
         400, "Bad Request" - Missing information in request.
-        402, "Payment Required" - Insuficient funds.
+        402, "Payment Required" - Insufficient funds.
     """
 
 
@@ -62,9 +62,9 @@ def status() -> List[Dict]:
         order_id (str, optional): UUID of the order.
         drone_id (str, optional): UUID of the drone.
         sender_id (str, optional): UUID of the sender.
-        reciever_id (str, optional): UUID of the reciever.
-        price_customer (float, optional): Amount the reciever payed.
-        price_delivery (float, optional): Amound the delivery cost.
+        receiver_id (str, optional): UUID of the receiver.
+        price_customer (float, optional): Amount the receiver payed.
+        price_delivery (float, optional): Amount the delivery cost.
         newer_than (str, optional): Only requests made after this date.
         older_than (str, optional): Only requests made before this date.
 
