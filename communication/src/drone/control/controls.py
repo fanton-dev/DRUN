@@ -13,7 +13,7 @@ class Controls:
             'cw':'e', 
             'ccw':'q'
         }
-        self.controls = {action: Control(key, False) for (action, key) in actions_keys.items()}
+        self.controls = {action: Control(key, False) for (action, key) in self.actions_keys.items()}
 
     def __getitem__(self, action):
         return self.controls[action]
