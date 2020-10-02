@@ -104,7 +104,7 @@ def topup_account() -> Tuple[str, int]:
     return jsonify(topup_dict), 200
 
 
-@users_blueprint.route("/users/update_discord", methods=["POST"])
+@users_blueprint.route("/users/update_discord", methods=["PATCH"])
 def update_discord() -> Tuple[str, int]:
     """Changes the discord ID of a given user.
 
