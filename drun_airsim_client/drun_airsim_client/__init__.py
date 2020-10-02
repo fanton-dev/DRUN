@@ -1,14 +1,18 @@
 """Base simulation utility for Microsoft AirSim."""
 
 from __future__ import absolute_import
+from io import BytesIO
 from typing import Tuple
 from math import sin, pi
 
-from airsim.types import Pose
+from airsim.types import Pose, CollisionInfo
 from airsim import (
     MultirotorClient,
-    WeatherParameter
+    WeatherParameter,
+    ImageRequest,
+    ImageType
 )
+from PIL import Image
 
 
 class DRUNAirSimClient(MultirotorClient):
@@ -17,10 +21,10 @@ class DRUNAirSimClient(MultirotorClient):
 
     Args:
         ip (str, optional): IP of the AirSim instance. Defaults to "".
-        port (int, optional): Port of the AirSim instance. Defaults to 41451.
+        port (float, optional): Port of the AirSim instance. Defaults to 41451.
     """
 
-    def __init__(self, ip: str = "", port: int = 41451) -> None:
+    def __init__(self, ip: str = "", port: float = 41451) -> None:
         MultirotorClient.__init__(self)
         MultirotorClient.confirmConnection(self)
         self.enableApiControl(True)
@@ -149,6 +153,7 @@ class DRUNAirSimClient(MultirotorClient):
         x_velocity -= sin(z_orientation * pi) * (right - left)
         y_velocity = 2 * (-abs(z_orientation) + 0.5) * (right - left)
         y_velocity += sin(z_orientation * pi) * (forward - backward)
+        # print(z_orientation)
 
         if cw or ccw:
             self.rotateByYawRateAsync(
@@ -163,26 +168,19 @@ class DRUNAirSimClient(MultirotorClient):
 
     def simulation_reset(
             self,
-            position: Tuple[int, int, int] = (0.0, 0.0, -20.0),
-            orientation: Tuple[int, int, int, int] = (0.0, 0.0, 0.0, 0.0),
-            start_datetime="2020-01-01 12:00:00",
-            weather: Tuple[int, int, int, int, int] = (0.0, 0.0, 0.0, 0.0, 0.0)
+            start_datetime: str = None,
+            weather: Tuple[float, float, float, float, float] = None
     ) -> None:
         """Resets the simulation with certain settings.
 
         Args:
-            position (Tuple[int, int, int], optional): Starting drone position.
-            orientation (Tuple[int, int, int, int], optional): Drone orient.
             start_datetime (str, optional): Simulation time.
             weather (Tuple[int, int, int, int, int], optional): Weather tuple.
         """
-
         self.reset()
-        self.takeoff()
-        self.set_pose(position=position, orientation=orientation)
-        self.set_time(start_datetime=start_datetime)
-        self.set_weather(*weather)
-
-    def get_collisions(self):
-        """Returns collision data for the drone."""
-        return self.simGetCollisionInfo()
+        self.enableApiControl(True)
+        self.armDisarm(True)
+        if start_datetime:
+            self.set_time(start_datetime)
+        if weather:
+            self.set_weather(*weather)
