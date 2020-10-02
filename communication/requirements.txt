@@ -1,3 +1,5 @@
 flask==1.1.2
-numpy==1.85.5
+numpy==1.19.2
 requests==2.24.0
+opencv-python==4.4.0.44
+pyardrone==0.6.1
