@@ -1,6 +1,6 @@
 class Controls:
 
-    def __init__(self):
+    def __init__(self, controls = None):
         self.actions_keys = {
             'takeoff':'Key.space', 
             'land':'x', 
@@ -13,7 +13,10 @@ class Controls:
             'cw':'e', 
             'ccw':'q'
         }
-        self.controls = {action: Control(key, False) for (action, key) in self.actions_keys.items()}
+        if controls is None:
+            self.controls = { action: Control(key, False) for (action, key) in self.actions_keys.items() }
+        else:
+            self.controls = { action: Control(self.actions_keys[action], state) for (action,state) in controls.items() }
 
     def __getitem__(self, action):
         return self.controls[action]
@@ -23,8 +26,18 @@ class Controls:
             if key == k:
                 return self.controls[a]
 
+    def dumps(self):
+        return str({ action:control.state for (action, control) in self.controls.items() })
+
+    @staticmethod
+    def loads(str):
+        return Controls(eval(str))
+
 class Control:
 
     def __init__(self, key, state):
         self.key = key
         self.state = state
+
+    def __repr__(self):
+        return "({},{})".format(self.key, self.state)
