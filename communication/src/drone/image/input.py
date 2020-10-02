@@ -37,6 +37,8 @@ def network_input(current_image: np.ndarray, port: int) -> None:
     """
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rsock:
         rsock.bind(('localhost', port))
+        rsock.listen()
+        conn, addr = rsock.accept()
         while True:
-            data = recvall(rsock)
+            data = recvall(conn)
             current_image = np.loads(data.decode())
