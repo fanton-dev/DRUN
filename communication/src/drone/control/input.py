@@ -4,6 +4,7 @@ from __future__ import absolute_import
 from controls import Controls
 
 import numpy as np
+from pynput import keyboard
 
 from ...database.interfaces.order import Order
 
@@ -14,6 +15,24 @@ def debug_input(current_controls: Controls) -> None:
     Args:
         current_controls (Controls): Cross-thread controls data.
     """
+    def on_press(key):
+        try:
+            control = current_controls.find_by_key(key)
+            control.state = True
+        except TypeError:
+            pass
+
+    def on_release(key):
+        try:
+            control = current_controls.find_by_key(key)
+            control.state = True
+        except TypeError:
+            pass
+
+    with keyboard.Listener(
+        on_press=on_press,
+        on_release=on_release) as listener:
+        listener.join()
 
 
 def network_input(

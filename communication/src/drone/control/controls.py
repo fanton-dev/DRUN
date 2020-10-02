@@ -18,6 +18,11 @@ class Controls:
     def __getitem__(self, action):
         return self.controls[action]
 
+    def find_by_key(self, key):
+        for (a, k) in self.actions_keys:
+            if key == k:
+                return self.controls[a]
+
 class Control:
 
     def __init__(self, key, state):
