@@ -48,11 +48,11 @@ class DRUNAirSimClient(MultirotorClient):
 
     def set_weather(
             self,
-            rain=0.0,
-            snow=0.0,
-            leafs=0.0,
-            dust=0.0,
-            fog=0.0
+            rain: float = 0.0,
+            snow: float = 0.0,
+            leafs: float = 0.0,
+            dust: float = 0.0,
+            fog: float = 0.0
     ) -> None:
         """Sets AirSim weather properties.
 
@@ -160,3 +160,25 @@ class DRUNAirSimClient(MultirotorClient):
             vy=y_velocity,
             vz=down - up,
             duration=duration).join()
+
+    def simulation_reset(
+            self,
+            position: Tuple[int, int, int] = (0.0, 0.0, -20.0),
+            orientation: Tuple[int, int, int, int] = (0.0, 0.0, 0.0, 0.0),
+            start_datetime="2020-01-01 12:00:00",
+            weather: Tuple[int, int, int, int, int] = (0.0, 0.0, 0.0, 0.0, 0.0)
+    ) -> None:
+        """Resets the simulation with certain settings.
+
+        Args:
+            position (Tuple[int, int, int], optional): Starting drone position.
+            orientation (Tuple[int, int, int, int], optional): Drone orient.
+            start_datetime (str, optional): Simulation time.
+            weather (Tuple[int, int, int, int, int], optional): Weather tuple.
+        """
+
+        self.reset()
+        self.takeoff()
+        self.set_pose(position=position, orientation=orientation)
+        self.set_time(start_datetime=start_datetime)
+        self.set_weather(*weather)
