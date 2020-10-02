@@ -49,7 +49,11 @@ def network_input(
         ip_address (str): IP address of the server.
         port (int): TCP port on the server for communication.
     """
-
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rsock:
+        rsock.connect((ip_address, port))
+        data = rsock.recv(4096)
+        control_string = data.decode()
+        current_controls = Controls.loads(control_string)
 
 def ai_input(
         current_controls: Controls,
