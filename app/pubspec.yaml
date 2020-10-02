@@ -11,7 +11,11 @@ dependencies:
   cupertino_icons:
   firebase_core:
   firebase_auth:
-  video_player: ^0.10.7
+  video_player:
+  intl_phone_number_input: ^0.3.0
+  flutter_sim_country_code: ^0.0.3
+  fluttertoast:
+  cloud_firestore:
 
 dev_dependencies:
   flutter_test:
