@@ -12,6 +12,7 @@ def debug_output(current_image: np.ndarray) -> None:
     Args:
         current_image (np.ndarray): Cross-thread image data.
     """
+    cv2.imshow('Current Image', current_image)
 
 
 def network_output(
