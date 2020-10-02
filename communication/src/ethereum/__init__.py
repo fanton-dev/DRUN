@@ -79,7 +79,7 @@ class EthereumClient:
         #   gasPrice - The price of a gas unit.
         transaction_details = {
             "nonce": nonce,
-            "to": address_reciever,
+            "to": address_receiver,
             "value": self.web3.toWei(value, "ether"),
             "gas": 2000000,
             "gasPrice": self.web3.toWei("8", "gwei")

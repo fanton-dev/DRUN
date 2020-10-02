@@ -70,7 +70,7 @@ class User():
     def topup_account(firebase_user_id, amount):
         user_public_key = ""
         query = "SELECT * FROM users WHERE firebase_user_id = '{}'".format(
-            user_id)
+            firebase_user_id)
         with Database() as database:
             rows = database.execute(query).fetchall()
             if rows == []:
