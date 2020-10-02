@@ -1,11 +1,13 @@
 """Base simulation utility for Microsoft AirSim."""
 
 from __future__ import absolute_import
+from typing import Tuple
 
 from airsim import (
     MultirotorClient,
     WeatherParameter
 )
+from airsim import types
 
 
 class DRUNAirSimClient(MultirotorClient):
@@ -34,7 +36,6 @@ class DRUNAirSimClient(MultirotorClient):
             start_datetime (str): Time in "YYYY-MM-DD hh:mm:ss" format.
             clock_speed (float, optional): Time scale factor. Defaults to 1.0.
         """
-
         self.simSetTimeOfDay(
             True,
             start_datetime=start_datetime,
@@ -61,7 +62,6 @@ class DRUNAirSimClient(MultirotorClient):
             dust (float, optional): Dust percentage. Defaults to 0.0.
             fog (float, optional): Fog percentage. Defaults to 0.0.
         """
-
         self.simEnableWeather(True)
         self.simSetWeatherParameter(WeatherParameter.Rain, rain)
         self.simSetWeatherParameter(WeatherParameter.Roadwetness, rain)
@@ -71,3 +71,11 @@ class DRUNAirSimClient(MultirotorClient):
         self.simSetWeatherParameter(WeatherParameter.RoadLeaf, leafs)
         self.simSetWeatherParameter(WeatherParameter.Dust, dust)
         self.simSetWeatherParameter(WeatherParameter.Fog, fog)
+
+    def get_pose(self) -> types.Pose:
+        """Returns the drone's current position and orientation.
+
+        Returns:
+            types.Pose: AirSim Pose object for current state.
+        """
+        return self.simGetVehiclePose()
