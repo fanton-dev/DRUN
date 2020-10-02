@@ -4,6 +4,9 @@ from __future__ import absolute_import
 
 import numpy as np
 
+import cv2
+from pyardrone import ARDrone
+from pyardrone.video import VideoMixin
 
 def camera_input(current_image: np.ndarray) -> None:
     """Reads data from the drone camera and stores it in the shared buffer.
@@ -11,6 +14,8 @@ def camera_input(current_image: np.ndarray) -> None:
     Args:
         current_image (np.ndarray): Cross-thread image data.
     """
+    drone = ARDrone()
+    current_image = drone.frame
 
 
 def network_input(current_image: np.ndarray, port: int) -> None:
