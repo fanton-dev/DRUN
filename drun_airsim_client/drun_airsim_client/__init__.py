@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import
 from typing import Tuple
+from math import sin, pi
 
 from airsim.types import Pose
 from airsim import (
@@ -116,3 +117,46 @@ class DRUNAirSimClient(MultirotorClient):
     def land(self):
         """Lands the drone."""
         self.landAsync().join()
+
+    def move(
+            self,
+            forward: float = 0.0,
+            backward: float = 0.0,
+            left: float = 0.0,
+            right: float = 0.0,
+            up: float = 0.0,
+            down: float = 0.0,
+            cw: float = 0.0,
+            ccw: float = 0.0,
+            duration: float = 0.01
+    ):
+        """Moves the drone in a certain direction for a certain amount of time.
+
+        Args:
+            forward (float, optional): Speed percent of moving forward.
+            backward (float, optional): Speed percent of moving backward.
+            left (float, optional): Speed percent of moving left.
+            right (float, optional): Speed percent of moving right.
+            up (float, optional): Speed percent of moving up.
+            down (float, optional): Speed percent of moving down.
+            cw (float, optional): Speed percent of rotating clockwise.
+            ccw (float, optional): Speed percent of rotating counterclockwise.
+            duration (float, optional): Duration in seconds. Defaults to 0.01.
+        """
+
+        z_orientation = self.get_pose().orientation.z_val
+        x_velocity = 2 * (-abs(z_orientation) + 0.5) * (forward - backward)
+        x_velocity -= sin(z_orientation * pi) * (right - left)
+        y_velocity = 2 * (-abs(z_orientation) + 0.5) * (right - left)
+        y_velocity += sin(z_orientation * pi) * (forward - backward)
+
+        if cw or ccw:
+            self.rotateByYawRateAsync(
+                yaw_rate=(cw - ccw)*45,
+                duration=duration).join()
+
+        self.moveByVelocityAsync(
+            vx=x_velocity,
+            vy=y_velocity,
+            vz=down - up,
+            duration=duration).join()
