@@ -25,7 +25,7 @@ def debug_input(current_controls: Controls) -> None:
     def on_release(key):
         try:
             control = current_controls.find_by_key(key)
-            control.state = True
+            control.state = False
         except TypeError:
             pass
 
