@@ -3,11 +3,11 @@
 from __future__ import absolute_import
 from typing import Tuple
 
+from airsim.types import Pose
 from airsim import (
     MultirotorClient,
     WeatherParameter
 )
-from airsim import types
 
 
 class DRUNAirSimClient(MultirotorClient):
@@ -72,11 +72,11 @@ class DRUNAirSimClient(MultirotorClient):
         self.simSetWeatherParameter(WeatherParameter.Dust, dust)
         self.simSetWeatherParameter(WeatherParameter.Fog, fog)
 
-    def get_pose(self) -> types.Pose:
+    def get_pose(self) -> Pose:
         """Returns the drone's current position and orientation.
 
         Returns:
-            types.Pose: AirSim Pose object for current state.
+            airsim.types.Pose: AirSim Pose object for current state.
         """
         return self.simGetVehiclePose()
 
@@ -108,3 +108,7 @@ class DRUNAirSimClient(MultirotorClient):
              pose.orientation.z_val) = orientation
 
         self.simSetVehiclePose(pose, True)
+
+    def takeoff(self):
+        """Starts an drone flight; takes off the drone."""
+        self.takeoffAsync().join()
