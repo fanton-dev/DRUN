@@ -58,6 +58,7 @@ def ai_input(
         orders: List[Order]
 ) -> None:
     """Forwards all the drone data to a trained AI model which outputs controls.
+    
     Args:
         current_controls (Controls): Cross-thread controls data.
         current_image (np.ndarray): Cross-thread image data.
