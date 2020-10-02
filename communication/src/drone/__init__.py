@@ -32,10 +32,106 @@ class DroneServerThread(Thread):
             ports: List[int],
             home: List[float]
     ) -> None:
+
+        self.drone_id = drone_id
+        self.ip_address = ip_address
+        self.ports = ports
+        self.home = home
+
+        self.orders = []
+        self.available = True
+        self.current_controls = [
+            {
+                "action": "takeoff",
+                "state": False,
+                "key": "Key.space"
+            },
+            {
+                "action": "land",
+                "state": False,
+                "key": "x"
+            },
+            {
+                "action": "forward",
+                "state": False,
+                "key": "w"
+            },
+            {
+                "action": "left",
+                "state": False,
+                "key": "a"
+            },
+            {
+                "action": "backward",
+                "state": False,
+                "key": "s"},
+            {
+                "action": "right",
+                "state": False,
+                "key": "d"
+            },
+            {
+                "action": "up",
+                "state": False,
+                "key": "z"
+            },
+            {
+                "action": "down",
+                "state": False,
+                "key": "c"
+            },
+            {
+                "action": "cw",
+                "state": False,
+                "key": "e"
+            },
+            {
+                "action": "ccw",
+                "state": False,
+                "key": "q"
+            },
+        ]
+        self.current_image = np.zeros((448, 448, 3))
+        self.current_location = home
+
         super(DroneServerThread, self).__init__()
 
     def run(self) -> None:
-        pass
+        # Starting the 3 TCP session threads
+        control_t = ControlThread(
+            ["ai"],
+            ["network"],
+            self.current_controls,
+            self.current_image,
+            self.current_location,
+            self.orders,
+            self.ip_address,
+            self.ports[0]
+        )
+        control_t.start()
+
+        image_t = ImageThread(
+            ["network"],
+            ["debug"],
+            self.current_image,
+            self.ip_address,
+            self.ports[1]
+        )
+        image_t.start()
+
+        location_t = LocationThread(
+            ["network"],
+            ["debug"],
+            self.current_location,
+            self.ip_address,
+            self.ports[2]
+        )
+        location_t.start()
+
+        # Waiting for the threads to complete
+        control_t.join()
+        image_t.join()
+        location_t.join()
 
 
 class DroneClientThread(Thread):
