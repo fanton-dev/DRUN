@@ -79,3 +79,32 @@ class DRUNAirSimClient(MultirotorClient):
             types.Pose: AirSim Pose object for current state.
         """
         return self.simGetVehiclePose()
+
+    def set_pose(
+            self,
+            position: Tuple[float, float, float] = None,
+            orientation: Tuple[float, float, float, float] = None
+    ) -> None:
+        """Sets the drone's current position and orientation.
+
+        Args:
+            position (Tuple, optional): (x, y, z) coordinates.
+            orientation (Tuple, optional): (w, x, y, z) rotation quaternion.
+
+        Notes:
+            For quaterion explanation refer to this article:
+            http://wiki.alioth.net/index.php/Quaternion
+        """
+        pose = self.get_pose()
+        if position:
+            (pose.position.x_val,
+             pose.position.y_val,
+             pose.position.z_val) = position
+
+        if orientation:
+            (pose.orientation.w_val,
+             pose.orientation.x_val,
+             pose.orientation.y_val,
+             pose.orientation.z_val) = orientation
+
+        self.simSetVehiclePose(pose, True)
