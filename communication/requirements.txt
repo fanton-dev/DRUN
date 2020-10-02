@@ -3,3 +3,5 @@ numpy==1.19.2
 requests==2.24.0
 opencv-python==4.4.0.44
 pyardrone==0.6.1
+pynput==1.7.1
+pyserial==3.4
