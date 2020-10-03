@@ -192,3 +192,15 @@ class DRUNAirSimClient(MultirotorClient):
             airsim.types.CollisionInfo: Colission data.
         """
         return self.simGetCollisionInfo()
+
+    def get_observation_regular(self) -> np.ndarray:
+        """Returns regular FPV camera observation.
+
+        Returns:
+            np.ndarray: Image array.
+        """
+        image_raw = self.simGetImages(
+            [ImageRequest(0, ImageType.Scene, False, False)]
+        )[0]
+        image_array = np.fromstring(image_raw.image_data_uint8, dtype=np.uint8)
+        return image_array.reshape(image_raw.height, image_raw.width, 3)
