@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import
 from typing import List
+from pyardrone.utils import every
 
 
 def debug_output(current_location: List[float], fps: float = 1.0) -> None:
@@ -11,7 +12,8 @@ def debug_output(current_location: List[float], fps: float = 1.0) -> None:
         current_location (List[float]): Cross-thread location data.
         fps (float, optional): Rate data to be printed at. Defaults to 1.0.
     """
-
+    for _ in every(1/fps):
+        print(current_location)
 
 def network_output(
         current_location: List[float],
