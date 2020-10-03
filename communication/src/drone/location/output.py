@@ -29,3 +29,10 @@ def network_output(
         port (int): TCP port on the server for communication.
         fps (float, optional): Rate data to be send at. Defaults to 1.0.
     """
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ssock:
+        ssock.connect((ip_address, port))
+
+        for _ in every(1/fps):
+            # current_image can be read on the server
+            # by calling numpy.loads on the recieved data
+            sock.sendall( str(current_location).encode() )
