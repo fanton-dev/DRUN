@@ -204,3 +204,15 @@ class DRUNAirSimClient(MultirotorClient):
         )[0]
         image_array = np.fromstring(image_raw.image_data_uint8, dtype=np.uint8)
         return image_array.reshape(image_raw.height, image_raw.width, 3)
+
+    def get_observation_depth(self) -> np.ndarray:
+        """Returns depth FPV camera observation.
+
+        Returns:
+            np.ndarray: Image array.
+        """
+        image_raw = self.simGetImages(
+            [ImageRequest(0, ImageType.DepthVis, False, False)]
+        )[0]
+        image_array = np.fromstring(image_raw.image_data_uint8, dtype=np.uint8)
+        return image_array.reshape(image_raw.height, image_raw.width)
