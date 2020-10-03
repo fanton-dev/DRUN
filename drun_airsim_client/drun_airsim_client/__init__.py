@@ -3,7 +3,7 @@
 from __future__ import absolute_import
 from io import BytesIO
 from typing import Tuple
-from math import sin, pi
+from math import sin, cos, pi, acos
 
 from airsim.types import Pose, CollisionInfo
 from airsim import (
@@ -12,7 +12,7 @@ from airsim import (
     ImageRequest,
     ImageType
 )
-from PIL import Image
+import numpy as np
 
 
 class DRUNAirSimClient(MultirotorClient):
@@ -148,12 +148,12 @@ class DRUNAirSimClient(MultirotorClient):
             duration (float, optional): Duration in seconds. Defaults to 0.01.
         """
 
+        # Math by @simo1209 <3 nh
         z_orientation = self.get_pose().orientation.z_val
-        x_velocity = 2 * (-abs(z_orientation) + 0.5) * (forward - backward)
-        x_velocity -= sin(z_orientation * pi) * (right - left)
-        y_velocity = 2 * (-abs(z_orientation) + 0.5) * (right - left)
-        y_velocity += sin(z_orientation * pi) * (forward - backward)
-        # print(z_orientation)
+        x_vel = cos(2 * (acos(z_orientation) - (pi/4))) * (left - right)
+        x_vel += sin(2 * (acos(z_orientation) - (pi/4))) * (forward-backward)
+        y_vel = cos(2 * (acos(z_orientation) - (pi/4))) * (forward-backward)
+        y_vel += sin(2 * (acos(z_orientation) - (pi/4))) * (right - left)
 
         if cw or ccw:
             self.rotateByYawRateAsync(
@@ -161,8 +161,8 @@ class DRUNAirSimClient(MultirotorClient):
                 duration=duration).join()
 
         self.moveByVelocityAsync(
-            vx=x_velocity,
-            vy=y_velocity,
+            vx=x_vel,
+            vy=y_vel,
             vz=down - up,
             duration=duration).join()
 
@@ -184,3 +184,11 @@ class DRUNAirSimClient(MultirotorClient):
             self.set_time(start_datetime)
         if weather:
             self.set_weather(*weather)
+
+    def get_collisions(self) -> CollisionInfo:
+        """Returns collision data for the drone.
+
+        Returns:
+            airsim.types.CollisionInfo: Colission data.
+        """
+        return self.simGetCollisionInfo()
