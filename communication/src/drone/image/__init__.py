@@ -42,4 +42,55 @@ class ImageThread(Thread):
         super(ImageThread, self).__init__()
 
     def run(self) -> None:
-        pass
+        input_ts = []
+        output_ts = []
+
+        if "camera" in self.input_mode:
+            input_ts.append(
+                Thread(
+                    target=camera_input,
+                    args=(self.current_image,)
+                )
+            )
+        if "network" in self.input_mode:
+            input_ts.append(
+                Thread(
+                    target=network_input,
+                    args=(
+                        self.current_image,
+                        self.port,
+                    )
+                )
+            )
+
+        if "debug" in self.output_mode:
+            output_ts.append(
+                Thread(
+                    target=debug_output,
+                    args=(self.current_image,)
+                )
+            )
+        if "network" in self.output_mode:
+            output_ts.append(
+                Thread(
+                    target=network_output,
+                    args=(
+                        self.current_image,
+                        self.ip_address,
+                        self.port,
+                    )
+                )
+            )
+
+        for thread in input_ts:
+            thread.start()
+
+        for thread in output_ts:
+            thread.start()
+
+        for thread in input_ts:
+            thread.join()
+
+        for thread in output_ts:
+            thread.join()
+
