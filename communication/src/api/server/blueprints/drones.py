@@ -76,6 +76,7 @@ def connect() -> Tuple[str, int]:
     drones_lock, drone_ts = common_variables.get_drone_ts()
     drones_lock.acquire()
     drone_ts.append(new_drone_th)
+    drone_ts[-1].start()
     drones_lock.release()
 
     print(request.json)

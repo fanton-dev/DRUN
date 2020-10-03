@@ -6,6 +6,7 @@ Script for creating a multithreaded server, controlling multiple drone.
 from __future__ import absolute_import
 
 from src.api import APIServerThread
+import src.discord as dis
 
 
 def server(api_port=5000):
@@ -17,7 +18,14 @@ def server(api_port=5000):
     drone_ts = []
     api_t = APIServerThread(drone_ts, api_port)
     api_t.start()
+
+
+    dis.init()
+
+    
+
     api_t.join()
+    
     for thread in drone_ts:
         thread.join()
 

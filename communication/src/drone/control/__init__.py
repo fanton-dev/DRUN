@@ -52,7 +52,97 @@ class ControlThread(Thread):
             ip_address: str,
             port: List[int]
     ) -> None:
+        self.input_mode = input_mode
+        self.output_mode = output_mode
+        self.current_controls = current_controls
+        self.current_image = current_image
+        self.current_location = current_location
+        self.orders = orders
+        self.ip_address = ip_address
+        self.port = port
+
         super(ControlThread, self).__init__()
 
     def run(self) -> None:
-        pass
+        input_ts = []
+        output_ts = []
+
+        if "debug" in self.input_mode:
+            input_ts.append(
+                Thread(
+                    target=debug_input,
+                    args=(
+                        self.current_controls,
+                        self.current_image,
+                        self.current_location,
+                        self.orders
+                    )
+                )
+            )
+        if "network" in self.input_mode:
+            input_ts.append(
+                Thread(
+                    target=network_input,
+                    args=(
+                        self.current_controls,
+                        self.ip_address,
+                        self.port
+                    )
+                )
+            )
+        if "ai" in self.input_mode:
+            input_ts.append(
+                Thread(
+                    target=ai_input,
+                    args=(
+                        self.current_controls,
+                        self.current_image,
+                        self.current_location,
+                        self.orders
+                    )
+                )
+            )
+
+        if "debug" in self.output_mode:
+            output_ts.append(
+                Thread(
+                    target=debug_output,
+                    args=(self.current_controls)
+                )
+            )
+        if "network" in self.output_mode:
+            output_ts.append(
+                Thread(
+                    target=network_output,
+                    args=(
+                        self.current_controls,
+                        self.port
+                    )
+                )
+            )
+        if "drone" in self.output_mode:
+            output_ts.append(
+                Thread(
+                    target=drone_output,
+                    args=(self.current_controls)
+                )
+            )
+        if "airsim" in self.output_mode:
+            output_ts.append(
+                Thread(
+                    target=airsim_output,
+                    args=(self.current_controls)
+                )
+            )
+
+        for thread in input_ts:
+            thread.start()
+
+        for thread in output_ts:
+            thread.start()
+
+        for thread in input_ts:
+            thread.join()
+
+        for thread in output_ts:
+            thread.join()

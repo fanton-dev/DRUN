@@ -13,14 +13,13 @@ from __future__ import absolute_import
 from typing import Tuple
 
 from flask import Blueprint, request, jsonify
+import web3 as w3
 
 from ....ethereum import EthereumClient
 from ....database.interfaces.user import User
 
 from ....database import Database
 
-
-import web3 as w3
 
 users_blueprint = Blueprint("users", __name__)
 
