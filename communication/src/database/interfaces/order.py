@@ -25,11 +25,11 @@ class Order():
             order_id: str,
             drone_id: str,
             sender_id: str,
-            receiver_id: str,
+            reciever_id: str,
             price_customer: float,
             price_delivery: float,
             sender_location: List[float],
-            receiver_location: List[float],
+            reciever_location: List[float],
             start_time: str = time
     ) -> None:
         self.order_id = order_id if order_id else uuid.uuid4().hex
