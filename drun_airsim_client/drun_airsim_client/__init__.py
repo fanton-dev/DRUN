@@ -1,7 +1,6 @@
 """Base simulation utility for Microsoft AirSim."""
 
 from __future__ import absolute_import
-from io import BytesIO
 from typing import Tuple
 from math import sin, cos, pi, acos
 
@@ -213,6 +212,18 @@ class DRUNAirSimClient(MultirotorClient):
         """
         image_raw = self.simGetImages(
             [ImageRequest(0, ImageType.DepthVis, False, False)]
+        )[0]
+        image_array = np.fromstring(image_raw.image_data_uint8, dtype=np.uint8)
+        return image_array.reshape(image_raw.height, image_raw.width)
+
+    def get_observation_segmentation(self) -> np.ndarray:
+        """Returns segmentation FPV camera observation.
+
+        Returns:
+            np.ndarray: Image array.
+        """
+        image_raw = self.simGetImages(
+            [ImageRequest(0, ImageType.Segmentation, False, False)]
         )[0]
         image_array = np.fromstring(image_raw.image_data_uint8, dtype=np.uint8)
         return image_array.reshape(image_raw.height, image_raw.width)
