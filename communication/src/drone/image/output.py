@@ -34,4 +34,4 @@ def network_output(
         for _ in every(1/fps):
             # current_image can be read on the server
             # by calling numpy.loads on the recieved data
-            ssock.sendall(current_image.dumps())
+            ssock.sendall( current_image.dumps().encode() )

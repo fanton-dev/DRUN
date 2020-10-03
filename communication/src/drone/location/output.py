@@ -33,4 +33,4 @@ def network_output(
         ssock.connect((ip_address, port))
 
         for _ in every(1/fps):
-            ssock.sendall( str(current_location) )
+            ssock.sendall( str(current_location).encode() )
