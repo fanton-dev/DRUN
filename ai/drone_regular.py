@@ -1,11 +1,14 @@
 # DRUN Deep Q-network navigation (Regular observations)
 # Library imports
 from __future__ import absolute_import
+from collections import namedtuple
 
 import gym
 import numpy as np
 import tensorflow as tf
+from tensorflow.keras import Model
 from tensorflow.keras.layers import Input, Conv2D, Flatten, Dense, Activation
+from tensorflow.keras.optimizers import Adam
 from collections import deque
 
 
@@ -82,28 +85,24 @@ def stack_frames(
     return stacked_state, stacked_frames
 
 
-class DroneDQN(tf.keras.Model):
-    def __init__(self):
-        self.image_input = Input(STATE_SIZE)
-        self.coords_input = Input(2)
+def drun_dqn() -> Model:
+    image_input = Input(STATE_SIZE)
+    coords_input = Input(2)
+    img_net = Conv2D(32, (4, 4), strides=(4, 4), activation="relu", input_shape=STATE_SIZE)(image_input)
+    img_net = Conv2D(64, (3, 3), strides=(2, 2), activation="relu")(img_net)
+    img_net = Conv2D(64, (3, 3), strides=(2, 2), activation="relu")(img_net)
+    img_net = Flatten()(img_net)
 
-        super(DroneDQN, self).__init__()
+    dense_net = Dense(512)(img_net, coords_input)
+    dense_net = Activation("relu")(dense_net)
+    dense_net = Dense(512)(dense_net)
+    dense_net = Activation("relu")(dense_net)
+    dense_net = Dense(512)(dense_net)
+    dense_net = Activation("relu")(dense_net)
+    dense_net = Dense(ACTION_SIZE)(dense_net)
+    output = Activation("linear")
+    return Model(inputs=(image_input, coords_input), output=output)
 
-    def call(self):
-        img_net = Conv2D(32, (4, 4), strides=(4, 4), activation="relu", input_shape=STATE_SIZE)(self.image_input)
-        img_net = Conv2D(64, (3, 3), strides=(2, 2), activation="relu")(img_net)
-        img_net = Conv2D(64, (3, 3), strides=(2, 2), activation="relu")(img_net)
-        img_net = Flatten()(img_net)
 
-        dense_net = Dense(512)(img_net, self.coords_input)
-        dense_net = Activation("relu")(dense_net)
-        dense_net = Dense(512)(dense_net)
-        dense_net = Activation("relu")(dense_net)
-        dense_net = Dense(512)(dense_net)
-        dense_net = Activation("relu")(dense_net)
-        dense_net = Dense(ACTION_SIZE)(dense_net)
-        model = Activation("linear")
-        return model
-
-optimizer = keras.optimizers.Adam(learning_rate=LEARNING_RATE, clipnorm=1.0)
-drone_dqn = DroneDQN()
+drone_dqn = drun_dqn()
+optimizer = Adam(learning_rate=LEARNING_RATE, clipnorm=1.0)
