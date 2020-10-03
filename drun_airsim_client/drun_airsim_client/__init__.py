@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import
 from typing import Tuple
-from math import sin, cos, pi, acos, abs
+from math import sin, cos, pi, acos, abs, atan
 
 from airsim.types import Pose, CollisionInfo
 from airsim import (
@@ -233,3 +233,10 @@ class DRUNAirSimClient(MultirotorClient):
         normal_x = abs((X[0] - B[0]) / (A[0] - B[0]))
         normal_y = abs((X[1] - B[1]) / (A[1] - B[1]))
         return (normal_x, normal_y)
+
+    @staticmethod
+    def calculate_goal_orientation(A: Tuple[float, float], B: Tuple[float, float]) -> float:
+        x = abs( A[0] - B[0] )
+        y = abs( A[1] - B[1] )
+        angle = atan(x/y)
+        return cos( angle/2 + pi/4 )
