@@ -43,4 +43,55 @@ class LocationThread(Thread):
         super(LocationThread, self).__init__()
 
     def run(self) -> None:
+        input_ts = []
+        output_ts = []
+
+        if "gps" in self.input_mode:
+            input_ts.append(
+                Thread(
+                    target=gps_input,
+                    args=(self.current_location,)
+                )
+            )
+        if "network" in self.input_mode:
+            input_ts.append(
+                Thread(
+                    target=network_input,
+                    args=(
+                        self.current_location,
+                        self.port,
+                    )
+                )
+            )
+
+        if "debug" in self.output_mode:
+            output_ts.append(
+                Thread(
+                    target=debug_output,
+                    args=(self.current_location,)
+                )
+            )
+        if "network" in self.output_mode:
+            output_ts.append(
+                Thread(
+                    target=network_output,
+                    args=(
+                        self.current_location,
+                        self.ip_address,
+                        self.port,
+                    )
+                )
+            )
+
+        for thread in input_ts:
+            thread.start()
+
+        for thread in output_ts:
+            thread.start()
+
+        for thread in input_ts:
+            thread.join()
+
+        for thread in output_ts:
+
         pass
