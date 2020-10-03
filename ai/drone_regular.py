@@ -2,6 +2,7 @@
 # Library imports
 from __future__ import absolute_import
 from collections import namedtuple
+from math import exp
 
 import gym
 import numpy as np
@@ -28,6 +29,11 @@ MAX_STEPS = 1000
 BATCH_SIZE = 64
 PRETRAIN_LENGTH = BATCH_SIZE
 MEMORY_SIZE = 1000000
+
+# Epsilon greedy
+EXPLORE_START = 1.0
+EXPLORE_STOP = 0.01
+DECAY_RATE = 0.0001
 
 # Q-learning hyperparameters
 GAMMA = 0.95
@@ -108,7 +114,7 @@ Experience = namedtuple(
 )
 
 
-class Memory():
+class ReplayMemory():
     def __init__(self, capacity):
         self.buffer = deque(maxlen=capacity)
         self.push_count = 0
@@ -129,3 +135,15 @@ class Memory():
 
     def is_sample_available(self, batch_size):
         return len(self.buffer) >= batch_size
+
+
+class EpsilonGreedy():
+    def __init__(self, start, stop, decay):
+        self.start = start
+        self.stop = stop
+        self.decay = decay
+
+    def get_exploration_rate(self, current_step):
+        rate = self.stop + (self.start - self.stop)
+        rate *= exp(-1 * current_step * self.decay)
+        return rate
