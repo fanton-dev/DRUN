@@ -22,7 +22,7 @@ def network_output(current_controls: Controls, port: int) -> None:
         port (int): TCP port on the server for communication.
     """
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ssock:
-        sock.bind(('localhost', port))
+        ssock.bind(('localhost', port))
         ssock.listen()
         conn, addr = ssock.accept()
         while True:
