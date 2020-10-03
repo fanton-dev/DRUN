@@ -11,7 +11,7 @@ from typing import List
 
 import numpy as np
 
-from .control import ControlThread
+from .control import ControlThread, Controls
 from .image import ImageThread
 from .location import LocationThread
 
@@ -40,57 +40,7 @@ class DroneServerThread(Thread):
 
         self.orders = []
         self.available = True
-        self.current_controls = [
-            {
-                "action": "takeoff",
-                "state": False,
-                "key": "Key.space"
-            },
-            {
-                "action": "land",
-                "state": False,
-                "key": "x"
-            },
-            {
-                "action": "forward",
-                "state": False,
-                "key": "w"
-            },
-            {
-                "action": "left",
-                "state": False,
-                "key": "a"
-            },
-            {
-                "action": "backward",
-                "state": False,
-                "key": "s"},
-            {
-                "action": "right",
-                "state": False,
-                "key": "d"
-            },
-            {
-                "action": "up",
-                "state": False,
-                "key": "z"
-            },
-            {
-                "action": "down",
-                "state": False,
-                "key": "c"
-            },
-            {
-                "action": "cw",
-                "state": False,
-                "key": "e"
-            },
-            {
-                "action": "ccw",
-                "state": False,
-                "key": "q"
-            },
-        ]
+        self.current_controls = Controls()
         self.current_image = np.zeros((448, 448, 3))
         self.current_location = home
 
@@ -149,57 +99,7 @@ class DroneClientThread(Thread):
         self.ip_address = ip_address
         self.ports = ports
 
-        self.current_controls = [
-            {
-                "action": "takeoff",
-                "state": False,
-                "key": "Key.space"
-            },
-            {
-                "action": "land",
-                "state": False,
-                "key": "x"
-            },
-            {
-                "action": "forward",
-                "state": False,
-                "key": "w"
-            },
-            {
-                "action": "left",
-                "state": False,
-                "key": "a"
-            },
-            {
-                "action": "backward",
-                "state": False,
-                "key": "s"},
-            {
-                "action": "right",
-                "state": False,
-                "key": "d"
-            },
-            {
-                "action": "up",
-                "state": False,
-                "key": "z"
-            },
-            {
-                "action": "down",
-                "state": False,
-                "key": "c"
-            },
-            {
-                "action": "cw",
-                "state": False,
-                "key": "e"
-            },
-            {
-                "action": "ccw",
-                "state": False,
-                "key": "q"
-            },
-        ]
+        self.current_controls = Controls()
         self.current_image = np.zeros((448, 448, 3))
         self.current_location = []
         super(DroneClientThread, self).__init__()
