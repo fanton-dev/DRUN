@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import
 from typing import Tuple
-from math import sin, cos, pi, acos
+from math import sin, cos, pi, acos, abs
 
 from airsim.types import Pose, CollisionInfo
 from airsim import (
@@ -227,3 +227,9 @@ class DRUNAirSimClient(MultirotorClient):
         )[0]
         image_array = np.fromstring(image_raw.image_data_uint8, dtype=np.uint8)
         return image_array.reshape(image_raw.height, image_raw.width)
+
+    @staticmethod
+    def calculate_normalized_point(X: Tuple[float, float], A: Tuple[float, float], B: Tuple[float, float]) -> Tuple[float, float]:
+        normal_x = abs((X[0] - B[0]) / (A[0] - B[0]))
+        normal_y = abs((X[1] - B[1]) / (A[1] - B[1]))
+        return (normal_x, normal_y)
