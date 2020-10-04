@@ -93,5 +93,4 @@ class LocationThread(Thread):
             thread.join()
 
         for thread in output_ts:
-
-            pass
+            thread.join()
