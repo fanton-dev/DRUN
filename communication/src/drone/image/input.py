@@ -37,10 +37,15 @@ def network_input(current_image: np.ndarray, port: int) -> None:
         current_image (np.ndarray): Cross-thread image data.
         port (int): TCP port a socket to be created on for listening.
     """
+    print('ImageThread > network_input')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rsock:
         rsock.bind(('localhost', port))
+        print('Socket binded')
         rsock.listen()
+        print('Socket listnening')
         conn, addr = rsock.accept()
-        while True:
-            data = recvall(conn)
-            current_image = np.loads(data.decode())
+        with conn:
+            print('Image Input established')
+            while True:
+                data = recvall(conn)
+                current_image = np.loads(data)

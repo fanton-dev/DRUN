@@ -1,6 +1,8 @@
 "Input methods for the LocationThread, modifying current_location."
 
 from __future__ import absolute_import
+import socket
+
 from typing import List
 
 def gps_input(current_location: List[float]) -> None:
@@ -19,10 +21,15 @@ def network_input(current_location: List[float], port: int) -> None:
         current_location (List[float]): Cross-thread location data.
         port (int): TCP port a socket to be created on for listening.
     """
+    print('LocationThread > network_input')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rsock:
         rsock.bind(('localhost', port))
+        print('Socket binded')
         rsock.listen()
+        print('Socket listnening')
         conn, addr = rsock.accept()
-        while True:
-            data = conn.recv(4096)
-            current_location = eval(data.decode())
+        with conn:
+            print('Location network_input connection established')
+            while True:
+                data = conn.recv(4096)
+                current_location = eval(data.decode())

@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import socket
 
 import numpy as np
+import cv2
 
 from pyardrone.utils import every
 
@@ -29,10 +30,11 @@ def network_output(
         port (int): TCP port on the server for communication.
         fps (float, optional): Rate data to be send at. Defaults to 10.0.
     """
+    print('ImageThread > network_output')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ssock:
         ssock.connect((ip_address, port))
-
+        print('Image network_output connected')
         for _ in every(1/fps):
             # current_image can be read on the server
             # by calling numpy.loads on the recieved data
-            ssock.sendall( current_image.dumps().encode() )
+            ssock.sendall( current_image.dumps() )

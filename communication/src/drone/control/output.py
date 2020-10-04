@@ -22,18 +22,19 @@ def network_output(current_controls: Controls, port: int) -> None:
         current_controls (Controls): Cross-thread controls data.
         port (int): TCP port on the server for communication.
     """
+    print('ControlThread > network_output')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ssock:
         ssock.bind(('localhost', port))
+        print('Control Output Socket binded')
         ssock.listen()
+        print('Control Output Socket listnening')
         conn, addr = ssock.accept()
-        while True:
-            # Waiting for ACK from the client
-            try:
-                conn.recv(3)
-            except socket.error:
-                break
-        data = current_controls.dumps()
-        conn.send(data.encode())
+        with conn:
+            print('Control established')
+            while True:
+                data = current_controls.dumps()
+                conn.send(data.encode())
+        
 
 def drone_output(current_controls: Controls) -> None:
     """Connects to the Parrot drone using its API and sends controls.
@@ -64,3 +65,4 @@ def airsim_output(current_controls: Controls) -> None:
     Args:
         current_controls (Controls): Cross-thread controls data.
     """
+    pass

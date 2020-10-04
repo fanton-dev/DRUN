@@ -50,6 +50,7 @@ def network_input(
         ip_address (str): IP address of the server.
         port (int): TCP port on the server for communication.
     """
+    print('ControlThread > network_input')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rsock:
         rsock.connect((ip_address, port))
         data = rsock.recv(4096)
@@ -70,3 +71,4 @@ def ai_input(
         current_location (List[float]): Cross-thread location data.
         orders (List[Order]): List of orders the drone should deliver.
     """
+    pass

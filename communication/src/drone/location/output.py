@@ -1,6 +1,8 @@
 "Output methods for the LocationThread, reading from current_location."
 
 from __future__ import absolute_import
+import socket
+
 from typing import List
 from pyardrone.utils import every
 
@@ -29,8 +31,10 @@ def network_output(
         port (int): TCP port on the server for communication.
         fps (float, optional): Rate data to be send at. Defaults to 1.0.
     """
+    print('LocationThread > network_output')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ssock:
         ssock.connect((ip_address, port))
 
         for _ in every(1/fps):
-            ssock.sendall( str(current_location).encode() )
+            pass
+            # ssock.sendall( str(current_location).encode() )

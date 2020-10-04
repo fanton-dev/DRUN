@@ -72,10 +72,7 @@ class ControlThread(Thread):
                 Thread(
                     target=debug_input,
                     args=(
-                        self.current_controls,
-                        self.current_image,
-                        self.current_location,
-                        self.orders
+                        self.current_controls
                     )
                 )
             )

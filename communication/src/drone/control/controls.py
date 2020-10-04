@@ -19,6 +19,10 @@ class Controls:
             self.controls = { action: Control(self.actions_keys[action], state) for (action,state) in controls.items() }
 
     def __getitem__(self, action):
+        if action is None:
+            return self.controls['land']
+        if action not in self.actions_keys.keys():
+            return self.controls['land']
         return self.controls[action]
 
     def find_by_key(self, key):
