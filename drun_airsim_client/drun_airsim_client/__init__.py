@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import
 from typing import Tuple
-from math import sin, cos, pi, acos, abs, atan
+from math import sin, cos, pi, acos, atan
 
 from airsim.types import Pose, CollisionInfo
 from airsim import (

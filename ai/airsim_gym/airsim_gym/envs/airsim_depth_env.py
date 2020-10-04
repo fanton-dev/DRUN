@@ -25,7 +25,7 @@ class AirSimDepthEnv(gym.Env):
 
         self._seed()
         self.home = [0.0, 0.0, -30.0]
-        self.goal = [1.0, -1.0]
+        self.goal = [100.0, -100.0]
         self.position = self.home
 
         self.current_episode = 0
@@ -51,24 +51,19 @@ class AirSimDepthEnv(gym.Env):
         self.position = self.client.get_pose().position
 
         if collided:
-            episode_done = True
+            done = True
             reward = -100.0
             distance = self._calculate_distance(self.goal)
         else:
-            episode_done = False
+            done = False
             reward, distance = self._calculate_reward()
 
         if distance < 2:
-            episode_done = True
+            done = True
             reward = 100.0
 
         self.history["reward"].append(reward)
-        reward_sum = np.sum(self.history["reward"])
         self.history["distance"].append(distance)
-
-        # Terminate the episode on large cumulative amount penalties
-        if reward_sum < -100:
-            episode_done = True
 
         info = {
             "x_position": self.position.x_val,
@@ -76,20 +71,24 @@ class AirSimDepthEnv(gym.Env):
         }
         self.state = self.client.get_observation_depth()
 
-        return self.state, reward, episode_done, info
+        return self.state, reward, done, info
 
     def reset(self):
         self.client.simulation_reset()
+        self.client.set_pose(position=(0, 0, -30))
+        self.client.takeoff()
 
         self.current_episode += 1
         self.current_step = 0
         self.history = self.default_history.copy()
 
-        self.client.set_pose(position=(0, 0, -30))
-        self.client.takeoff()
+        return self.client.get_observation_depth()
 
     def render(self, mode="none") -> None:
         pass
+
+    def get_state(self):
+        return self.client.get_observation_depth()
 
     def set_home(self, new_home: List[int]) -> None:
         """Changes the environment home.

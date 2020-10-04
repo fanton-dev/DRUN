@@ -23,7 +23,7 @@ class AirSimRegularEnv(gym.Env):
 
         self._seed()
         self.home = [0.0, 0.0, -30.0]
-        self.goal = [1.0, -1.0]
+        self.goal = [100.0, -100.0]
         self.position = self.home
 
         self.current_episode = 0
@@ -47,6 +47,11 @@ class AirSimRegularEnv(gym.Env):
 
         collided = self.client.get_collisions().has_collided
         self.position = self.client.get_pose().position
+        self.position = self.client.calculate_normalized_point(
+            [self.position.x_val, self.position.y_val],
+            self.home,
+            self.goal
+        )
 
         if collided:
             episode_done = True
@@ -56,25 +61,17 @@ class AirSimRegularEnv(gym.Env):
             episode_done = False
             reward, distance = self._calculate_reward()
 
-        if distance < 2:
+        if distance < 30:
             episode_done = True
             reward = 100.0
 
         self.history["reward"].append(reward)
-        reward_sum = np.sum(self.history["reward"])
         self.history["distance"].append(distance)
 
-        # Terminate the episode on large cumulative amount penalties
-        if reward_sum < -100:
-            episode_done = True
-
-        info = {
-            "x_position": self.position.x_val,
-            "y_position": self.position.y_val
-        }
         self.state = self.client.get_observation_regular()
 
-        return self.state, reward, episode_done, info
+        print(self.history["reward"])
+        return self.state, reward, episode_done, self.position
 
     def reset(self):
         self.client.simulation_reset()
@@ -84,6 +81,8 @@ class AirSimRegularEnv(gym.Env):
         self.current_episode += 1
         self.current_step = 0
         self.history = self.default_history.copy()
+
+        return self.client.get_observation_regular()
 
     def render(self, mode="none") -> None:
         pass
@@ -104,18 +103,21 @@ class AirSimRegularEnv(gym.Env):
         """
         self.goal = new_goal.copy()
 
+    def get_state(self):
+        return self.client.get_observation_regular()
+
     def _calculate_reward(self):
         distance_now = self._calculate_distance(self.goal)
         distance_before = self.history["distance"][-1]
 
-        reward = -1
+        reward = -0.0001
         reward = reward + (distance_before - distance_now)
 
         return reward, distance_now
 
     def _calculate_distance(self, goal):
-        distance = np.power((goal[0]-self.position.x_val), 2)
-        distance += np.power((goal[1]-self.position.y_val), 2)
+        distance = np.power((goal[0]-self.position[0]), 2)
+        distance += np.power((goal[1]-self.position[1]), 2)
         return np.sqrt(distance)
 
     def _seed(self, seed=None):
