@@ -61,10 +61,23 @@ def network_input(
     """
     print('ControlThread > network_input')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rsock:
-        rsock.connect((ip_address, port))
-        data = rsock.recv(4096)
-        control_string = data.decode()
-        current_controls = Controls.loads(control_string)
+        connected = False
+        while not connected:
+            print('Trying to connect to {}:{}'.format(ip_address, port))
+            try:
+                rsock.connect((ip_address, port))
+                connected = True
+            except:
+                pass
+        
+        print('Connected to the server')
+        while True:
+            data = rsock.recv(4096)
+            control_string = data.decode()
+            current_controls = Controls.loads(control_string)
+            # debug output doesnt print correctly
+            # print(current_controls.dumps()) 
+            rsock.send(b'ACK')
 
 
 def ai_input(

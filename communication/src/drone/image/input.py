@@ -13,10 +13,13 @@ def camera_input(current_image: np.ndarray) -> None:
     Args:
         current_image (np.ndarray): Cross-thread image data.
     """
-    from pyardrone import ARDrone
     from pyardrone.video import VideoMixin
+    from pyardrone import ARDrone
 
     drone = ARDrone()
+
+    print(drone)
+    
     current_image = drone.frame
 
 def recvall(sock): # Function to read the whole data recieved before loading to ndarray
@@ -39,7 +42,7 @@ def network_input(current_image: np.ndarray, port: int) -> None:
     """
     print('ImageThread > network_input')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rsock:
-        rsock.bind(('localhost', port))
+        rsock.bind(('0.0.0.0', port))
         print('Socket binded')
         rsock.listen()
         print('Socket listnening')
@@ -47,5 +50,18 @@ def network_input(current_image: np.ndarray, port: int) -> None:
         with conn:
             print('Image Input established')
             while True:
-                data = recvall(conn)
+                loading_image = True
+                data = b''
+                while loading_image:
+                    part = conn.recv(4096)
+                    if len(part) == 0:
+                        break
+                    data+=part
+                    print(part)
+                    print(len(part))
+                    ack = str(len(part))
+                    conn.sendall(ack.encode()) #send number of bytes read for part
+                
                 current_image = np.loads(data)
+                print(current_image)
+                conn.sendall(b'ACK')

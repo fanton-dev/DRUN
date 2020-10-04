@@ -32,9 +32,26 @@ def network_output(
     """
     print('ImageThread > network_output')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ssock:
-        ssock.connect((ip_address, port))
+        connected = False
+        while not connected:
+            print('Trying to connect to {}:{}'.format(ip_address, port))
+            try:
+                ssock.connect((ip_address, port))
+                connected = True
+            except:
+                pass
+
         print('Image network_output connected')
         for _ in every(1/fps):
             # current_image can be read on the server
             # by calling numpy.loads on the recieved data
-            ssock.sendall( current_image.dumps() )
+            data = current_image.dumps()
+            sent_bytes = 0
+            while True:
+                if sent_bytes == len(data):
+                    ssock.sendall(b'') # send zero bytes
+                    break
+                ssock.send( data[sent_bytes:sent_bytes+4096] )
+                recieved_bytes = ssock.recv(4).decode() # wait response
+                sent_bytes += int(recieved_bytes)
+            ssock.recv(3) # wait ACK

@@ -53,4 +53,4 @@ def client(ip_address: str, api_port: int):
 
 
 if __name__ == "__main__":
-    client("localhost", 5000)
+    client("0.0.0.0", 5000)
