@@ -19,13 +19,10 @@ def server(api_port=5000):
     api_t = APIServerThread(drone_ts, api_port)
     api_t.start()
 
-
-    dis.init()
-
-    
+    dis.init()    
 
     api_t.join()
-    
+    dis.join()
     for thread in drone_ts:
         thread.join()
 
