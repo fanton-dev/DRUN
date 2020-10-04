@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:DRUN/screens/messages.dart';
 
 class HomeScreen extends StatefulWidget {
   final FirebaseUser user;
@@ -64,8 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundColor: Theme.of(context).accentColor,
                 ),
           title: Text(contact.displayName ?? ''),
-          //This can be further expanded to showing contacts detail
-          // onPressed().
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return MessagesScreen(user: user, peer: contact);
+              },
+            ),
+          ),
         );
       },
     );
