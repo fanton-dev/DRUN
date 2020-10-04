@@ -1,6 +1,7 @@
 """Base simulation utility for Microsoft AirSim."""
 
 from __future__ import absolute_import
+from __future__ import division
 from typing import Tuple, List
 from math import sin, cos, pi, acos, atan
 
@@ -229,14 +230,24 @@ class DRUNAirSimClient(MultirotorClient):
         return image_array.reshape(image_raw.height, image_raw.width)
 
     @staticmethod
-    def calculate_normalized_point(X: List[float], A: List[float], B: List[float]) -> List[float]:
-        normal_x = abs((X[0] - A[0]) / (A[0] - B[0]))
-        normal_y = abs((X[1] - A[1]) / (A[1] - B[1]))
-        return [normal_x, normal_y]
+    def calculate_normalized_point(
+            X: List[float, float],
+            A: List[float, float],
+            B: List[float, float],
+            scale: float
+    ) -> List[float, float]:
+
+        normal_x = abs((X[0] - B[0] * scale) / ((A[0] - B[0]) * scale))
+        normal_y = abs((X[1] - B[1] * scale) / ((A[1] - B[1]) * scale))
+        return (normal_x, normal_y)
 
     @staticmethod
-    def calculate_goal_orientation(A: Tuple[float, float], B: Tuple[float, float]) -> float:
-        x = abs(A[0] - B[0])
-        y = abs(A[1] - B[1])
-        angle = atan(x/y)
+    def calculate_goal_orientation(
+        A: List[float, float],
+        B: List[float, float]
+    ) -> float:
+
+        point_x = abs(A[0] - B[0])
+        point_y = abs(A[1] - B[1])
+        angle = atan(point_x/point_y)
         return cos(angle/2 + pi/4)
