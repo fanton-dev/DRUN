@@ -6,7 +6,6 @@ from typing import List
 from .controls import Controls
 
 import numpy as np
-from pynput import keyboard
 
 from ...database.interfaces.order import Order
 
@@ -17,6 +16,7 @@ def debug_input(current_controls: Controls) -> None:
     Args:
         current_controls (Controls): Cross-thread controls data.
     """
+    from pynput import keyboard
     def on_press(key):
         try:
             control = current_controls.find_by_key(key)
