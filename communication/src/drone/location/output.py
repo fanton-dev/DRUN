@@ -32,9 +32,17 @@ def network_output(
         fps (float, optional): Rate data to be send at. Defaults to 1.0.
     """
     print('LocationThread > network_output')
+    print(current_location)
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ssock:
-        ssock.connect((ip_address, port))
+        connected = False
+        while not connected:
+            print('Trying to connect to {}:{}'.format(ip_address, port))
+            try:
+                ssock.connect((ip_address, port))
+                connected = True
+            except:
+                pass
 
         for _ in every(1/fps):
-            pass
-            # ssock.sendall( str(current_location).encode() )
+            ssock.sendall( str(current_location).encode() )
+            ssock.recv(3)

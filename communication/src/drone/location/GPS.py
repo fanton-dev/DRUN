@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 
 import serial
 import time
+import re
 
 from typing import List
 
@@ -74,8 +75,11 @@ class GPS:
 
     @classmethod
     def current_location(cls) -> List[float]:
-        location = cls.__get_current_location().split(
-            ',')  # 4241.165993,N,02315.930125,E
+        s = cls.__get_current_location()
+        
+        x = re.search(r"\d+\.\d+,[A-Z],\d+\.\d+,[A-Z]", s)
+        location = x.group().split(',')  # 4241.165993,N,02315.930125,E
+        print(location)
         lat = float(location[0])
         lon = float(location[2])
         if location[1] == 'S':

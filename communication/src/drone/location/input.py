@@ -12,7 +12,10 @@ def gps_input(current_location: List[float]) -> None:
         current_location (List[float]): Cross-thread location data.
     """
     from .GPS import GPS
-    current_location = GPS.current_location()
+    location = GPS.current_location()
+    current_location[0] = location[0]
+    current_location[1] = location[1]
+
 
 def network_input(current_location: List[float], port: int) -> None:
     """Creates a socket for listening for received drone location data.
@@ -23,7 +26,7 @@ def network_input(current_location: List[float], port: int) -> None:
     """
     print('LocationThread > network_input')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rsock:
-        rsock.bind(('localhost', port))
+        rsock.bind(('0.0.0.0', port))
         print('Socket binded')
         rsock.listen()
         print('Socket listnening')
@@ -32,4 +35,7 @@ def network_input(current_location: List[float], port: int) -> None:
             print('Location network_input connection established')
             while True:
                 data = conn.recv(4096)
-                current_location = eval(data.decode())
+                location = eval(data.decode())
+                current_location[0] = location[0]
+                current_location[1] = location[1]
+                conn.send(b'ACK')
