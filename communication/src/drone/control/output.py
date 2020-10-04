@@ -13,6 +13,7 @@ def debug_output(current_controls: Controls, fps: float = 0.1) -> None:
         current_controls (Controls): Cross-thread controls data.
         fps (float): Rate data to be printed at. Defaults to 0.1.
     """
+    print("ControlThread > debug_output")
     for _ in every(1/fps):
         print(current_controls.dumps())
 
@@ -34,6 +35,7 @@ def network_output(current_controls: Controls, port: int) -> None:
             while True:
                 data = current_controls.dumps()
                 conn.send(data.encode())
+                ack = conn.recv(3)
         
 
 def drone_output(current_controls: Controls) -> None:
