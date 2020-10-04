@@ -35,7 +35,6 @@ class EpsilonGreedy():
             observation = observation.reshape(1, *observation.shape)
             position = position.reshape(1, *position.shape)
 
-            print(observation.shape, position.shape)
             prediction = dqn.predict([observation, position])
 
             # Take the biggest Q value (= the best action)

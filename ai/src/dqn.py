@@ -6,7 +6,7 @@ from tensorflow.keras.layers import Input, Conv2D, Flatten, Dense, Concatenate
 
 
 STATE_SIZE = [256, 256, 4]
-ACTION_SIZE = 8
+ACTION_SIZE = 4
 
 
 def drun_dqn() -> Model:

@@ -180,7 +180,6 @@ if TRAINING:
                 rewards_mb = np.array([item.reward for item in batch])
                 dones_mb = np.array([item.done for item in batch])
 
-                print(observation.shape, position_mb.shape)
                 target_Qs_batch = []
 
                 # Build the updated Q-values for the sampled future states

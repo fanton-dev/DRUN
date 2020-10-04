@@ -231,21 +231,18 @@ class DRUNAirSimClient(MultirotorClient):
 
     @staticmethod
     def calculate_normalized_point(
-            X: List[float, float],
-            A: List[float, float],
-            B: List[float, float],
+            X: List[float],
+            A: List[float],
+            B: List[float],
             scale: float
-    ) -> List[float, float]:
+    ) -> List[float]:
 
-        normal_x = abs((X[0] - B[0] * scale) / ((A[0] - B[0]) * scale))
-        normal_y = abs((X[1] - B[1] * scale) / ((A[1] - B[1]) * scale))
+        normal_x = abs((X[0] - A[0] * scale) / ((A[0] - B[0]) * scale))
+        normal_y = abs((X[1] - A[1] * scale) / ((A[1] - B[1]) * scale))
         return (normal_x, normal_y)
 
     @staticmethod
-    def calculate_goal_orientation(
-        A: List[float, float],
-        B: List[float, float]
-    ) -> float:
+    def calculate_goal_orientation(A: List[float], B: List[float]) -> float:
 
         point_x = abs(A[0] - B[0])
         point_y = abs(A[1] - B[1])

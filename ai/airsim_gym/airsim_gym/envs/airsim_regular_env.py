@@ -18,13 +18,15 @@ class AirSimRegularEnv(gym.Env):
         self.state = np.zeros((256, 256, 3), dtype=np.uint8)
 
         # Action space definition
-        # [Forward, Left, Backward, Right, Up, Down, CW, CCW]
-        self.action_space = gym.spaces.Discrete(8)
+        # [Forward, Left, Backward, Right]
+        self.action_space = gym.spaces.Discrete(4)
 
         self._seed()
         self.home = [0.0, 0.0, -30.0]
-        self.goal = [100.0, -100.0]
+        self.goal = [20.0, 20.0]
         self.position = self.home
+        self.normalized_position = None
+        self.coordinate_scale_factor = 2
 
         self.current_episode = 0
         self.current_step = 0
@@ -47,10 +49,11 @@ class AirSimRegularEnv(gym.Env):
 
         collided = self.client.get_collisions().has_collided
         self.position = self.client.get_pose().position
-        self.position = self.client.calculate_normalized_point(
+        self.normalized_position = self.client.calculate_normalized_point(
             [self.position.x_val, self.position.y_val],
             self.home,
-            self.goal
+            self.goal,
+            self.coordinate_scale_factor,
         )
 
         if collided:
@@ -70,7 +73,8 @@ class AirSimRegularEnv(gym.Env):
 
         self.state = self.client.get_observation_regular()
 
-        return self.state, self.position, reward, done
+        print(self.normalized_position, reward, done)
+        return self.state, self.normalized_position, reward, done
 
     def reset(self):
         self.client.simulation_reset()
@@ -106,21 +110,21 @@ class AirSimRegularEnv(gym.Env):
         return (
             self.client.get_observation_regular(),
             self.client.calculate_normalized_point(
-                self.home, self.home, self.goal),
-        ) # TODO - extend by 2
+                self.home, self.home, self.goal, 1.1),
+        )
 
     def _calculate_reward(self):
         distance_now = self._calculate_distance(self.goal)
         distance_before = self.history["distance"][-1]
 
-        reward = -0.0001
+        reward = -1
         reward = reward + (distance_before - distance_now)
 
         return reward, distance_now
 
     def _calculate_distance(self, goal):
-        distance = np.power((goal[0]-self.position[0]), 2)
-        distance += np.power((goal[1]-self.position[1]), 2)
+        distance = np.power((goal[0]-self.position.x_val), 2)
+        distance += np.power((goal[1]-self.position.y_val), 2)
         return np.sqrt(distance)
 
     def _seed(self, seed=None):

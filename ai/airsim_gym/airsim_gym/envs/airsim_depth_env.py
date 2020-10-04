@@ -20,8 +20,8 @@ class AirSimDepthEnv(gym.Env):
         self.state = np.zeros((256, 256), dtype=np.uint8)
 
         # Action space definition
-        # [Forward, Left, Backward, Right, Up, Down, CW, CCW]
-        self.action_space = gym.spaces.Discrete(8)
+        # [Forward, Left, Backward, Right]
+        self.action_space = gym.spaces.Discrete(4)
 
         self._seed()
         self.home = [0.0, 0.0, -30.0]
