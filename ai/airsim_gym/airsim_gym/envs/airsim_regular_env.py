@@ -54,15 +54,15 @@ class AirSimRegularEnv(gym.Env):
         )
 
         if collided:
-            episode_done = True
+            done = True
             reward = -100.0
             distance = self._calculate_distance(self.goal)
         else:
-            episode_done = False
+            done = False
             reward, distance = self._calculate_reward()
 
         if distance < 30:
-            episode_done = True
+            done = True
             reward = 100.0
 
         self.history["reward"].append(reward)
@@ -70,19 +70,18 @@ class AirSimRegularEnv(gym.Env):
 
         self.state = self.client.get_observation_regular()
 
-        print(self.history["reward"])
-        return self.state, reward, episode_done, self.position
+        return self.state, self.position, reward, done
 
     def reset(self):
         self.client.simulation_reset()
-        self.client.set_pose(position=(0, 0, -30))
+        self.client.set_pose(position=self.home)
         self.client.takeoff()
 
         self.current_episode += 1
         self.current_step = 0
         self.history = self.default_history.copy()
 
-        return self.client.get_observation_regular()
+        return self.get_state()
 
     def render(self, mode="none") -> None:
         pass
@@ -104,7 +103,11 @@ class AirSimRegularEnv(gym.Env):
         self.goal = new_goal.copy()
 
     def get_state(self):
-        return self.client.get_observation_regular()
+        return (
+            self.client.get_observation_regular(),
+            self.client.calculate_normalized_point(
+                self.home, self.home, self.goal),
+        ) # TODO - extend by 2
 
     def _calculate_reward(self):
         distance_now = self._calculate_distance(self.goal)

@@ -10,6 +10,7 @@ import tensorflow as tf
 from tensorflow.keras import Model
 from tensorflow.keras.layers import Input, Conv2D, Flatten, Dense, Activation, Concatenate
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.losses import Huber
 
 from src.dqn import drun_dqn
 from src.epsilon import EpsilonGreedy
@@ -23,15 +24,16 @@ env = gym.make("airsim_gym:airsim-regular-v0")
 # Model hyperparameters
 STATE_SIZE = [256, 256, 4]
 ACTION_SIZE = env.action_space.n
-STACK_SIZE = 4
+STACK_SIZE = 64
 LEARNING_RATE = 0.0002
 
 # Training parameters
 TOTAL_EPISODES = 5000
 MAX_STEPS = 1000
-BATCH_SIZE = 2
+BATCH_SIZE = 64
 PRETRAIN_LENGTH = BATCH_SIZE
 MEMORY_SIZE = 1000000
+UPDATE_AFTER_ACTIONS = 4
 
 # Epsilon greedy
 EXPLORE_START = 1.0
@@ -48,12 +50,8 @@ ENV_PREVIEW = False
 # Environment preview
 if ENV_PREVIEW:
     env.reset()
-    for _ in range(10):
+    for _ in range(1000):
         env.step(env.action_space.sample())
-
-
-model = drun_dqn()
-optimizer = Adam(learning_rate=LEARNING_RATE, clipnorm=1.0)
 
 
 # Initialise replay memory
@@ -63,43 +61,48 @@ replay_memory = ReplayMemory(MEMORY_SIZE)
 for i in range(PRETRAIN_LENGTH):
     if i == 0:
         # If no state is available, we get one from the reset
-        state = env.reset()
-        state, stacked_frames = stack_frames(stacked_frames, state, True)
+        observation, position = env.reset()
+        observation, stacked_frames = stack_frames(stacked_frames, observation, True)
 
     # Random action
     action = env.action_space.sample()
-    state, reward, done, _ = env.step(action)
-    state = preprocess_frame(state)
+    observation, position, reward, done = env.step(action)
+    observation = preprocess_frame(observation)
 
     # Hit something
     if done:
-        # We finished the episode
-        next_state = np.zeros(state.shape)
+        # Empty frame on episode ending
+        next_observation = np.zeros(observation.shape)
+        next_position = [0.0, 0.0]
 
         # Add experience to memory
-        replay_memory.add(Experience(state, action, next_state, reward))
+        replay_memory.add(Experience(stacked_frames, position, action, next_observation, next_position, reward, done))
 
         # Start a new episode
-        state = env.reset()
+        observation, position = env.reset()
 
         # Stack the frames
-        state, stacked_frames = stack_frames(stacked_frames, state, True)
+        observation, stacked_frames = stack_frames(stacked_frames, observation, True)
 
     else:
         # Get the next state
-        next_state = env.get_state()
-        next_state, stacked_frames = stack_frames(
-            stacked_frames, next_state, False)
+        next_observation, next_position = env.get_state()
+        next_observation, stacked_frames = stack_frames(
+            stacked_frames, next_observation, False)
 
         # Add experience to memory
-        print(state)
-        replay_memory.add(Experience(state, action, next_state, reward))
+        replay_memory.add(Experience(stacked_frames, position, action, next_observation, next_position, reward, done))
 
-        # Our state is now the next_state
-        state = next_state
+        # Our state is now the next_observation
+        observation = next_observation
 
-# print(replay_memory.buffer)
+model = drun_dqn()
+print(model.summary())
+optimizer = Adam(learning_rate=LEARNING_RATE, clipnorm=1.0)
+loss_function = Huber()
 epsilon = EpsilonGreedy(EXPLORE_START, EXPLORE_START, DECAY_RATE)
+
+
 # Start training
 if TRAINING:
     decay_step = 0
@@ -108,36 +111,38 @@ if TRAINING:
         episode_step = 0
         episode_rewards = []
 
-        state = env.reset()
-        state, stacked_frames = stack_frames(stacked_frames, state, True)
+        observation, position = env.reset()
+        observation, stacked_frames = stack_frames(stacked_frames, observation, True)
 
         while episode_step < MAX_STEPS:
+            # Increase episode_decay/decay_steps
             episode_step += 1
-            # Increase decay_step
             decay_step += 1
 
             # Predict the action to take and take it
-            action, explore_probability = epsilon.predict_action(decay_step, state, env, model)
+            action, explore_probability = epsilon.predict_action(decay_step, observation, position, env, model)
 
             # Do the action
-            state, reward, done, _ = env.step(action)
+            observation, position, reward, done = env.step(action)
+            observation = preprocess_frame(observation)
 
             # Add the reward to total reward
             episode_rewards.append(reward)
 
             # If the game is finished
             if done:
-                # We finished the episode
-                next_state = np.zeros(state.shape)
+                # Empty frame on episode ending
+                next_observation = np.zeros(observation.shape)
+                next_position = [0.0, 0.0]
 
                 # Add experience to memory
-                replay_memory.add(Experience(state, action, next_state, reward))
+                replay_memory.add(Experience(stacked_frames, position, action, next_observation, next_position, reward, done))
 
                 # Start a new episode
-                state = env.reset()
+                observation, position = env.reset()
 
                 # Stack the frames
-                state, stacked_frames = stack_frames(stacked_frames, state, True)
+                observation, stacked_frames = stack_frames(stacked_frames, observation, True)
 
                 # Set episode_step = max_steps to end the episode
                 episode_step = MAX_STEPS
@@ -147,59 +152,65 @@ if TRAINING:
 
                 print("Episode: {}".format(episode),
                       "Total reward: {}".format(total_reward),
-                    #   "Training loss: {:.4f}".format(loss),
-                      "Explore P: {:.4f}".format(explore_probability))
+                      "Explore probability: {:.4f}".format(explore_probability))
 
-                replay_memory.add(Experience(
-                    state, action, next_state, reward))
+                replay_memory.add(Experience(stacked_frames, position, action, next_observation, next_position, reward, done))
 
             else:
                 # Get the next state
-                next_state = env.get_state()
-                next_state, stacked_frames = stack_frames(stacked_frames, next_state, False)
+                next_observation, next_position = env.get_state()
+                next_observation, stacked_frames = stack_frames(stacked_frames, next_observation, False)
 
                 # Add experience to memory
-                replay_memory.add(Experience(state, action, next_state, reward))
+                replay_memory.add(Experience(stacked_frames, position, action, next_observation, next_position, reward, done))
 
                 # st+1 is now our current state
-                state = next_state
+                observation = next_observation
 
             # LEARNING PART
             # Obtain random mini-batch from memory
-            batch = replay_memory.sample(BATCH_SIZE)
-            states_mb = np.array([each[0] for each in batch], ndmin=3)
-            actions_mb = np.array([each[1] for each in batch])
-            rewards_mb = np.array([each[2] for each in batch])
-            next_states_mb = np.array([each[3] for each in batch], ndmin=3)
-            dones_mb = np.array([each[4] for each in batch])
+            if episode_step % UPDATE_AFTER_ACTIONS == 0 and replay_memory.is_sample_available(BATCH_SIZE):
+                batch = replay_memory.sample(BATCH_SIZE)
+                observation_mb = np.array([item.observation for item in batch])
+                observation_mb = np.rollaxis(observation_mb, 1, observation_mb.ndim)
+                position_mb = np.array([item.position for item in batch])
+                actions_mb = np.array([item.action for item in batch])
+                next_observations_mb = np.array([item.next_observation for item in batch])
+                next_positions_mb = np.array([item.next_position for item in batch])
+                rewards_mb = np.array([item.reward for item in batch])
+                dones_mb = np.array([item.done for item in batch])
 
-            target_Qs_batch = []
+                print(observation.shape, position_mb.shape)
+                target_Qs_batch = []
 
-            # with tf.GradientTape() as tape:
-            #     q_values = model(replay_memory.sample(BATCH_SIZE))
+                # Build the updated Q-values for the sampled future states
+                # Use the target model for stability
+    
+                future_rewards = model.predict([observation_mb, position_mb])
+                # Q value = reward + discount factor * expected future reward
+                updated_q_values = rewards_mb + GAMMA * tf.reduce_max(
+                    future_rewards, axis=1
+                )
 
-            # # Get Q values for next_state
-            # Qs_next_state = sess.run(DQNetwork.output, feed_dict={
-            #                          DQNetwork.inputs_: next_states_mb})
+                # If final frame set the last value to -1
+                updated_q_values = updated_q_values * (1 - dones_mb) - dones_mb
 
-            # # Set Q_target = r if the episode ends at s+1, otherwise set Q_target = r + gamma*maxQ(s", a")
-            # for i in range(0, len(batch)):
-            #     terminal = dones_mb[i]
+                # Create a mask so we only calculate loss on the updated Q-values
+                masks = tf.one_hot(actions_mb, ACTION_SIZE)
 
-            #     # If we are in a terminal state, only equals reward
-            #     if terminal:
-            #         target_Qs_batch.append(rewards_mb[i])
+                with tf.GradientTape() as tape:
+                    # Train the model on the states and updated Q-values
+                    q_values = model([observation_mb, position_mb])
 
-            #     else:
-            #         target = rewards_mb[i] + gamma * np.max(Qs_next_state[i])
-            #         target_Qs_batch.append(target)
+                    # Apply the masks to the Q-values to get the Q-value for action taken
+                    q_action = tf.reduce_sum(tf.multiply(q_values, masks), axis=1)
+                    # Calculate loss between new Q-value and old Q-value
+                    loss = loss_function(updated_q_values, q_action)
+                    print("Training loss: {:.4f}".format(loss))
 
-            # targets_mb = np.array([each for each in target_Qs_batch])
-
-            # loss, _ = sess.run([DQNetwork.loss, DQNetwork.optimizer],
-            #                    feed_dict={DQNetwork.inputs_: states_mb,
-            #                               DQNetwork.target_Q: targets_mb,
-            #                               DQNetwork.actions_: actions_mb})
+                # Backpropagation
+                grads = tape.gradient(loss, model.trainable_variables)
+                optimizer.apply_gradients(zip(grads, model.trainable_variables))
 
         # Save model every 10 episodes
         if episode % 10 == 0:

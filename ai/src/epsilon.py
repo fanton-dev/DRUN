@@ -15,7 +15,7 @@ class EpsilonGreedy():
         rate *= exp(-1 * current_step * self.decay)
         return rate
 
-    def predict_action(self, current_step, state, env, dqn):
+    def predict_action(self, current_step, observation, position, env, dqn):
         # EPSILON GREEDY STRATEGY
         # Choose action a from state s using epsilon greedy.
         # First we randomize a number
@@ -23,16 +23,22 @@ class EpsilonGreedy():
 
         explore_probability = self.get_exploration_rate(current_step)
 
-        if explore_probability > exp_exp_tradeoff:
+        if explore_probability < exp_exp_tradeoff:
             action = env.action_space.sample()
 
         else:
             # Get action from Q-network (exploitation)
             # Estimate the Qs values state
-            prediction = dqn.predict((state, np.zeros(2)))
+            observation = np.array(observation)
+            position = np.array(position)
+
+            observation = observation.reshape(1, *observation.shape)
+            position = position.reshape(1, *position.shape)
+
+            print(observation.shape, position.shape)
+            prediction = dqn.predict([observation, position])
 
             # Take the biggest Q value (= the best action)
-            choice = np.argmax(prediction)
-            action = env.action_space[int(choice)]
+            action = np.argmax(prediction)
 
         return action, explore_probability

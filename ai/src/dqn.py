@@ -13,9 +13,9 @@ def drun_dqn() -> Model:
     image_input = Input(STATE_SIZE)
     coords_input = Input(2)
 
-    img_net = Conv2D(32, (4, 4), strides=(4, 4), activation="relu", input_shape=STATE_SIZE)(image_input)
-    img_net = Conv2D(64, (3, 3), strides=(2, 2), activation="relu")(img_net)
-    img_net = Conv2D(64, (3, 3), strides=(2, 2), activation="relu")(img_net)
+    img_net = Conv2D(32, (4, 4), strides=(4, 4), activation="relu", padding="same", input_shape=STATE_SIZE)(image_input)
+    img_net = Conv2D(64, (3, 3), strides=(2, 2), activation="relu", padding="same")(img_net)
+    img_net = Conv2D(64, (3, 3), strides=(2, 2), activation="relu", padding="same")(img_net)
     img_net = Flatten()(img_net)
 
     combined = Concatenate(axis=1)
