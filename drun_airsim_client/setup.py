@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="drun_airsim_client",
-    version="0.0.1",
+    version="0.0.2",
     author="Angel Penchev (FAnton)",
     author_email="angel.penchev.tsb@gmail.com",
     description="Custom AirSim client for the DRUN project",
