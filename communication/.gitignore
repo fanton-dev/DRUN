@@ -163,3 +163,4 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/code,linux,python,windows,visualstudiocode
 drone_id.txt
 firebase.json
+src/drone/control/model

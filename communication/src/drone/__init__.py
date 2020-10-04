@@ -54,6 +54,7 @@ class DroneServerThread(Thread):
             self.current_controls,
             self.current_image,
             self.current_location,
+            self.home,
             self.orders,
             self.ip_address,
             self.ports[0]
