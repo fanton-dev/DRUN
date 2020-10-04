@@ -45,7 +45,7 @@ class GPS:
             time.sleep(0.01)
             rec_buff = cls.ser.read(cls.ser.inWaiting())
         if rec_buff != '':
-            if back not in rec_buff.decode():
+            if returnee not in rec_buff.decode():
                 #print(command + ' ERROR')
                 #print(command + ' back:\t' + rec_buff.decode())
                 return 0
@@ -76,14 +76,10 @@ class GPS:
     def current_location(cls) -> List[float]:
         location = cls.__get_current_location().split(
             ',')  # 4241.165993,N,02315.930125,E
-
         lat = float(location[0])
         lon = float(location[2])
-
         if location[1] == 'S':
             lat *= -1
-
         if location[3] == 'W':
             lon *= -1
-
         return [lon, lat]
