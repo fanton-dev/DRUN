@@ -229,9 +229,9 @@ class DRUNAirSimClient(MultirotorClient):
         return image_array.reshape(image_raw.height, image_raw.width)
 
     @staticmethod
-    def calculate_normalized_point(X: Tuple[float, float], A: Tuple[float, float], B: Tuple[float, float]) -> Tuple[float, float]:
-        normal_x = abs((X[0] - B[0]) / (A[0] - B[0]))
-        normal_y = abs((X[1] - B[1]) / (A[1] - B[1]))
+    def calculate_normalized_point(X: Tuple[float, float], A: Tuple[float, float], B: Tuple[float, float], scale: float) -> Tuple[float, float]:
+        normal_x = abs((X[0] - B[0] * scale) / ((A[0] - B[0]) * scale) )
+        normal_y = abs((X[1] - B[1] * scale) / ((A[1] - B[1]) * scale) )
         return (normal_x, normal_y)
 
     @staticmethod
