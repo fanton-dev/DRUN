@@ -4,6 +4,7 @@ This module provides communication and connection to a discord bot
 """
 
 from __future__ import absolute_import
+import os
 from uuid import uuid4
 
 import discord
@@ -15,11 +16,11 @@ import asyncio
 from threading import Thread
 
 
-import os
 from dotenv import load_dotenv
 from pathlib import Path
 from geopy.geocoders import Nominatim
 
+from ..database.interfaces.user import User
 
 bot = commands.Bot(command_prefix='!')
 
@@ -39,6 +40,7 @@ def init() -> None:
 
 @bot.command(pass_context=True)
 async def delivery(ctx):
+    print(ctx.author.id)
     await ctx.send(f'Hello {ctx.author}, please tell us the phone number of the person, you want to deliver to')
     channel = ctx.channel
     msg = await bot.wait_for('message')
@@ -46,15 +48,15 @@ async def delivery(ctx):
         msg = await bot.wait_for('message')
     phone_number = msg.content
 
-    user_id = None
+    chat_id = None
     users_ref = firestore_client.collection(u'users')
     docs = users_ref.stream()
     for doc in docs:
         if doc.to_dict()["phone"] == phone_number:
-            user_id = doc.to_dict()["uid"]
+            chat_id = doc.to_dict()["uid"]
             break
 
-    while user_id == None:
+    while chat_id == None:
         await ctx.send(f'We couldn\'t find a user registered with that phone, please try again')
         msg = await bot.wait_for('message')
         if msg.author == bot.user:
@@ -64,8 +66,7 @@ async def delivery(ctx):
         docs = users_ref.stream()
         for doc in docs:
             if doc.to_dict()["phone"] == phone_number:
-                user_id = doc.to_dict()["uid"]
-        
+                chat_id = doc.to_dict()["uid"]
 
     await ctx.send(f'Thank you! Now please tell us where do you want us to pickup your package from?')
     msg = await bot.wait_for('message')
@@ -92,6 +93,6 @@ async def delivery(ctx):
         u'type': u'delivery',
         u'location': [location.latitude, location.longitude],
         u'price': price,
-        u'userId': user_id
+        u'userId': User.get_firebase_id(ctx.author.id),
+        u'chatId': chat_id
     })
-

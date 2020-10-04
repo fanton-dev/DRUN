@@ -81,3 +81,16 @@ class User():
 
         topup_tx = transaction_client.topup_account(user_public_key, amount)
         return topup_tx
+
+    @staticmethod
+    def get_firebase_id(discord_id):
+        firebase_id = None
+        query = "SELECT * FROM users WHERE discord_api_key = '{}'".format(
+            discord_id)
+        with Database() as database:
+            rows = database.execute(query).fetchall()
+            if rows == []:
+                raise ValueError("No such sender")
+            firebase_id = rows[0][0]
+
+        return firebase_id
