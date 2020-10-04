@@ -39,6 +39,12 @@ class ImageThread(Thread):
             ip_address: str,
             port: List[int]
     ) -> None:
+        self.input_mode = input_mode
+        self.output_mode = output_mode
+        self.current_image = current_image
+        self.ip_address = ip_address
+        self.port = port
+
         super(ImageThread, self).__init__()
 
     def run(self) -> None:

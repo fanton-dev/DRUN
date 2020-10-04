@@ -1,6 +1,7 @@
 "Output methods for the ImageThread, reading from current_image."
 
 from __future__ import absolute_import
+import socket
 
 import numpy as np
 

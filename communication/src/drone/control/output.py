@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import
 from .controls import Controls
+import socket
 
 from pyardrone import ARDrone
 from pyardrone.utils import every

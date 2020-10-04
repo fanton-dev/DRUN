@@ -40,6 +40,11 @@ class LocationThread(Thread):
             ip_address: str,
             port: List[int]
     ) -> None:
+        self.input_mode = input_mode
+        self.output_mode = output_mode
+        self.current_location = current_location
+        self.ip_address = ip_address
+        self.port = port
         super(LocationThread, self).__init__()
 
     def run(self) -> None:

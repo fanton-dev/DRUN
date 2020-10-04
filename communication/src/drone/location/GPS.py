@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 
 import serial
-
+import time
 
 from typing import List
 

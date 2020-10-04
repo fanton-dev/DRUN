@@ -1,12 +1,11 @@
 "Input methods for the ImageThread, modifying current_image."
 
 from __future__ import absolute_import
+import socket
 
 import numpy as np
 
 import cv2
-from pyardrone import ARDrone
-from pyardrone.video import VideoMixin
 
 def camera_input(current_image: np.ndarray) -> None:
     """Reads data from the drone camera and stores it in the shared buffer.
@@ -14,6 +13,9 @@ def camera_input(current_image: np.ndarray) -> None:
     Args:
         current_image (np.ndarray): Cross-thread image data.
     """
+    from pyardrone import ARDrone
+    from pyardrone.video import VideoMixin
+
     drone = ARDrone()
     current_image = drone.frame
 
