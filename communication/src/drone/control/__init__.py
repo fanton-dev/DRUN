@@ -48,6 +48,7 @@ class ControlThread(Thread):
             current_controls: Controls,
             current_image: np.array,
             current_location: List[float],
+            home: List[float],
             orders: List[Order],
             ip_address: str,
             port: List[int]
@@ -57,6 +58,7 @@ class ControlThread(Thread):
         self.current_controls = current_controls
         self.current_image = current_image
         self.current_location = current_location
+        self.home = home
         self.orders = orders
         self.ip_address = ip_address
         self.port = port

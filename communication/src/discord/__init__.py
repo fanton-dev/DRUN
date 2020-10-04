@@ -4,6 +4,7 @@ This module provides communication and connection to a discord bot
 """
 
 from __future__ import absolute_import
+from uuid import uuid4
 
 import discord
 import firebase_admin
@@ -49,7 +50,6 @@ async def delivery(ctx):
     users_ref = firestore_client.collection(u'users')
     docs = users_ref.stream()
     for doc in docs:
-        print(doc.to_dict()["phone"], phone_number)
         if doc.to_dict()["phone"] == phone_number:
             user_id = doc.to_dict()["uid"]
             break
@@ -80,13 +80,13 @@ async def delivery(ctx):
         address = msg.content
         geolocator = Nominatim(user_agent="drun")
         location = geolocator.geocode(address)
-    await ctx.send(f'And finally, how much do you want to charge the reciever?')
+    await ctx.send(f'And finally, how much do you want to charge the reliever?')
     msg = await bot.wait_for('message')
     if msg.author == bot.user:
         msg = await bot.wait_for('message')
     price = msg.content
     await ctx.send(f'Affirmative! Your request has been made!')
-    doc_ref = firestore_client.collection(u'messages').document(u'gosho')
+    doc_ref = firestore_client.collection(u'messages').document(uuid4().hex)
     doc_ref.set({
         u'message': u'Discord wants to send you a delivery',
         u'type': u'delivery',

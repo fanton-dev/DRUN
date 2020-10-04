@@ -10,4 +10,6 @@ geopy==2.0.0
 web3==5.12.1
 python-dotenv==0.14.0
 firebase-admin==4.4.0
+drun_airsim_client==0.0.3
+tensoflow==2.3.0
 RPi.GPIO==0.7.0
