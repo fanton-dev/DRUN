@@ -1,0 +1,3 @@
+from __future__ import absolute_import
+from airsim_gym.envs.airsim_regular_env import AirSimRegularEnv
+from airsim_gym.envs.airsim_depth_env import AirSimDepthEnv

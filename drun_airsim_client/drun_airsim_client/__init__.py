@@ -1,8 +1,9 @@
 """Base simulation utility for Microsoft AirSim."""
 
 from __future__ import absolute_import
-from typing import Tuple
-from math import sin, cos, pi, acos
+from __future__ import division
+from typing import Tuple, List
+from math import sin, cos, pi, acos, atan
 
 from airsim.types import Pose, CollisionInfo
 from airsim import (
@@ -227,3 +228,23 @@ class DRUNAirSimClient(MultirotorClient):
         )[0]
         image_array = np.fromstring(image_raw.image_data_uint8, dtype=np.uint8)
         return image_array.reshape(image_raw.height, image_raw.width)
+
+    @staticmethod
+    def calculate_normalized_point(
+            X: List[float],
+            A: List[float],
+            B: List[float],
+            scale: float
+    ) -> List[float]:
+
+        normal_x = abs((X[0] - A[0] * scale) / ((A[0] - B[0]) * scale))
+        normal_y = abs((X[1] - A[1] * scale) / ((A[1] - B[1]) * scale))
+        return (normal_x, normal_y)
+
+    @staticmethod
+    def calculate_goal_orientation(A: List[float], B: List[float]) -> float:
+
+        point_x = abs(A[0] - B[0])
+        point_y = abs(A[1] - B[1])
+        angle = atan(point_x/point_y)
+        return cos(angle/2 + pi/4)
