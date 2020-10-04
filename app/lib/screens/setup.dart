@@ -64,7 +64,7 @@ class _SetupScreenState extends State<SetupScreen>
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 300.0),
+            padding: EdgeInsets.only(top: 150.0),
             child: Column(
               children: <Widget>[
                 Container(
