@@ -2,7 +2,6 @@
 
 from __future__ import absolute_import
 from typing import List
-from .GPS import GPS
 
 def gps_input(current_location: List[float]) -> None:
     """Reads data from the RPi GPS antenna and stores it in the shared buffer.
@@ -10,6 +9,7 @@ def gps_input(current_location: List[float]) -> None:
     Args:
         current_location (List[float]): Cross-thread location data.
     """
+    from .GPS import GPS
     current_location = GPS.current_location()
 
 def network_input(current_location: List[float], port: int) -> None:

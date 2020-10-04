@@ -94,4 +94,4 @@ class LocationThread(Thread):
 
         for thread in output_ts:
 
-        pass
+            pass
