@@ -10,12 +10,14 @@ dependencies:
     sdk: flutter
   cupertino_icons:
   firebase_core:
-  firebase_auth:
+  firebase_auth: 0.16.1
   video_player:
   intl_phone_number_input: ^0.3.0
   flutter_sim_country_code: ^0.0.3
   fluttertoast:
   cloud_firestore:
+  contacts_service: ^0.4.6
+  permission_handler: ^5.0.0
 
 dev_dependencies:
   flutter_test:
