@@ -7,6 +7,7 @@ pynput==1.7.1
 pyserial==3.4
 discord.py==1.5.0
 geopy==2.0.0
-RPi.GPIO==0.7.0
 web3==5.12.1
 python-dotenv==0.14.0
+firebase-admin==4.4.0
+RPi.GPIO==0.7.0
