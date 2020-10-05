@@ -1,0 +1,29 @@
+name: DRUN
+description: Drone delivery service.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons:
+  firebase_core:
+  firebase_auth: 0.16.1
+  video_player:
+  intl_phone_number_input: ^0.3.0
+  flutter_sim_country_code: ^0.0.3
+  fluttertoast:
+  cloud_firestore:
+  contacts_service: ^0.4.6
+  permission_handler: ^5.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
