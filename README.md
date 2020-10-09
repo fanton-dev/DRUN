@@ -1,72 +1,58 @@
 # DRUN
-> Drun is an open-source drone delivery system.  
+> DRUN is an open-source autonomous drone delivery system. 
 
-<!-- <p align="center">
-<img src="" alt="Project Banner">
-</p> -->
-
-<!-- <p align="center">
-<a href="https://github.com/braind3d/traffic-brain/actions?query=workflow%3A%22Classification+CI%22">
-<img src="https://img.shields.io/github/workflow/status/braind3d/traffic-brain/Classification CI?label=classification+ci&style=flat-square" alt="Classification CI">
-</a>
-
-<a href="https://github.com/braind3d/traffic-brain/actions?query=workflow%3A%22Server+CI%22">
-<img src="https://img.shields.io/github/workflow/status/braind3d/traffic-brain/Server CI?label=server+ci&style=flat-square" alt="Server CI status">
-</a>
-
-<a href="https://github.com/braind3d/traffic-brain/actions?query=workflow%3A%22Embedded+CI%22">
-<img src="https://img.shields.io/github/workflow/status/braind3d/traffic-brain/Embedded CI?label=embedded+ci&style=flat-square" alt="Embedded CI status">
-</a>
-
-<a href="https://github.com/braind3d/traffic-brain/actions?query=workflow%3A%22Client+CI%22">
-<img src="https://img.shields.io/github/workflow/status/braind3d/traffic-brain/Client CI?label=client+ci&style=flat-square" alt="Client CI status">
-</a>
+<p align="center">
+<img src="docs/promotional/Project Banner.png" alt="Project Banner">
 </p>
 
 <p align="center">
-<a href="https://github.com/braind3d/traffic-brain">
-<img src="http://hits.dwyl.com/braind3d/traffic-brain.svg" alt="Hit count badge">
+<a href="https://github.com/braind3d/DRUN">
+<img src="http://hits.dwyl.com/braind3d/DRUN.svg" alt="Hit count badge">
 </a>
 
-<a href="https://github.com/braind3d/traffic-brain/issues?q=is%3Aissue+is%3Aopen">
-<img src="https://img.shields.io/github/issues-raw/braind3d/traffic-brain?style=flat-square" alt="Open issues status badge">
+<a href="https://github.com/braind3d/DRUN/issues?q=is%3Aissue+is%3Aopen">
+<img src="https://img.shields.io/github/issues-raw/braind3d/DRUN?style=flat-square" alt="Open issues status badge">
 </a>
 
-<a href="https://github.com/braind3d/traffic-brain/issues?q=is%3Aissue+is%3Aclosed">
-<img src="https://img.shields.io/github/issues-closed-raw/braind3d/traffic-brain?style=flat-square" alt="Closed issues status badge">
+<a href="https://github.com/braind3d/DRUN/issues?q=is%3Aissue+is%3Aclosed">
+<img src="https://img.shields.io/github/issues-closed-raw/braind3d/DRUN?style=flat-square" alt="Closed issues status badge">
 </a>
 
-<a href="https://github.com/braind3d/traffic-brain/fork">
+<a href="https://github.com/braind3d/DRUN/fork">
 <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square" alt="Contributions welcome badge">
 </a>
 
 <a href="LICENSE">
-<img src="https://img.shields.io/github/license/braind3d/traffic-brain?style=flat-square" alt="License badge">
+<img src="https://img.shields.io/github/license/braind3d/DRUN?style=flat-square" alt="License badge">
 </a>
-</p> -->
+</p>
 
 
 ## Get started
-<!-- <p align="center">
-<img src="docs/img/Export/Architecture.png" alt="Project Architecture">
-</p> -->
+<p align="center">
+<img src="docs/promotional/Project Structure.png" alt="Project Structure">
+</p>
 
 
 The project consists of 4 main components:
-- **Neural Network** for drone control (located in "[/ai](/ai)")
-- **Main server** controlling communication between drone and server and handling orders from the app(located in "[/communication](/communication)")
-- **Drone schematic** (located in "[/embedded](/embedded)")
-- **App** for communication between users, including placing orders and exchanging payments(with etherium currency)( located in "[/app](/app)")
+- **Deep Q-learning network** for autonomous drone control (located in "[/ai](/ai)")
+- **Server** controlling communication between drone and server, handling external API requests, Ethereum payments and Discord messages (located in "[/communication](/communication)")
+- **Drone utilities** for getting started with the Parrot.AR drone (located in "[/embedded](/embedded)")
+- **Mobile app** for communication between users, including placing orders and exchanging ethereum payments (located in "[/app](/app)")
 
-For each of the components' directories there is a coresponding `README.md` with instructions on how to get started.
+For each of the components' directories there is a corresponding `README.md` with instructions on how to get started.
 
 ## Authors
-- **Angel Penchev** ([@angel-penchev](https://github.com/angel-penchev)) - Neural network design
-- **Simeon Georgiev** ([@simo1209](https://github.com/simo1209)) - Drone and server communication, Embedded
-- **Boyan Ivanov** ([@bobig6](https://github.com/bobig6)) - App and server communication, Etherium payments, Discord Bot
-- **Bogdan Mironov** ([@bogdanmironov](https://github.com/bogdanmironov)) - App development
-- **Miroslav Mirchev** ([@Miro-02](https://github.com/Miro-02)) - App development
+- **Angel Penchev** ([@angel-penchev](https://github.com/angel-penchev)) - Project manager, Drone AI
+- **Simeon Georgiev** ([@simo1209](https://github.com/simo1209)) - Embedded, Drone/Server communication
+- **Boyan Ivanov** ([@bobig6](https://github.com/bobig6)) - Server API, Etherium payments, Discord Bot, Database
+- **Bogdan Mironov** ([@bogdanmironov](https://github.com/bogdanmironov)) - Mobile app development
+- **Miroslav Mirchev** ([@Miro-02](https://github.com/Miro-02)) - Mobile app development
 
+## Drone IRL
+<p align="center">
+<img src="docs/promotional/Drone IRL.jpg" alt="Drone IRL">
+</p>
 
 ## Contributions
 1. Fork it (<https://github.com/braind3d/DRUN/fork>)
