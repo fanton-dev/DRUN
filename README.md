@@ -1,5 +1,5 @@
 # DRUN
-> DRUN is an open-source autonomous drone delivery system. 
+> DRUN is an open-source autonomous drone delivery system. A drone connects to a server using the local cellular network, which drives it to pick-up and deliver orders. Orders can be submitted via the server API, the mobile app or a Discord bot. Payments are processed using a private ethereum client.
 
 <p align="center">
 <img src="docs/promotional/Project Banner.png" alt="Project Banner">
