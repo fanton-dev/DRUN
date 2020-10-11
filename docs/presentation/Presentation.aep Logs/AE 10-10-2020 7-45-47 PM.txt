@@ -1,0 +1,17 @@
+Adobe After Effects v15.0.1 Windows 64 render log for project “Presentation.aep”
+
+Rendering started on 10/10/2020 at 7:45:47 PM
+
+  10/10/2020 7:45:47 PM: Starting composition “01.3 Intro Main”.
+
+  Output To: D:\Projects\programming\drun-private\docs\presentation\Exports\greenscreen\01.3 Intro Main.mov  After Effects error: Rendering error while writing to file “D:\Projects\programming\drun-private\docs\presentation\Exports\greenscreen\01.3 Intro Main.mov”. Unable to delete existing file. (-1610153460)  didn’t delete empty file “01.3 Intro Main.mov” because it was larger than expected. (26  ::  170)  10/10/2020 7:45:48 PM: Finished composition “01.3 Intro Main”.
+
+
+  10/10/2020 7:45:48 PM: Starting composition “02.0 Story Background”.
+
+  Output To: D:\Projects\programming\drun-private\docs\presentation\Exports\greenscreen\02.0 Story Background.avi      Render stopped by user.    10/10/2020 7:45:57 PM: Finished composition “02.0 Story Background”.
+
+
+  Total Time Elapsed: 9 Seconds
+Log closed on 10/10/2020 at 7:45:57 PM
+

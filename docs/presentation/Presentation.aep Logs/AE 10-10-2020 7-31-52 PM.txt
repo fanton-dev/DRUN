@@ -1,0 +1,22 @@
+Adobe After Effects v15.0.1 Windows 64 render log for project “Presentation.aep”
+
+Rendering started on 10/10/2020 at 7:31:52 PM
+
+  10/10/2020 7:31:52 PM: Starting composition “01.2 Intro Transition”.
+
+  Output To: D:\Projects\programming\drun-private\docs\presentation\exports\greenscreen\01.2 Intro Transition.mov    10/10/2020 7:32:02 PM: Finished composition “01.2 Intro Transition”.
+
+
+  10/10/2020 7:32:02 PM: Starting composition “03.0 Structure Transition”.
+
+  Output To: D:\Projects\programming\drun-private\docs\presentation\exports\greenscreen\03.0 Structure Transition.avi    10/10/2020 7:32:39 PM: Finished composition “03.0 Structure Transition”.
+
+
+  10/10/2020 7:32:39 PM: Starting composition “01.3 Intro Main”.
+
+  Output To: D:\Projects\programming\drun-private\docs\presentation\exports\greenscreen\01.3 Intro Main.mov    10/10/2020 7:32:40 PM: Finished composition “01.3 Intro Main”.
+
+
+  Total Time Elapsed: 47 Seconds
+Log closed on 10/10/2020 at 7:32:40 PM
+

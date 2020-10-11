@@ -1,0 +1,17 @@
+Adobe After Effects v15.0.1 Windows 64 render log for project “Presentation.aep”
+
+Rendering started on 10/11/2020 at 6:33:17 AM
+
+  10/11/2020 6:33:17 AM: Starting composition “03.1.1 Embedded Hardware”.
+
+  Output To: D:\Projects\programming\DRUN\master\docs\presentation\Exports\greenscreen\03.1.1 Embedded Hardware.mov    10/11/2020 6:38:07 AM: Finished composition “03.1.1 Embedded Hardware”.
+
+
+  10/11/2020 6:38:07 AM: Starting composition “03.2 Server”.
+
+  Output To: D:\Projects\programming\DRUN\master\docs\presentation\Exports\greenscreen\03.2 Server.mov    10/11/2020 6:42:32 AM: Finished composition “03.2 Server”.
+
+
+  Total Time Elapsed: 9 Min, 15 Sec
+Log closed on 10/11/2020 at 6:42:32 AM
+

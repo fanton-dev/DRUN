@@ -1,0 +1,27 @@
+Adobe After Effects v15.0.1 Windows 64 render log for project “Presentation.aep”
+
+Rendering started on 10/10/2020 at 11:46:15 PM
+
+  10/10/2020 11:46:15 PM: Starting composition “02.4.1 Story Statistics Intro”.
+
+  Output To: D:\Projects\programming\drun-private\docs\presentation\Exports\greenscreen\02.4.1 Story Statistics Intro.mov    10/10/2020 11:48:30 PM: Finished composition “02.4.1 Story Statistics Intro”.
+
+
+  10/10/2020 11:48:30 PM: Starting composition “02.4.2 Story Statistics Packages”.
+
+  Output To: D:\Projects\programming\drun-private\docs\presentation\Exports\greenscreen\02.4.2 Story Statistics Packages.mov    10/10/2020 11:49:44 PM: Finished composition “02.4.2 Story Statistics Packages”.
+
+
+  10/10/2020 11:49:44 PM: Starting composition “02.4.3 Story Statistics Ecology”.
+
+  Output To: D:\Projects\programming\drun-private\docs\presentation\Exports\greenscreen\02.4.3 Story Statistics Ecology.mov    10/10/2020 11:50:45 PM: Finished composition “02.4.3 Story Statistics Ecology”.
+
+
+  10/10/2020 11:50:45 PM: Starting composition “02.4.4 Story Statistics Covid”.
+
+  Output To: D:\Projects\programming\drun-private\docs\presentation\Exports\greenscreen\02.4.4 Story Statistics Covid.mov    10/10/2020 11:51:45 PM: Finished composition “02.4.4 Story Statistics Covid”.
+
+
+  Total Time Elapsed: 5 Min, 30 Sec
+Log closed on 10/10/2020 at 11:51:45 PM
+
