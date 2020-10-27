@@ -23,7 +23,7 @@
 </a>
 
 <a href="LICENSE">
-<img src="https://img.shields.io/github/license/braind3d/DRUN?color=011043&style=flat-square" alt="License badge">
+<img src="https://img.shields.io/badge/license-BCD%20%2B%20Commons%20Clause-011043?style=flat-square" alt="License badge">
 </a>
 </p>
 
