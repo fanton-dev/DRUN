@@ -7,23 +7,23 @@
 
 <p align="center">
 <a href="https://github.com/braind3d/DRUN">
-<img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbraind3d%2FDRUN" alt="Hits">
+<img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgjbae1212%2Fhit-counter&count_bg=%23011043&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=true" alt="Hits">
 </a>
 
 <a href="https://github.com/braind3d/DRUN/issues?q=is%3Aissue+is%3Aopen">
-<img src="https://img.shields.io/github/issues-raw/braind3d/DRUN?style=flat-square" alt="Open issues status badge">
+<img src="https://img.shields.io/github/issues-raw/braind3d/DRUN?color=011043&style=flat-square" alt="Open issues status badge">
 </a>
 
 <a href="https://github.com/braind3d/DRUN/issues?q=is%3Aissue+is%3Aclosed">
-<img src="https://img.shields.io/github/issues-closed-raw/braind3d/DRUN?style=flat-square" alt="Closed issues status badge">
+<img src="https://img.shields.io/github/issues-closed-raw/braind3d/DRUN?color=011043&style=flat-square" alt="Closed issues status badge">
 </a>
 
 <a href="https://github.com/braind3d/DRUN/fork">
-<img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square" alt="Contributions welcome badge">
+<img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?color=011043&style=flat-square" alt="Contributions welcome badge">
 </a>
 
 <a href="LICENSE">
-<img src="https://img.shields.io/github/license/braind3d/DRUN?style=flat-square" alt="License badge">
+<img src="https://img.shields.io/github/license/braind3d/DRUN?color=011043&style=flat-square" alt="License badge">
 </a>
 </p>
 
