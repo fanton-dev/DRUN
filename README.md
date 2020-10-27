@@ -7,7 +7,7 @@
 
 <p align="center">
 <a href="https://github.com/braind3d/DRUN">
-<img src="http://hits.dwyl.com/braind3d/DRUN.svg" alt="Hit count badge">
+<img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbraind3d%2FDRUN" alt="Hits">
 </a>
 
 <a href="https://github.com/braind3d/DRUN/issues?q=is%3Aissue+is%3Aopen">
