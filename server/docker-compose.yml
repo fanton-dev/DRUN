@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: .
+      args:
+        - service_src=./services/api-service/src
+    command: bash -c "npm run start:dev"
+    restart: on-failure
+    env_file:
+      - ./services/api-service/.env
+    volumes:
+      - ./services/api-service/src:/usr/src/app/service/src:cached
+      - ./core:/usr/src/app/core:cached
+
+  order:
+    build:
+      context: .
+      args:
+        - service_src=./services/order-service/src
+    command: bash -c "npm run start:dev"
+    restart: on-failure
+    env_file:
+      - ./services/order-service/.env
+    volumes:
+      - ./services/order-service/src:/usr/src/app/service/src:cached
+      - ./core:/usr/src/app/core:cached
+
+  delivery:
+    build:
+      context: .
+      args:
+        - service_src=./services/delivery-service/src
+    command: bash -c "npm run start:dev"
+    restart: on-failure
+    env_file:
+      - ./services/delivery-service/.env
+    volumes:
+      - ./services/delivery-service/src:/usr/src/app/service/src:cached
+      - ./core:/usr/src/app/core:cached
+
+  payment:
+    build:
+      context: .
+      args:
+        - service_src=./services/payment-service/src
+    command: bash -c "npm run start:dev"
+    restart: on-failure
+    env_file:
+      - ./services/payment-service/.env
+    volumes:
+      - ./services/payment-service/src:/usr/src/app/service/src:cached
+      - ./core:/usr/src/app/core:cached
+
+  mongo:
+    image: "mongo:latest"
+    logging:
+      driver: none
+    ports:
+      - 27017:27017
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    logging:
+      driver: none
+    ports:
+      - "5672:5672"
+      - "15672:15672"
