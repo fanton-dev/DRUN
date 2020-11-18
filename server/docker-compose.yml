@@ -6,7 +6,20 @@ services:
       context: .
       args:
         - service_src=./services/api-service/src
-    command: bash -c "npm run start:dev"
+    command: bash -c "jest; npm run start:dev"
+    restart: on-failure
+    env_file:
+      - ./services/api-service/.env
+    volumes:
+      - ./services/api-service/src:/usr/src/app/service/src:cached
+      - ./core:/usr/src/app/core:cached
+
+  authentication:
+    build:
+      context: .
+      args:
+        - service_src=./services/api-service/src
+    command: bash -c "npm run test; npm run start:dev"
     restart: on-failure
     env_file:
       - ./services/api-service/.env
@@ -19,7 +32,7 @@ services:
       context: .
       args:
         - service_src=./services/order-service/src
-    command: bash -c "npm run start:dev"
+    command: bash -c "npm run test; npm run start:dev"
     restart: on-failure
     env_file:
       - ./services/order-service/.env
@@ -32,7 +45,7 @@ services:
       context: .
       args:
         - service_src=./services/delivery-service/src
-    command: bash -c "npm run start:dev"
+    command: bash -c "npm run test; npm run start:dev"
     restart: on-failure
     env_file:
       - ./services/delivery-service/.env
@@ -45,12 +58,25 @@ services:
       context: .
       args:
         - service_src=./services/payment-service/src
-    command: bash -c "npm run start:dev"
+    command: bash -c "npm run test; npm run start:dev"
     restart: on-failure
     env_file:
       - ./services/payment-service/.env
     volumes:
       - ./services/payment-service/src:/usr/src/app/service/src:cached
+      - ./core:/usr/src/app/core:cached
+  
+  discord:
+    build:
+      context: .
+      args:
+        - service_src=./services/api-service/src
+    command: bash -c "npm run test; npm run start:dev"
+    restart: on-failure
+    env_file:
+      - ./services/api-service/.env
+    volumes:
+      - ./services/api-service/src:/usr/src/app/service/src:cached
       - ./core:/usr/src/app/core:cached
 
   mongo:
