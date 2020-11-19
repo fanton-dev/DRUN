@@ -7,20 +7,33 @@
     "start": "node ./service/src/index.js",
     "start:dev": "nodemon ./service/src/index.js",
     "test": "jest",
-    "check": "eslint ./",
-    "fix": "eslint --fix ./"
+    "lint": "eslint ./",
+    "lint:fix": "eslint --fix ./"
   },
   "author": "FAnton",
   "license": "CC-BY-4.0",
   "dependencies": {
     "amqplib": "^0.6.0",
+    "cuid": "^2.1.8",
     "dotenv": "^8.2.0",
+    "moment": "^2.29.1",
     "mongoose": "^5.10.15"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.12.1",
+    "babel-jest": "^26.6.3",
     "eslint": "^7.13.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
     "jest": "^26.6.3",
     "nodemon": "^2.0.6"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   }
 }
