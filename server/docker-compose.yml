@@ -1,31 +1,18 @@
 version: "3"
 
 services:
-  api:
-    build:
-      context: .
-      args:
-        - service_src=./services/api-service/src
-    command: bash -c "jest; npm run start:dev"
-    restart: on-failure
-    env_file:
-      - ./services/api-service/.env
-    volumes:
-      - ./services/api-service/src:/usr/src/app/service/src:cached
-      - ./core:/usr/src/app/core:cached
-
   authentication:
     build:
       context: .
       args:
-        - service_src=./services/api-service/src
-        - service_test=./services/api-service/test
+        - service_src=./services/authentication-service/src
+        - service_test=./services/authentication-service/test
     command: bash -c "npm run test; npm run start:dev"
     restart: on-failure
     env_file:
-      - ./services/api-service/.env
+      - ./services/authentication-service/.env
     volumes:
-      - ./services/api-service/src:/usr/src/app/service/src:cached
+      - ./services/authentication-service/src:/usr/src/app/service/src:cached
       - ./core:/usr/src/app/core:cached
 
   order:
