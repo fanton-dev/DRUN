@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install
-COPY ./babel.config.json ./babel.config.json
+COPY ./babel.config.js ./babel.config.js
 COPY ${service_src} ./service/src
 COPY ${service_test} ./service/test
 COPY ./core ./core

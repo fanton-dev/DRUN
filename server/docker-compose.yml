@@ -1,18 +1,18 @@
 version: "3"
 
 services:
-  authentication:
+  user:
     build:
       context: .
       args:
-        - service_src=./services/authentication-service/src
-        - service_test=./services/authentication-service/test
-    command: bash -c "npm run test; npm run start:dev"
+        - service_src=./services/user-service/src
+        - service_test=./services/user-service/test
+    command: bash -c "npm run start:dev"
     restart: on-failure
     env_file:
-      - ./services/authentication-service/.env
+      - .env
     volumes:
-      - ./services/authentication-service/src:/usr/src/app/service/src:cached
+      - ./services/user-service/src:/usr/src/app/service/src:cached
       - ./core:/usr/src/app/core:cached
 
   order:
@@ -21,10 +21,10 @@ services:
       args:
         - service_src=./services/order-service/src
         - service_test=./services/order-service/test
-    command: bash -c "npm run test; npm run start:dev"
+    command: bash -c "npm run start:dev"
     restart: on-failure
     env_file:
-      - ./services/order-service/.env
+      - .env
     volumes:
       - ./services/order-service/src:/usr/src/app/service/src:cached
       - ./core:/usr/src/app/core:cached
@@ -35,10 +35,10 @@ services:
       args:
         - service_src=./services/delivery-service/src
         - service_test=./services/delivery-service/test
-    command: bash -c "npm run test; npm run start:dev"
+    command: bash -c "npm run start:dev"
     restart: on-failure
     env_file:
-      - ./services/delivery-service/.env
+      - .env
     volumes:
       - ./services/delivery-service/src:/usr/src/app/service/src:cached
       - ./core:/usr/src/app/core:cached
@@ -49,10 +49,10 @@ services:
       args:
         - service_src=./services/payment-service/src
         - service_test=./services/payment-service/test
-    command: bash -c "npm run test; npm run start:dev"
+    command: bash -c "npm run start:dev"
     restart: on-failure
     env_file:
-      - ./services/payment-service/.env
+      - .env
     volumes:
       - ./services/payment-service/src:/usr/src/app/service/src:cached
       - ./core:/usr/src/app/core:cached
@@ -63,20 +63,20 @@ services:
       args:
         - service_src=./services/discord-service/src
         - service_test=./services/discord-service/test
-    command: bash -c "npm run test; npm run start:dev"
+    command: bash -c "npm run start:dev"
     restart: on-failure
     env_file:
-      - ./services/discord-service/.env
+      - .env
     volumes:
       - ./services/discord-service/src:/usr/src/app/service/src:cached
       - ./core:/usr/src/app/core:cached
 
-  mongo:
-    image: "mongo:latest"
-    logging:
-      driver: none
+  postgres:
+    image: "postgres"
     ports:
-      - 27017:27017
+      - 5432:5432
+    env_file:
+      - .env
 
   rabbitmq:
     image: "rabbitmq:management"
