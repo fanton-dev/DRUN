@@ -1,87 +1,113 @@
-version: "3"
+version: "3.9"
 
 services:
-  user:
+  order-service:
+    image: order-service
     build:
       context: .
-      args:
-        - service_src=./services/user-service/src
-        - service_test=./services/user-service/test
     command: bash -c "npm run start:dev"
     restart: on-failure
     env_file:
       - .env
-    volumes:
-      - ./services/user-service/src:/usr/src/app/service/src:cached
-      - ./core:/usr/src/app/core:cached
-
-  order:
-    build:
-      context: .
-      args:
-        - service_src=./services/order-service/src
-        - service_test=./services/order-service/test
-    command: bash -c "npm run start:dev"
-    restart: on-failure
-    env_file:
-      - .env
+    depends_on:
+      - database
+      - queue
+    ports:
+      - "3001:3001"
     volumes:
       - ./services/order-service/src:/usr/src/app/service/src:cached
-      - ./core:/usr/src/app/core:cached
+      - ./services/core:/usr/src/app/core:cached
 
-  delivery:
+  payment-service:
+    image: payment-service
     build:
       context: .
-      args:
-        - service_src=./services/delivery-service/src
-        - service_test=./services/delivery-service/test
+      network: "host"
     command: bash -c "npm run start:dev"
     restart: on-failure
     env_file:
       - .env
-    volumes:
-      - ./services/delivery-service/src:/usr/src/app/service/src:cached
-      - ./core:/usr/src/app/core:cached
-
-  payment:
-    build:
-      context: .
-      args:
-        - service_src=./services/payment-service/src
-        - service_test=./services/payment-service/test
-    command: bash -c "npm run start:dev"
-    restart: on-failure
-    env_file:
-      - .env
+    depends_on:
+      - database
+      - queue
     volumes:
       - ./services/payment-service/src:/usr/src/app/service/src:cached
-      - ./core:/usr/src/app/core:cached
-  
-  discord:
+      - ./services/core:/usr/src/app/core:cached
+
+  delivery-service:
+    image: delivery-service
     build:
       context: .
-      args:
-        - service_src=./services/discord-service/src
-        - service_test=./services/discord-service/test
+      network: "host"
     command: bash -c "npm run start:dev"
     restart: on-failure
     env_file:
       - .env
+    depends_on:
+      - database
+      - queue
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./services/delivery-service/src:/usr/src/app/service/src:cached
+      - ./services/core:/usr/src/app/core:cached
+
+  user-service:
+    image: user-service
+    build:
+      context: .
+    command: bash -c "npm run start:dev"
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - database
+      - queue
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./services/user-service/src:/usr/src/app/service/src:cached
+      - ./services/core:/usr/src/app/core:cached
+  
+  discord-service:
+    image: discord-service
+    build:
+      context: .
+    command: bash -c "npm run start:dev"
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - database
+      - queue
     volumes:
       - ./services/discord-service/src:/usr/src/app/service/src:cached
-      - ./core:/usr/src/app/core:cached
+      - ./services/core:/usr/src/app/core:cached
 
-  postgres:
+  database:
     image: "postgres"
+    logging:
+      driver: none
     ports:
       - 5432:5432
     env_file:
       - .env
 
-  rabbitmq:
+  queue:
     image: "rabbitmq:management"
     logging:
       driver: none
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  reverse-proxy:
+    image: "nginx:stable"
+    depends_on:
+        - order-service
+        # - delivery-service
+        # - user-service
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
