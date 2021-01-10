@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "rootDir": "./",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "strict": true,
+    "allowJs": true
+  },
+  "include": ["./services"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
