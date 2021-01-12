@@ -1,6 +1,6 @@
 import {validate as uuidValidate} from 'uuid';
 import makeFakeOrder from '../../../test/fixtures/order';
-import makeOrder from './';
+import makeOrder from '.';
 
 describe('order', () => {
   it('must process a proper order', () => {
@@ -44,7 +44,7 @@ describe('order', () => {
   it('must have a sender location', () => {
     const order = makeFakeOrder({
       sender: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: null,
       },
     });
@@ -55,7 +55,7 @@ describe('order', () => {
   it('must have a sender location latitude', () => {
     const order = makeFakeOrder({
       sender: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: null,
           longitude: 22.22,
@@ -69,7 +69,7 @@ describe('order', () => {
   it('must have a numeric sender location latitude', () => {
     const order = makeFakeOrder({
       sender: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 'gosho',
           longitude: 22.22,
@@ -84,7 +84,7 @@ describe('order', () => {
   it('must have a numeric sender location longitude', () => {
     const order = makeFakeOrder({
       sender: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 43.44,
           longitude: 'posho',
@@ -99,7 +99,7 @@ describe('order', () => {
   it('must have a sender location longitude', () => {
     const order = makeFakeOrder({
       sender: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 43.44,
           longitude: null,
@@ -113,7 +113,7 @@ describe('order', () => {
   it('must have a valid sender location latitude (above -90)', () => {
     const order = makeFakeOrder({
       sender: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: -90.2,
           longitude: 22.22,
@@ -127,7 +127,7 @@ describe('order', () => {
   it('must have a valid sender location latitude (below 90)', () => {
     const order = makeFakeOrder({
       sender: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 90.2,
           longitude: 22.22,
@@ -141,7 +141,7 @@ describe('order', () => {
   it('must have a valid sender location longitude (above -180)', () => {
     const order = makeFakeOrder({
       sender: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 43.23,
           longitude: -181,
@@ -155,7 +155,7 @@ describe('order', () => {
   it('must have a valid sender location longitude (below 180)', () => {
     const order = makeFakeOrder({
       sender: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 43.23,
           longitude: 181,
@@ -202,7 +202,7 @@ describe('order', () => {
   it('must have a receiver location', () => {
     const order = makeFakeOrder({
       receiver: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: null,
       },
     });
@@ -213,7 +213,7 @@ describe('order', () => {
   it('must have a receiver location latitude', () => {
     const order = makeFakeOrder({
       receiver: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: null,
           longitude: 22.22,
@@ -228,7 +228,7 @@ describe('order', () => {
   it('must have a receiver location longitude', () => {
     const order = makeFakeOrder({
       receiver: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 43.44,
           longitude: null,
@@ -243,7 +243,7 @@ describe('order', () => {
   it('must have a numeric receiver location latitude', () => {
     const order = makeFakeOrder({
       receiver: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 'gosho',
           longitude: 22.22,
@@ -258,7 +258,7 @@ describe('order', () => {
   it('must have a numeric receiver location longitude', () => {
     const order = makeFakeOrder({
       receiver: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 43.44,
           longitude: 'posho',
@@ -273,7 +273,7 @@ describe('order', () => {
   it('must have a valid receiver location latitude (above -90)', () => {
     const order = makeFakeOrder({
       receiver: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: -90.2,
           longitude: 22.22,
@@ -287,7 +287,7 @@ describe('order', () => {
   it('must have a valid receiver location latitude (below 90)', () => {
     const order = makeFakeOrder({
       receiver: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 90.2,
           longitude: 22.22,
@@ -301,7 +301,7 @@ describe('order', () => {
   it('must have a valid receiver location longitude (above -180)', () => {
     const order = makeFakeOrder({
       receiver: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 43.23,
           longitude: -181,
@@ -316,7 +316,7 @@ describe('order', () => {
   it('must have a valid receiver location longitude (below 180)', () => {
     const order = makeFakeOrder({
       receiver: {
-        id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+        id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
         location: {
           latitude: 43.23,
           longitude: 181,
@@ -495,6 +495,6 @@ describe('order', () => {
 
   it('must export getCreatedOn', () => {
     const order = makeFakeOrder();
-    expect(Date(makeOrder(order).getCreatedOn()));
+    expect(Date.parse(makeOrder(order).getCreatedOn()));
   });
 });

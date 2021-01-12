@@ -1,25 +1,34 @@
+import {Validator, Order} from '../../../../core/global';
+
 /**
- * Orders entity containing all the information for further processing.
+ * Orders entity builder containing all the information for further processing.
  *
  * @export
- * @param {Object} validator - data validator dependency injection
- * @param {Object} generateIdentifier - id generator dependency injection
+ * @param {{validator: Validator, generateIdentifier: Function}} {
+ *   validator,
+ *   generateIdentifier
+ * } - dependency injection
  * @return {Function} - order object builder
  */
-export default function buildMakeOrder(validator, generateIdentifier) {
+export default function buildMakeOrder({
+  validator,
+  generateIdentifier,
+}: {validator: Validator, generateIdentifier: Function}): Function {
   return function makeOrder({
-    id = generateIdentifier(),
     sender,
     receiver,
     paymentCard,
-    createdOn = Date.now(),
-  } = {}) {
+  }: Order): object {
+    // Internal parameters
+    const id = generateIdentifier();
+    const createdOn = Date.now();
+
     // Construction data validation
     // Identifier validation
     try {
-      validator.validateIdentifier(id, 'internal');
-    } catch (err) {
-      throw new Error('Order identifier error: ' + err.message);
+      validator.validateIdentifier(id);
+    } catch (e) {
+      throw new Error('Order identifier error: ' + e.message);
     }
 
     // Sender validation
@@ -28,10 +37,10 @@ export default function buildMakeOrder(validator, generateIdentifier) {
     }
 
     try {
-      validator.validateIdentifier(sender.id, 'firebase');
+      validator.validateIdentifier(sender.id);
       validator.validateLocation(sender.location);
-    } catch (err) {
-      throw new Error('Order sender error: ' + err.message);
+    } catch (e) {
+      throw new Error('Order sender error: ' + e.message);
     }
 
     // Receiver validation
@@ -40,17 +49,17 @@ export default function buildMakeOrder(validator, generateIdentifier) {
     }
 
     try {
-      validator.validateIdentifier(receiver.id, 'firebase');
+      validator.validateIdentifier(receiver.id);
       validator.validateLocation(receiver.location);
-    } catch (err) {
-      throw new Error('Order receiver error: ' + err.message);
+    } catch (e) {
+      throw new Error('Order receiver error: ' + e.message);
     }
 
     // Payment card validation
     try {
       validator.validatePaymentCard(paymentCard);
-    } catch (err) {
-      throw new Error('Order payment card error: ' + err.message);
+    } catch (e) {
+      throw new Error('Order payment card error: ' + e.message);
     }
 
     // Creation date validation
