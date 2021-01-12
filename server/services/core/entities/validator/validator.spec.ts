@@ -1,31 +1,30 @@
-import {default as val} from './';
+import {default as val} from '.';
 
 describe('validator.validateIdentifier', () => {
+  it('must pass on valid identifier', () => {
+    expect(() => val.validateIdentifier(
+        'f0a1889b-da86-4365-9007-08b86c50fc9a',
+    )).not.toThrow();
+  });
+
   it('must find undefined identifier', () => {
-    expect(() => val.validateIdentifier(null, 'internal'))
+    expect(() => val.validateIdentifier(null))
         .toThrow('Identifier not defined.');
   });
-
-  it('must find invalid type', () => {
+  it('must find invalid identifier', () => {
     expect(
-        () => val.validateIdentifier('ckhqosj1s0000eaoyblr71uuc', 'missing'),
-    ).toThrow('Identifier type defined is invalid.');
-  });
-
-  it('must find invalid internal identifier', () => {
-    expect(
-        () => val.validateIdentifier('sthinvalid88', 'internal'),
-    ).toThrow('Identifier passed is invalid.');
-  });
-
-  it('must find invalid firebase identifier', () => {
-    expect(
-        () => val.validateIdentifier('@@@LOe8s@XfrJLoROHI1FZ52r4s', 'firebase'),
+        () => val.validateIdentifier('sthinvalid88'),
     ).toThrow('Identifier passed is invalid.');
   });
 });
 
 describe('validator.validateLocation', () => {
+  it('must pass on valid location', () => {
+    expect(() => val.validateLocation(
+        {latitude: '23.22', longitude: '43.33'},
+    )).not.toThrow();
+  });
+
   it('must find undefined location', () => {
     expect(() => val.validateLocation(null)).toThrow('Location not defined.');
   });
@@ -81,6 +80,12 @@ describe('validator.validateLocation', () => {
 
 
 describe('validator.paymentCard', () => {
+  it('must pass on valid card', () => {
+    expect(() => val.validatePaymentCard(
+        {number: '4242 4242 4242 4242', date: '12/68', CVC: '666'},
+    )).not.toThrow();
+  });
+
   it('must find undefined card', () => {
     expect(() => val.validatePaymentCard(null)).toThrow('Card not defined.');
   });
