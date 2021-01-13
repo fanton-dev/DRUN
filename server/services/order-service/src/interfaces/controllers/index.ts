@@ -8,7 +8,7 @@ const postOrder = makePostOrder({createOrder});
 
 const orderController = Object.freeze({
   getOrder,
-  postOrders,
+  postOrder,
   notFound,
 });
 
