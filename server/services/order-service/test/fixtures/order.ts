@@ -1,21 +1,23 @@
+import {Order} from '../../../core/global';
+
 /**
- * Provides a fake orders entity for testing.
+ * Provides a builder for fake testing order entities.
  *
  * @export
- * @param {*} overrides
- * @return {*}
+ * @param {object} [overrides] - data override for fake order
+ * @return {Order} - fake order object
  */
-export default function makeFakeOrder(overrides) {
+export default function makeFakeOrder(overrides?: object): Order {
   const order = {
     sender: {
-      id: 'rjLoRaOHh1FZ2r4s16OkLO58siXf',
+      id: 'f0a1889b-da86-4365-9007-08b86c50fc9a',
       location: {
         latitude: 43.33,
         longitude: 22.22,
       },
     },
     receiver: {
-      id: 'cka7djgczqclceu80001iooy5',
+      id: 'f61574cf-1a2c-430d-9b8c-d7ce93e52760',
       location: {
         latitude: 43.40,
         longitude: 22.32,
