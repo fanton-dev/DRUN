@@ -1,6 +1,6 @@
 import {validate as uuidValidate} from 'uuid';
 import makeFakePayment from '../../../test/fixtures/payment';
-import makePayment from './';
+import makePayment from '.';
 
 describe('payment', () => {
   it('must process a proper request', () => {
