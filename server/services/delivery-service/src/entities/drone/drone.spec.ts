@@ -1,7 +1,7 @@
 import faker from 'faker';
 import {validate as uuidValidate} from 'uuid';
 import makeFakeDrone from '../../../test/fixtures/drone';
-import makeDrone from './';
+import makeDrone from '.';
 
 describe('drone', () => {
   it('must process a proper request', () => {
@@ -169,7 +169,9 @@ describe('drone', () => {
 
   it('must export getConnectedOn', () => {
     const drone = makeFakeDrone();
-    expect(Date(makeDrone(drone).getConnectedOn()));
+    expect(
+        makeDrone(drone).getConnectedOn() / 1000,
+    ).toBeCloseTo(Date.now() / 1000, 0.001);
   });
 
   it('must export markAsBusy', () => {

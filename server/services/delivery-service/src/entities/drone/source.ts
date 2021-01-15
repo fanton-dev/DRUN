@@ -1,12 +1,18 @@
+import {Source, SourceExport} from '../../../../core/global';
+
 /**
  * Request ip/browser source object.
  *
  * @export
- * @param {*} isValidIp - ip validator dependency injection
- * @return {*}
+ * @param {{isValidIp: Function}} {
+ *   isValidIp,
+ * } - dependency injection
+ * @return {Function} - source object builder
  */
-export default function buildSource(isValidIp) {
-  return function makeSource({ip, browser, referrer} = {}) {
+export default function buildSource({
+  isValidIp,
+}: {isValidIp: Function}) {
+  return function makeSource({ip, browser, referrer}: Source): SourceExport {
     if (!ip) {
       throw new Error('Source must have an IP.');
     }
