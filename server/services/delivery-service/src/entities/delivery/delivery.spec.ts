@@ -19,12 +19,6 @@ describe('delivery', () => {
     expect(() => makeDelivery(delivery)).toThrow('Delivery must have a drone.');
   });
 
-  it('must have a valid drone object', () => {
-    const delivery = makeFakeDelivery({drone: {'random': 'object'}});
-    expect(() => makeDelivery(delivery))
-        .toThrow('Delivery must have a valid drone object.');
-  });
-
   it('must have a sender location', () => {
     const delivery = makeFakeDelivery({
       senderLocation: null,
@@ -266,12 +260,13 @@ describe('delivery', () => {
 
   it('must export getCreatedOn', () => {
     const delivery = makeFakeDelivery();
-    expect(Date(makeDelivery(delivery).getCreatedOn()));
+    expect(makeDelivery(delivery).getCreatedOn() / 1000)
+        .toBeCloseTo(Date.now() / 1000, 0.001);
   });
 
   it('must export getCompletedOn', () => {
     const delivery = makeFakeDelivery();
-    expect(Date(makeDelivery(delivery).getCompletedOn()));
+    expect(makeDelivery(delivery).getCompletedOn()).toBe(undefined);
   });
 
   it('must export markAsCompleted', () => {

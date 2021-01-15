@@ -1,3 +1,5 @@
+import {Delivery, Validator} from '../../../../core/global';
+
 // Defining the maximum flight distance in kilometers.
 const maxDistanceRoute = 5;
 
@@ -5,34 +7,39 @@ const maxDistanceRoute = 5;
  * Deliveries entity containing coordinates of receiver and sender.
  *
  * @export
- * @param {Object} validator - data validator dependency injection
- * @param {Object} generateIdentifier - id generator dependency injection
- * @return {function} - delivery object builder
+ * @param {{validator: Validator, generateIdentifier: Function}} {
+ *   validator,
+ *   generateIdentifier,
+ * } - dependency injection
+ * @return {Function} - delivery object builder
  */
-export default function buildCreateDelivery(validator, generateIdentifier) {
+export default function buildCreateDelivery({
+  validator,
+  generateIdentifier,
+}: {validator: Validator, generateIdentifier: () => string}): Function {
   return function createDelivery({
     orderId,
     drone,
     senderLocation,
     receiverLocation,
-  } = {}) {
+  }: Delivery): object {
     // Internal parameters
     const id = generateIdentifier();
     const createdOn = Date.now();
-    let completedOn;
+    let completedOn: number = undefined;
 
     // Construction data validation
     // Identifier validation
     try {
-      validator.validateIdentifier(id, 'internal');
-    } catch (err) {
-      throw new Error('Delivery identifier error: ' + err.message);
+      validator.validateIdentifier(id);
+    } catch (e) {
+      throw new Error('Delivery identifier error: ' + e.message);
     }
 
     try {
-      validator.validateIdentifier(orderId, 'internal');
-    } catch (err) {
-      throw new Error('Delivery identifier error: ' + err.message);
+      validator.validateIdentifier(orderId);
+    } catch (e) {
+      throw new Error('Delivery identifier error: ' + e.message);
     }
 
 
@@ -41,37 +48,24 @@ export default function buildCreateDelivery(validator, generateIdentifier) {
       throw new Error('Delivery must have a drone.');
     }
 
-    if (!(
-      'getId' in drone &&
-      'getDroneSource' in drone &&
-      'getHomeLocation' in drone &&
-      'getIsBusy' in drone &&
-      'getDrone' in drone &&
-      'getConnectedOn' in drone &&
-      'markAsBusy' in drone &&
-      'markAsNotBusy' in drone
-    )) {
-      throw new Error('Delivery must have a valid drone object.');
-    }
-
     try {
       validator.validateLocation(drone.getHomeLocation());
-    } catch (err) {
-      throw new Error('Delivery drone location error: ' + err.message);
+    } catch (e) {
+      throw new Error('Delivery drone location error: ' + e.message);
     }
 
     // Sender location validation
     try {
       validator.validateLocation(senderLocation);
-    } catch (err) {
-      throw new Error('Delivery sender location error: ' + err.message);
+    } catch (e) {
+      throw new Error('Delivery sender location error: ' + e.message);
     }
 
     // Receiver location validation
     try {
       validator.validateLocation(receiverLocation);
-    } catch (err) {
-      throw new Error('Delivery receiver location error: ' + err.message);
+    } catch (e) {
+      throw new Error('Delivery receiver location error: ' + e.message);
     }
 
     // Route length validation
@@ -82,8 +76,8 @@ export default function buildCreateDelivery(validator, generateIdentifier) {
           receiverLocation,
           maxDistanceRoute,
       );
-    } catch (err) {
-      throw new Error('Delivery route error: ' + err.message);
+    } catch (e) {
+      throw new Error('Delivery route error: ' + e.message);
     }
 
     // Creation date validation
