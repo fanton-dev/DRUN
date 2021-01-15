@@ -117,6 +117,94 @@ interface DroneExport {
     markAsNotBusy: Function,
 }
 
+/**
+ * Delivery object structure.
+ *
+ * @interface Delivery
+ */
+interface Delivery {
+  orderId: string,
+  drone: DroneExport,
+  senderLocation: Location,
+  receiverLocation: Location,
+}
+
+/**
+ * HTTP Request object structure.
+ *
+ * @interface HttpRequest
+ * @extends {Request}
+ */
+interface HttpRequest extends Request {
+  body: any,
+  params: ParamsDictionary,
+  ip: string,
+  method: string,
+  path: string,
+  statusCode: number,
+}
+
+/**
+ * HTTP Response object structure.
+ *
+ * @interface HttpResponse
+ * @extends {Response}
+ */
+interface HttpResponse extends Response{
+  headers: object,
+  body: any,
+  statusCode: number,
+}
+
+/**
+ * Shared Queue object structure.
+ *
+ * @interface SharedQueue
+ */
+interface SharedQueue {
+  emit: Function,
+  consume: Function,
+}
+
+/**
+ * Queue Library object structure.
+ *
+ * @interface QueueLibrary
+ */
+interface QueueLibrary {
+  connect: Function,
+}
+
+/**
+ * Queue Connection object structure.
+ *
+ * @interface QueueConnection
+ */
+interface QueueConnection {
+  createChannel: Function,
+}
+
+/**
+ * Queue Channel object structure.
+ *
+ * @interface QueueChannel
+ */
+interface QueueChannel {
+  consume: Function,
+  assertQueue: Function,
+  sendToQueue: Function
+}
+
+/**
+ * Database Controller object structure.
+ *
+ * @interface DatabaseController
+ */
+interface DatabaseController {
+  insert: Function,
+  findById: Function,
+}
+
 export {
   Validator,
   Location,
@@ -125,4 +213,15 @@ export {
   Source,
   SourceExport,
   Order,
+  Payment,
+  Drone,
+  DroneExport,
+  Delivery,
+  HttpRequest,
+  HttpResponse,
+  SharedQueue,
+  QueueLibrary,
+  QueueConnection,
+  QueueChannel,
+  DatabaseController,
 };
