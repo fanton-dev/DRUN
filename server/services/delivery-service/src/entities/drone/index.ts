@@ -1,7 +1,7 @@
 import {v4 as uuidv4} from 'uuid';
 import ipRegex from 'ip-regex';
 import buildCreateDrone from './drone';
-import buildSource from './source';
+import buildSource from '../../../../core/entities/source';
 import validator from '../../../../core/entities/validator';
 
 const makeSource = buildSource({isValidIp});

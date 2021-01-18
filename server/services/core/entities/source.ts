@@ -1,4 +1,4 @@
-import {Source, SourceExport} from '../../../../core/global';
+import {Source, SourceExport} from '../global';
 
 /**
  * Request ip/browser source object.

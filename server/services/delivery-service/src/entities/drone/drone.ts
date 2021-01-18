@@ -4,10 +4,16 @@ import {Drone, Source, SourceExport, Validator} from '../../../../core/global';
  * Drones entity containing the information of a delivery drone.
  *
  * @export
- * @param {Object} validator - data validator dependency injection
- * @param {Object} generateIdentifier - id generator dependency injection
- * @param {Object} makeSource - ip source dependency injection
- * @return {function} - drone object builder
+ * @param {{
+ *   validator: Validator,
+ *   generateIdentifier: Function,
+ *   makeSource: Function
+ * }} {
+ *   validator,
+ *   generateIdentifier,
+ *   makeSource,
+ * } - dependency injection
+ * @return {Function} - drone object builder
  */
 export default function buildCreateDrone({
   validator,
@@ -19,22 +25,22 @@ export default function buildCreateDrone({
   makeSource: ({ip, browser, referrer}: Source) => SourceExport
 }) {
   return function createDrone({
-    droneSource,
+    source,
     homeLocation,
   }: Drone) {
     // Internal parameters
     const id = generateIdentifier();
     let isBusy = false;
     const connectedOn = Date.now();
-    let validDroneSource: SourceExport;
+    let validSource: SourceExport;
 
     // Source validation + parsing
-    if (!droneSource) {
+    if (!source) {
       throw new Error('Drone must have a source.');
     }
 
     try {
-      validDroneSource = makeSource(droneSource);
+      validSource = makeSource(source);
     } catch (e) {
       throw new Error('Drone source error: ' + e.message);
     }
@@ -57,9 +63,10 @@ export default function buildCreateDrone({
     // Module exporting
     return Object.freeze({
       getId: () => id,
-      getDroneSource: () => validDroneSource,
+      getDroneSource: () => validSource,
       getHomeLocation: () => homeLocation,
       getIsBusy: () => isBusy,
+      getSource: () => validSource,
       getConnectedOn: () => connectedOn,
       markAsBusy: () => isBusy = true,
       markAsNotBusy: () => isBusy = false,

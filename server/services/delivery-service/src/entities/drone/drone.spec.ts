@@ -10,13 +10,13 @@ describe('drone', () => {
   });
 
   it('must have a source', () => {
-    const drone = makeFakeDrone({droneSource: null});
+    const drone = makeFakeDrone({source: null});
     expect(() => makeDrone(drone)).toThrow('Drone must have a source.');
   });
 
   it('must have a source ip', () => {
     const drone = makeFakeDrone({
-      droneSource: {
+      source: {
         ip: null,
         browser: faker.internet.userAgent(),
         referrer: faker.internet.url(),
@@ -28,7 +28,7 @@ describe('drone', () => {
 
   it('must have a valid source ip', () => {
     const drone = makeFakeDrone({
-      droneSource: {
+      source: {
         ip: '255.255.255.256',
         browser: faker.internet.userAgent(),
         referrer: faker.internet.url(),
@@ -149,12 +149,12 @@ describe('drone', () => {
     expect(uuidValidate(makeDrone(drone).getId())).toBe(true);
   });
 
-  it('must export getDroneSource', () => {
+  it('must export getSource', () => {
     const drone = makeFakeDrone();
-    const createdDroneSource = makeDrone(drone).getDroneSource();
-    expect(createdDroneSource.getIp()).toBe(drone.droneSource.ip);
-    expect(createdDroneSource.getBrowser()).toBe(drone.droneSource.browser);
-    expect(createdDroneSource.getReferrer()).toBe(drone.droneSource.referrer);
+    const createdSource = makeDrone(drone).getSource();
+    expect(createdSource.getIp()).toBe(drone.source.ip);
+    expect(createdSource.getBrowser()).toBe(drone.source.browser);
+    expect(createdSource.getReferrer()).toBe(drone.source.referrer);
   });
 
   it('must export getHomeLocation', () => {

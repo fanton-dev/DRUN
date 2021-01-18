@@ -10,7 +10,7 @@ import {Drone} from '../../../core/global';
  */
 export default function makeFakeDrone(overrides?: object): Drone {
   const drone = {
-    droneSource: {
+    source: {
       ip: faker.internet.ip(),
       browser: faker.internet.userAgent(),
       referrer: faker.internet.url(),
