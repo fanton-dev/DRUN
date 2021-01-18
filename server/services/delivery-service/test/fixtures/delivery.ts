@@ -1,7 +1,7 @@
 import {v4 as uuidv4} from 'uuid';
 import makeFakeDrone from './drone';
 import makeDrone from '../../src/entities/drone';
-import {Delivery} from '../../../core/global';
+import {Delivery} from '../../../core/@types/global';
 
 /**
  * Provides a builder for fake testing delivery entities.

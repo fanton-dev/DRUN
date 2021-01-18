@@ -1,4 +1,4 @@
-import {Validator, Order, SourceExport, Source} from '../../../../core/global';
+import {Validator, Order, SourceExport, Source} from '../../../../core/@types/global';
 
 /**
  * Orders entity builder containing all the information for further processing.

@@ -1,4 +1,4 @@
-import {HttpRequest} from '../../../../core/global';
+import {HttpRequest} from '../../../../core/@types/global';
 
 /**
  * Express controller for handling of POST "/order".
@@ -20,7 +20,7 @@ export default function makePostOrder({
       if (httpRequest.headers['Referer']) {
         source.referrer = httpRequest.headers['Referer'];
       }
-      const order = await createOrder(orderInfo);
+      const order = await createOrder({...orderInfo, source});
       return {
         headers: {
           'Content-Type': 'application/json',

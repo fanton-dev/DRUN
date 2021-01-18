@@ -1,4 +1,4 @@
-import {Drone, Source, SourceExport, Validator} from '../../../../core/global';
+import {Drone, Source, SourceExport, Validator} from '../../../../core/@types/global';
 
 /**
  * Drones entity containing the information of a delivery drone.

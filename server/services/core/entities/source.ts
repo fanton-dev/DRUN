@@ -1,4 +1,4 @@
-import {Source, SourceExport} from '../global';
+import {Source, SourceExport} from '../@types/global';
 
 /**
  * Request ip/browser source object.

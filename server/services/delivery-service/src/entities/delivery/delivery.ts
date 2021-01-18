@@ -1,4 +1,4 @@
-import {Delivery, Validator} from '../../../../core/global';
+import {Delivery, Validator} from '../../../../core/@types/global';
 
 // Defining the maximum flight distance in kilometers.
 const maxDistanceRoute = 5;

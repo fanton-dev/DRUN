@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import {Payment} from '../../../core/global';
+import {Payment} from '../../../core/@types/global';
 
 /**
  * Provides a builder for fake testing payment entities.

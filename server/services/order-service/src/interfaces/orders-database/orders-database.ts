@@ -1,19 +1,5 @@
 import {Client as PostgresClient, Pool as PostgresPool} from 'pg';
-import {DatabaseController} from '../../../../core/global';
-
-/**
- * Database interactions interface.
- *
- * @export
- * @param {({
- *   databaseClient: (PostgresClient | PostgresPool),
- *   generateIdentifier: Function
- * })} {
- *   databaseClient,
- *   generateIdentifier,
- * } - dependency injection
- * @return {DatabaseController} - database controller object
- */
+import {DatabaseController} from '../../../../core/@types/global';
 
 /**
  * Database interactions interface.
@@ -46,6 +32,9 @@ export default function makeOrdersDatabase({
         receiver_id UUID NOT NULL,
         receiver_location_latitude FLOAT8 NOT NULL,
         receiver_location_longitude FLOAT8 NOT NULL,
+        source_ip TEXT NOT NULL,
+        source_browser TEXT NOT NULL,
+        source_referrer TEXT NOT NULL,
         created_on TIMESTAMPTZ NOT NULL
       );`,
       (error, _) => {

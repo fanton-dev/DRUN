@@ -1,4 +1,8 @@
-import {Order, SharedQueue, DatabaseController} from '../../../core/global';
+import {
+  Order,
+  SharedQueue,
+  DatabaseController,
+} from '../../../core/@types/global';
 import makeOrder from '../entities/order';
 
 /**
@@ -35,6 +39,9 @@ export default function buildCreateOrder({
       senderLocation: order.getSenderLocation(),
       receiverId: order.getReceiverId(),
       receiverLocation: order.getReceiverLocation(),
+      sourceIp: order.getSource().getIp(),
+      sourceBrowser: order.getSource().getBrowser(),
+      sourceReferrer: order.getSource().getReferrer(),
       createdOn: order.getCreatedOn(),
     };
     sharedQueue.emit('ORDER_APPROVED', {
@@ -55,6 +62,9 @@ export default function buildCreateOrder({
       receiver_id: `'${order.getReceiverId()}'`,
       receiver_location_latitude: order.getReceiverLocation().latitude,
       receiver_location_longitude: order.getReceiverLocation().longitude,
+      source_ip: `'${order.getSource().getIp()}'`,
+      source_browser: `'${order.getSource().getBrowser()}'`,
+      source_referrer: `'${order.getSource().getReferrer()}'`,
       created_on: `to_timestamp(${order.getCreatedOn()})`,
     });
 

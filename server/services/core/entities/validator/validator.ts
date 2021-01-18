@@ -1,4 +1,4 @@
-import {Validator, Location, PaymentCard} from '../../global';
+import {Validator, Location, PaymentCard} from '../../@types/global';
 
 /**
  * Validator entity, providing the means for testing passed identifier,

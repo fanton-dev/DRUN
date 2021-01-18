@@ -1,5 +1,5 @@
 import {Request, RequestHandler, Response} from 'express';
-import {HttpResponse} from './global';
+import {HttpResponse} from './@types/global';
 
 /**
  * Creates an express callback from a given controller.

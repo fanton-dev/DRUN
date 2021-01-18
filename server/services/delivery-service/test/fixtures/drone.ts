@@ -1,5 +1,5 @@
 import faker from 'faker';
-import {Drone} from '../../../core/global';
+import {Drone} from '../../../core/@types/global';
 
 /**
  * Provides a builder for fake testing drone entities.

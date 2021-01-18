@@ -8,6 +8,15 @@
     "strict": true,
     "allowJs": true
   },
+  "ts-node": {
+    "files": true
+  },
+  "files": [
+    "services/core/@types/global.d.ts",
+    "services/core/@types/ip-regex.d.ts",
+    "core/@types/global.d.ts",
+    "core/@types/ip-regex.d.ts",
+  ],
   "include": ["./services"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

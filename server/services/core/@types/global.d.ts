@@ -79,6 +79,7 @@ interface Order {
   sender: Person,
   receiver: Person,
   paymentCard: PaymentCard,
+  source: Source,
 }
 
 /**
@@ -97,7 +98,7 @@ interface Payment {
  * @interface Drone
  */
 interface Drone {
-  droneSource: Source,
+  source: Source,
   homeLocation: Location
 }
 
@@ -127,6 +128,7 @@ interface Delivery {
   drone: DroneExport,
   senderLocation: Location,
   receiverLocation: Location,
+  source: SourceExport
 }
 
 /**
@@ -135,13 +137,12 @@ interface Delivery {
  * @interface HttpRequest
  * @extends {Request}
  */
-interface HttpRequest extends Request {
+interface HttpRequest {
   body: any,
-  params: ParamsDictionary,
-  ip: string,
-  method: string,
-  path: string,
-  statusCode: number,
+  params?: ParamsDictionary,
+  ip?: string,
+  method?: string,
+  path?: string,
 }
 
 /**
@@ -150,7 +151,7 @@ interface HttpRequest extends Request {
  * @interface HttpResponse
  * @extends {Response}
  */
-interface HttpResponse extends Response{
+interface HttpResponse {
   headers: object,
   body: any,
   statusCode: number,

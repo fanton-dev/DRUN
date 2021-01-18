@@ -1,4 +1,4 @@
-import {DatabaseController} from '../../../core/global';
+import {DatabaseController} from '../../../core/@types/global';
 
 /**
  * Retrieves information for a concrete order from the database.

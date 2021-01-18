@@ -3,7 +3,7 @@ import {
   QueueConnection,
   QueueLibrary,
   SharedQueue,
-} from '../../global';
+} from '../../@types/global';
 
 /**
  * Provides methods for interacting with the shared services queue.

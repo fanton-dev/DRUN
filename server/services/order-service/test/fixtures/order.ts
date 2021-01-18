@@ -1,5 +1,5 @@
 import faker from 'faker';
-import {Order} from '../../../core/global';
+import {Order} from '../../../core/@types/global';
 
 /**
  * Provides a builder for fake testing order entities.

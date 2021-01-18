@@ -1,4 +1,4 @@
-import {Payment, Validator} from '../../../../core/global';
+import {Payment, Validator} from '../../../../core/@types/global';
 
 /**
  * Payment entity containing all the information of card payment.
