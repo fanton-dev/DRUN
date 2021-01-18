@@ -1,27 +1,39 @@
-import {Validator, Order} from '../../../../core/global';
+import {Validator, Order, SourceExport, Source} from '../../../../core/global';
 
 /**
  * Orders entity builder containing all the information for further processing.
  *
  * @export
- * @param {{validator: Validator, generateIdentifier: Function}} {
+ * @param {{
+ *   validator: Validator,
+ *   generateIdentifier: Function,
+ *   makeSource: Function
+ * }} {
  *   validator,
- *   generateIdentifier
+ *   generateIdentifier,
+ *   makeSource,
  * } - dependency injection
  * @return {Function} - order object builder
  */
 export default function buildMakeOrder({
   validator,
   generateIdentifier,
-}: {validator: Validator, generateIdentifier: Function}): Function {
+  makeSource,
+}: {
+  validator: Validator,
+  generateIdentifier: () => string,
+  makeSource: ({ip, browser, referrer}: Source) => SourceExport
+}): Function {
   return function makeOrder({
     sender,
     receiver,
     paymentCard,
+    source,
   }: Order): object {
     // Internal parameters
     const id = generateIdentifier();
     const createdOn = Date.now();
+    let validSource: SourceExport;
 
     // Construction data validation
     // Identifier validation
@@ -70,6 +82,18 @@ export default function buildMakeOrder({
     // Removing spaces from the card number
     paymentCard.number = paymentCard.number.replace(/ /g, '');
 
+    // Source validation + parsing
+    if (!source) {
+      throw new Error('Drone must have a source.');
+    }
+
+    try {
+      validSource = makeSource(source);
+    } catch (e) {
+      throw new Error('Drone source error: ' + e.message);
+    }
+
+
     // Module exporting
     return Object.freeze({
       getId: () => id,
@@ -80,6 +104,7 @@ export default function buildMakeOrder({
       getPaymentCardNumber: () => paymentCard.number,
       getPaymentCardDate: () => paymentCard.date,
       getPaymentCardCVC: () => paymentCard.CVC,
+      getSource: () => validSource,
       getCreatedOn: () => createdOn,
     });
   };

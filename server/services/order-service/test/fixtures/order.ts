@@ -1,3 +1,4 @@
+import faker from 'faker';
 import {Order} from '../../../core/global';
 
 /**
@@ -27,6 +28,11 @@ export default function makeFakeOrder(overrides?: object): Order {
       number: '4242 4242 4242 4242',
       date: '12/68',
       CVC: '420',
+    },
+    source: {
+      ip: faker.internet.ip(),
+      browser: faker.internet.userAgent(),
+      referrer: faker.internet.url(),
     },
   };
 
