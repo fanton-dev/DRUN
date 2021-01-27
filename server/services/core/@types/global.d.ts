@@ -1,4 +1,4 @@
-import {ParamsDictionary, Request, Response} from 'express-serve-static-core';
+import {ParamsDictionary} from 'express-serve-static-core';
 
 /**
  * Validator object structure.
@@ -28,6 +28,16 @@ interface Location {
 }
 
 /**
+ * Location export object structure.
+ *
+ * @interface LocationExport
+ */
+interface LocationExport {
+  getLatitude: () => number,
+  getLongitude: () => number
+}
+
+/**
  * Sender/Receiver object structure.
  *
  * @interface Person
@@ -35,6 +45,16 @@ interface Location {
 interface Person {
   id: string,
   location: Location,
+}
+
+/**
+ * Sender/Receiver export object structure.
+ *
+ * @interface PersonExport
+ */
+interface PersonExport {
+  getId: () => string,
+  getLocation: () => LocationExport
 }
 
 /**
@@ -46,6 +66,17 @@ interface PaymentCard {
   number: string,
   date: string,
   CVC: string
+}
+
+/**
+ * PaymentCard export object structure.
+ *
+ * @interface PaymentCardExport
+ */
+interface PaymentCardExport {
+  getNumber: () => string,
+  getDate: () => string,
+  getCVC: () => string
 }
 
 /**
@@ -71,15 +102,34 @@ interface SourceExport {
 }
 
 /**
+ * Order object structure without payment data.
+ *
+ * @interface OrderWithoutPaymentCard
+ */
+interface OrderWithoutPaymentCard {
+  id?: string,
+  sender: Person,
+  receiver: Person,
+  source: Source,
+  createdOn?: number
+}
+
+/**
  * Order object structure.
  *
  * @interface Order
  */
-interface Order {
-  sender: Person,
-  receiver: Person,
+interface Order extends OrderWithoutPaymentCard {
   paymentCard: PaymentCard,
-  source: Source,
+}
+
+interface OrderExport {
+  getId: () => string,
+  getSender: () => PersonExport,
+  getReceiver: () => PersonExport,
+  getPaymentCard: () => PaymentCardExport,
+  getSource: () => SourceExport,
+  getCreatedOn: () => number,
 }
 
 /**
@@ -89,7 +139,17 @@ interface Order {
  */
 interface Payment {
   orderId: string,
-  paymentCard: PaymentCard
+  paymentCard: PaymentCard,
+}
+
+/**
+ * Payment export object structure.
+ *
+ * @interface PaymentExport
+ */
+interface PaymentExport {
+  getOrderId: () => string,
+  getPaymentCard: () => PaymentCardExport,
 }
 
 /**
@@ -99,11 +159,12 @@ interface Payment {
  */
 interface Drone {
   source: Source,
-  homeLocation: Location
+  homeLocation: Location,
 }
 
 /**
  * Drone export object structure.
+ * TO-DO fix this mess of an interface.
  *
  * @interface DroneExport
  */
@@ -128,7 +189,20 @@ interface Delivery {
   drone: DroneExport,
   senderLocation: Location,
   receiverLocation: Location,
-  source: SourceExport
+  source: SourceExport,
+}
+
+/**
+ * Delivery object structure.
+ *
+ * @interface DeliveryExport
+ */
+interface DeliveryExport {
+  getOrderId: () => string,
+  getDrone: () => DroneExport,
+  getSenderLocation: () => LocationExport,
+  getReceiverLocation: () => LocationExport,
+  getSource: () => SourceExport,
 }
 
 /**
@@ -138,11 +212,13 @@ interface Delivery {
  * @extends {Request}
  */
 interface HttpRequest {
+  headers: any,
   body: any,
   params?: ParamsDictionary,
   ip?: string,
   method?: string,
   path?: string,
+  query?: any
 }
 
 /**
@@ -152,7 +228,7 @@ interface HttpRequest {
  * @extends {Response}
  */
 interface HttpResponse {
-  headers: object,
+  headers: any,
   body: any,
   statusCode: number,
 }
@@ -197,6 +273,17 @@ interface QueueChannel {
 }
 
 /**
+ * Database client object structure.
+ *
+ * @interface DatabaseClient
+ */
+interface DatabaseClient {
+  connect: Function,
+  query: Function,
+  end: Function,
+}
+
+/**
  * Database Controller object structure.
  *
  * @interface DatabaseController
@@ -209,20 +296,28 @@ interface DatabaseController {
 export {
   Validator,
   Location,
+  LocationExport,
   Person,
+  PersonExport,
   PaymentCard,
+  PaymentCardExport,
   Source,
   SourceExport,
+  OrderWithoutPaymentCard,
   Order,
+  OrderExport,
   Payment,
+  PaymentExport,
   Drone,
   DroneExport,
   Delivery,
   HttpRequest,
+  DeliveryExport,
   HttpResponse,
   SharedQueue,
   QueueLibrary,
   QueueConnection,
   QueueChannel,
+  DatabaseClient,
   DatabaseController,
 };
