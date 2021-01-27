@@ -7,7 +7,7 @@ import {Order, OrderExport} from '../../../../core/@types/global';
  * @param {OrderExport} order - exported order
  * @return {Order} -
  */
-export default function orderDecompressed(order: OrderExport): Order {
+export default function decompressedOrder(order: OrderExport): Order {
   return {
     id: order.getId(),
     sender: {

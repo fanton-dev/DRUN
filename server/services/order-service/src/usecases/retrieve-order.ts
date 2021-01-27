@@ -12,7 +12,7 @@ import {DatabaseController} from '../../../core/@types/global';
 export default function buildRetrieveOrder({
   ordersDatabase,
 }: {ordersDatabase: DatabaseController}): Function {
-  return async function retrieveOrder(orderId: String) {
+  return async function retrieveOrder(orderId: string) {
     return await ordersDatabase.findById(orderId);
   };
 }

@@ -123,6 +123,11 @@ interface Order extends OrderWithoutPaymentCard {
   paymentCard: PaymentCard,
 }
 
+/**
+ * Order export object structure.
+ *
+ * @interface OrderExport
+ */
 interface OrderExport {
   getId: () => string,
   getSender: () => PersonExport,
@@ -131,6 +136,27 @@ interface OrderExport {
   getSource: () => SourceExport,
   getCreatedOn: () => number,
 }
+
+/* eslint-disable camelcase */
+/**
+ * Order object database schema.
+ *
+ * @interface OrderDbSchema
+ */
+interface OrderDbSchema {
+  id: string,
+  sender_id: string,
+  sender_location_latitude: number,
+  sender_location_longitude: number,
+  receiver_id: Person,
+  receiver_location_latitude: number,
+  receiver_location_longitude: number,
+  source_ip: string,
+  source_browser: string,
+  source_referrer: string,
+  created_on: number
+}
+/* eslint-enable camelcase */
 
 /**
  * Payment object structure.
@@ -306,6 +332,7 @@ export {
   OrderWithoutPaymentCard,
   Order,
   OrderExport,
+  OrderDbSchema,
   Payment,
   PaymentExport,
   Drone,

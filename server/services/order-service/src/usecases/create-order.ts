@@ -3,7 +3,7 @@ import {
   SharedQueue,
   DatabaseController,
 } from '../../../core/@types/global';
-import makeOrder, {orderDecompress} from '../entities/order';
+import makeOrder, {decompressOrder} from '../entities/order';
 
 /**
  * Handles a user order request, stores it in local db and notifies other
@@ -33,10 +33,10 @@ export default function buildCreateOrder({
     }
 
     // Emitting an 'ORDER_APPROVED' event in shared queue on valid order
-    const orderDecompressed = orderDecompress(order);
-    sharedQueue.emit('ORDER_APPROVED', orderDecompressed);
+    const decompressedOrder = decompressOrder(order);
+    sharedQueue.emit('ORDER_APPROVED', decompressedOrder);
 
     // Creating an entry in local database
-    return ordersDatabase.insert(orderDecompressed);
+    return ordersDatabase.insert(decompressedOrder);
   };
 }

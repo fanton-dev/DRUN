@@ -1,3 +1,10 @@
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY,
+    phone_number TEXT NOT NULL,
+    joined_on TIMESTAMPTZ NOT NULL
+);
+
+-- TO-DO REFERENCE users(id)
 CREATE TABLE IF NOT EXISTS orders (
     id UUID PRIMARY KEY,
     sender_id UUID NOT NULL, 
