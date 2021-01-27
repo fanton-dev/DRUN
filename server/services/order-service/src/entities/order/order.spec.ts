@@ -454,43 +454,74 @@ describe('order', () => {
     expect(uuidValidate(makeOrder(order).getId())).toBe(true);
   });
 
-  it('must export getSenderId', () => {
+  it('must export getSender.getId', () => {
     const order = makeFakeOrder();
-    expect(makeOrder(order).getSenderId()).toBe(order.sender.id);
+    expect(makeOrder(order).getSender().getId()).toBe(order.sender.id);
   });
 
-  it('must export getSenderLocation', () => {
+  it('must export getSender.getLocation.getLatitude', () => {
     const order = makeFakeOrder();
-    expect(makeOrder(order).getSenderLocation()).toBe(order.sender.location);
+    expect(makeOrder(order).getSender().getLocation().getLatitude())
+        .toBe(order.sender.location.latitude);
   });
 
-  it('must export getReceiverId', () => {
+  it('must export getSender.getLocation.getLongitude', () => {
     const order = makeFakeOrder();
-    expect(makeOrder(order).getReceiverId()).toBe(order.receiver.id);
+    expect(makeOrder(order).getSender().getLocation().getLongitude())
+        .toBe(order.sender.location.longitude);
   });
 
-  it('must export getReceiverLocation', () => {
+  it('must export getReceiver.getId', () => {
     const order = makeFakeOrder();
-    expect(makeOrder(order).getReceiverLocation())
-        .toBe(order.receiver.location);
+    expect(makeOrder(order).getReceiver().getId()).toBe(order.receiver.id);
   });
 
-  it('must export getPaymentCardNumber', () => {
+  it('must export getReceiver.getLocation.getLatitude', () => {
     const order = makeFakeOrder();
-    expect(makeOrder(order).getPaymentCardNumber())
+    expect(makeOrder(order).getReceiver().getLocation().getLatitude())
+        .toBe(order.receiver.location.latitude);
+  });
+
+  it('must export getReceiver.getLocation.getLongitude', () => {
+    const order = makeFakeOrder();
+    expect(makeOrder(order).getReceiver().getLocation().getLongitude())
+        .toBe(order.receiver.location.longitude);
+  });
+
+  it('must export getPaymentCard.getNumber', () => {
+    const order = makeFakeOrder();
+    expect(makeOrder(order).getPaymentCard().getNumber())
         .toBe(order.paymentCard.number);
   });
 
-  it('must export getPaymentCardDate', () => {
+  it('must export getPaymentCard.getDate', () => {
     const order = makeFakeOrder();
-    expect(makeOrder(order).getPaymentCardDate())
+    expect(makeOrder(order).getPaymentCard().getDate())
         .toBe(order.paymentCard.date);
   });
 
-  it('must export getPaymentCardCVC', () => {
+  it('must export getPaymentCard.getCVC', () => {
     const order = makeFakeOrder();
-    expect(makeOrder(order).getPaymentCardCVC())
+    expect(makeOrder(order).getPaymentCard().getCVC())
         .toBe(order.paymentCard.CVC);
+  });
+
+  it('must export getSource.getIp', () => {
+    const order = makeFakeOrder();
+    expect(makeOrder(order).getSource().getIp())
+        .toBe(order.source.ip);
+  });
+
+  it('must export getSource.getReference', () => {
+    const order = makeFakeOrder();
+    expect(makeOrder(order).getSource().getIp())
+        .toBe(order.source.ip);
+  });
+
+  it('must export getSource.getBrowser', () => {
+    const order = makeFakeOrder();
+    expect(makeOrder(order).getSource().getBrowser())
+        .toBe(order.source.browser);
   });
 
   it('must export getCreatedOn', () => {

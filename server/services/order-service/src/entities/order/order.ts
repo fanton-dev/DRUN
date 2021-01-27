@@ -1,4 +1,9 @@
-import {Validator, Order, SourceExport, Source} from '../../../../core/@types/global';
+import {
+  Validator,
+  Order,
+  SourceExport,
+  Source,
+} from '../../../../core/@types/global';
 
 /**
  * Orders entity builder containing all the information for further processing.
@@ -97,13 +102,25 @@ export default function buildMakeOrder({
     // Module exporting
     return Object.freeze({
       getId: () => id,
-      getSenderId: () => sender.id,
-      getSenderLocation: () => sender.location,
-      getReceiverId: () => receiver.id,
-      getReceiverLocation: () => receiver.location,
-      getPaymentCardNumber: () => paymentCard.number,
-      getPaymentCardDate: () => paymentCard.date,
-      getPaymentCardCVC: () => paymentCard.CVC,
+      getSender: () => Object.freeze({
+        getId: () => sender.id,
+        getLocation: () => Object.freeze({
+          getLatitude: () => sender.location.latitude,
+          getLongitude: () => sender.location.longitude,
+        }),
+      }),
+      getReceiver: () => Object.freeze({
+        getId: () => receiver.id,
+        getLocation: () => Object.freeze({
+          getLatitude: () => receiver.location.latitude,
+          getLongitude: () => receiver.location.longitude,
+        }),
+      }),
+      getPaymentCard: () => Object.freeze({
+        getNumber: () => paymentCard.number,
+        getDate: () => paymentCard.date,
+        getCVC: () => paymentCard.CVC,
+      }),
       getSource: () => validSource,
       getCreatedOn: () => createdOn,
     });
