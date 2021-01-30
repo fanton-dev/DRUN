@@ -254,9 +254,9 @@ interface HttpRequest {
  * @extends {Response}
  */
 interface HttpResponse {
-  headers: any,
-  body: any,
-  statusCode: number,
+  headers: any;
+  body: any;
+  statusCode: number;
 }
 
 /**
@@ -265,8 +265,11 @@ interface HttpResponse {
  * @interface SharedQueue
  */
 interface SharedQueue {
-  emit: Function,
-  consume: Function,
+  emit(queueNames: Array<string>, message: object): void;
+  listen(
+    queueName: string,
+    callback: (message: string) => any,
+  ): void;
 }
 
 /**
@@ -275,7 +278,10 @@ interface SharedQueue {
  * @interface QueueLibrary
  */
 interface QueueLibrary {
-  connect: Function,
+  connect(
+    url: string,
+    callback: (err: any, connection: QueueConnection) => void
+  ): void,
 }
 
 /**
@@ -284,7 +290,19 @@ interface QueueLibrary {
  * @interface QueueConnection
  */
 interface QueueConnection {
-  createChannel: Function,
+  close(callback?: (err: any) => void): void;
+  createChannel(callback: (err: any, channel: QueueChannel) => void): void;
+  connection: {
+    serverProperties: {
+      host: string;
+      product: string;
+      version: string;
+      platform: string;
+      copyright?: string;
+      information: string;
+      [key: string]: string | undefined;
+    };
+  };
 }
 
 /**
@@ -293,9 +311,55 @@ interface QueueConnection {
  * @interface QueueChannel
  */
 interface QueueChannel {
-  consume: Function,
-  assertQueue: Function,
-  sendToQueue: Function
+  consume(
+    queue: string,
+    onMessage: (msg: QueueMessage | null) => void,
+    options?: object
+  ): void;
+
+  assertQueue(
+    queue?: string,
+    options?: object
+  ): void;
+
+  sendToQueue(
+    queue: string,
+    content: Buffer,
+    options?: object
+  ): boolean;
+
+  prefetch(count: number, global?: boolean): void;
+
+  close(callback: (err: any) => void): void;
+}
+
+interface QueueMessage {
+  content: Buffer;
+  fields: {
+    messageCount?: number;
+    consumerTag?: string;
+  };
+  properties: {
+    contentType: any | undefined;
+    contentEncoding: any | undefined;
+    headers: {
+      'x-first-death-exchange'?: string;
+      'x-first-death-queue'?: string;
+      'x-first-death-reason'?: string;
+      [key: string]: any;
+    };
+    deliveryMode: any | undefined;
+    priority: any | undefined;
+    correlationId: any | undefined;
+    replyTo: any | undefined;
+    expiration: any | undefined;
+    messageId: any | undefined;
+    timestamp: any | undefined;
+    type: any | undefined;
+    userId: any | undefined;
+    appId: any | undefined;
+    clusterId: any | undefined;
+  };
 }
 
 /**
@@ -345,6 +409,7 @@ export {
   QueueLibrary,
   QueueConnection,
   QueueChannel,
+  QueueMessage,
   DatabaseClient,
   DatabaseController,
 };

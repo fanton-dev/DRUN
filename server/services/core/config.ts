@@ -23,6 +23,7 @@ const config = Object.freeze({
   inboundDeliveryServiceQueue: String(
       process.env.INBOUND_DELIVERY_SERVICE_QUEUE,
   ),
+  inboundLoggerServiceQueue: String(process.env.INBOUND_LOGGER_SERVICE_QUEUE),
   inboundUserServiceQueue: String(process.env.INBOUND_USER_SERVICE_QUEUE),
 });
 

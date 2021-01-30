@@ -2,6 +2,7 @@ import {
   QueueChannel,
   QueueConnection,
   QueueLibrary,
+  QueueMessage,
   SharedQueue,
 } from '../../@types/global';
 
@@ -20,32 +21,51 @@ export default function makeSharedQueue({
   queueUrl,
 }: {queueLibrary: QueueLibrary, queueUrl: string}): SharedQueue {
   /**
-   * Emits a message to a shared queue.
+   * Emits a message to a list of shared queues.
    *
-   * @param {string} queueName
+   * @param {Array<string>} queueNames
    * @param {object} message
    */
-  async function emit(queueName: string, message: object) {
+  function emit(queueNames: Array<string>, message: object): void {
     queueLibrary.connect(queueUrl, (e0: Error, connection: QueueConnection) => {
-      if (e0) {
-        throw e0;
-      }
-      connection.createChannel((e1: Error, channel: QueueChannel) => {
-        if (e1) {
-          throw e1;
+      queueNames.map((queueName) => {
+        if (e0) {
+          throw e0;
         }
-        channel.assertQueue(queueName, {durable: false});
-        channel.sendToQueue(queueName, Buffer.from(JSON.stringify(message)));
+
+        connection.createChannel((
+            e1: Error,
+            channel: QueueChannel,
+        ) => {
+          if (e1) {
+            throw e1;
+          }
+
+          channel.assertQueue(queueName, {durable: true});
+          channel.sendToQueue(
+              queueName,
+              Buffer.from(JSON.stringify(message)),
+              {persistent: true},
+          );
+        });
       });
+
+      setTimeout(function() {
+        connection.close();
+      }, 500);
     });
   }
 
   /**
-   * Consumes a message from a shared queue.
+   * Listens for messages from a shared queue.
    *
    * @param {string} queueName
+   * @param {Function} callback
    */
-  async function consume(queueName: string) {
+  function listen(
+      queueName: string,
+      callback: (message: string) => any,
+  ): void {
     queueLibrary.connect(queueUrl, (e0: Error, connection: QueueConnection) => {
       if (e0) {
         throw e0;
@@ -54,17 +74,22 @@ export default function makeSharedQueue({
         if (e1) {
           throw e1;
         }
-        channel.consume(queueName, (message: {content: object}) => {
-          return JSON.stringify(message.content.toString());
-        }, {
-          noAck: true,
-        });
+
+        channel.assertQueue(queueName, {durable: true});
+        channel.prefetch(1);
+        channel.consume(
+            queueName,
+            (msg: QueueMessage | null) => {
+              callback(JSON.stringify(msg?.content.toString()));
+            },
+            {noAck: false},
+        );
       });
     });
   }
 
   return Object.freeze({
     emit: emit,
-    consume: consume,
+    listen: listen,
   });
 }

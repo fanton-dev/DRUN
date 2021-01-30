@@ -4,6 +4,7 @@ import {
   DatabaseController,
 } from '../../../core/@types/global';
 import makeOrder, {decompressOrder} from '../entities/order';
+import config from '../../../core/config';
 
 /**
  * Handles a user order request, stores it in local db and notifies other
@@ -28,13 +29,25 @@ export default function buildCreateOrder({
     try {
       order = makeOrder(orderInfo);
     } catch (e) {
-      sharedQueue.emit('ORDER_DENIED', e.message);
+      sharedQueue.emit([
+        config.inboundLoggerServiceQueue,
+      ], {
+        event: 'ORDER_DENIED',
+        message: e.message,
+      });
       throw e;
     }
 
     // Emitting an 'ORDER_APPROVED' event in shared queue on valid order
     const decompressedOrder = decompressOrder(order);
-    sharedQueue.emit('ORDER_APPROVED', decompressedOrder);
+    sharedQueue.emit([
+      config.inboundPaymentServiceQueue,
+      config.inboundDeliveryServiceQueue,
+      config.inboundLoggerServiceQueue,
+    ], {
+      event: 'ORDER_ACCEPTED',
+      message: decompressedOrder,
+    });
 
     // Creating an entry in local database
     return ordersDatabase.insert(decompressedOrder);
