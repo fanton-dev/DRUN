@@ -1,6 +1,6 @@
 import {
   PaymentApi,
-  PaymentApiResponse,
+  PaymentApiCharge,
   PaymentCard,
   PaymentLibrary,
 } from '../../../../core/@types/global';
@@ -28,14 +28,14 @@ export default function makePaymentApi({
   /**
    * Generates a stripe token for payment card.
    *
-   * @param {PaymentCard} paymentCard - card used for generation
-   * @return {Promise<PaymentApiResponse>}
+   * @param {PaymentCard} paymentCard - Payment card used for generation
+   * @return {Promise<string>}
    */
   async function paymentCardToToken(
       paymentCard: PaymentCard,
-  ): Promise<PaymentApiResponse> {
+  ): Promise<string> {
     const [expMonth, expYear] = paymentCard.date.split('/', 2);
-    return paymentLibrary.tokens.create({
+    const token = await paymentLibrary.tokens.create({
       card: {
         number: paymentCard.number,
         exp_month: expMonth,
@@ -43,20 +43,21 @@ export default function makePaymentApi({
         cvc: paymentCard.CVC,
       },
     });
+    return token.id;
   }
 
   /**
    * Processes a stripe payment.
    *
-   * @param {string} token
-   * @param {string} description
-   * @return {PaymentApiResponse}
+   * @param {string} token - Payment card token
+   * @param {string} description - Transaction description
+   * @return {PaymentApiCharge}
    */
   async function charge(
       token: string,
       description: string,
-  ): Promise<PaymentApiResponse> {
-    return paymentLibrary.charges.create({
+  ): Promise<PaymentApiCharge> {
+    return await paymentLibrary.charges.create({
       source: token,
       amount: shippingCharge,
       currency: 'bgn',

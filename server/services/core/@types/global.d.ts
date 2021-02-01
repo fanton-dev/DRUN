@@ -395,41 +395,39 @@ interface DatabaseController {
 /**
  * Payment API object structure.
  *
+ * @exports
  * @interface PaymentApi
  */
-interface PaymentApi {
+export interface PaymentApi {
+  paymentCardToToken(
+    paymentCard: PaymentCard,
+  ): Promise<string>
+
   charge(
     token: string,
     description: string,
-  ): Promise<PaymentApiResponse>;
+  ): Promise<PaymentApiCharge>;
 }
 
 /**
  * Payment library object structure.
  *
+ * @exports
  * @interface PaymentLibrary
  */
-interface PaymentLibrary {
-  charges: Stripe.ChargesResource;
+export interface PaymentLibrary {
   tokens: Stripe.TokensResource;
+  charges: Stripe.ChargesResource;
 }
+
 
 /**
- * Payment API response object structure.
+ * Payment API charge object structure.
  *
- * @interface PaymentApiResponse
+ * @exports
+ * @interface PaymentApiToken
  */
-interface PaymentApiResponse {
-  headers: {[key: string]: string};
-  lastResponse: {
-    requestId: string;
-    statusCode: number;
-    apiVersion?: string;
-    idempotencyKey?: string;
-    stripeAccount?: string;
-  };
-}
-
+export interface PaymentApiCharge extends Stripe.Response<Stripe.Charge> {}
 
 export {
   Validator,
@@ -460,7 +458,4 @@ export {
   QueueMessageRaw,
   DatabaseClient,
   DatabaseController,
-  PaymentApi,
-  PaymentLibrary,
-  PaymentApiResponse,
 };
