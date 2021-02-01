@@ -2,11 +2,11 @@ import makeOrdersDatabase from './orders-database';
 import makeFakeOrder from '../../../test/fixtures/order';
 import makeOrder, {decompressOrder} from '../../entities/order';
 import makeFakeDatabaseClient from '../../../test/fixtures/database-client';
-import {DatabaseController} from '../../../../core/@types/global';
+import {OrderDatabaseController} from '../../../../core/@types/global';
 
 
 describe('order-database', () => {
-  let ordersDatabase: DatabaseController;
+  let ordersDatabase: OrderDatabaseController;
   const order = decompressOrder(makeOrder(makeFakeOrder()));
   const databaseClient = makeFakeDatabaseClient(order);
 
@@ -19,7 +19,7 @@ describe('order-database', () => {
 
   it('inserts an order', async () => {
     const result = await ordersDatabase.insert(order);
-    expect(result).toEqual(order.id);
+    expect(result).toEqual({id: order.id});
   });
 
   it('finds an order by id', async () => {

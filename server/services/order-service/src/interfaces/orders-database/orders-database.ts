@@ -1,12 +1,10 @@
-import {QueryResult} from 'pg';
 import {
   DatabaseClient,
-  DatabaseController,
-  OrderDbSchema,
+  DatabaseQueryResults,
+  OrderDatabaseController,
+  OrderDatabaseSchema,
   OrderWithoutPaymentCard,
 } from '../../../../core/@types/global';
-
-type queryResultType = QueryResult<OrderDbSchema>;
 
 /**
  * Database interactions interface.
@@ -19,7 +17,7 @@ type queryResultType = QueryResult<OrderDbSchema>;
  *   databaseClient,
  *   databaseTable,
  * } - dependency injection
- * @return {DatabaseController} - database controller object
+ * @return {OrderDatabaseController} - database controller object
  */
 export default function makeOrdersDatabase({
   databaseClient,
@@ -27,47 +25,65 @@ export default function makeOrdersDatabase({
 }: {
   databaseClient: DatabaseClient,
   databaseTable: string
-}): DatabaseController {
+}): OrderDatabaseController {
   /**
    * Finds an entry in the database.
    *
    * @param {string} orderId
+   * @return {
+   *    Promise<OrderWithoutPaymentCard | { error: string; }>
+   * } - order entry from database
    */
-  async function findById(orderId: string) {
-    const result: queryResultType = await databaseClient.query(`
+  async function findById(
+      orderId: string,
+  ): Promise<OrderWithoutPaymentCard | { error: string; }> {
+    const resultRows: void | DatabaseQueryResults<OrderDatabaseSchema> = await
+    databaseClient.query(`
       SELECT * FROM ${databaseTable} WHERE id = $1
     `, [orderId],
     ).catch((e: Error) => console.log(e));
 
+    if (!resultRows) {
+      return {error: 'No such order found.'};
+    }
+
+    const result = resultRows.rows[0];
     return Object.freeze({
-      id: result.rows[0].id,
+      id: result.id,
       sender: {
-        id: result.rows[0].sender_id,
+        id: result.sender_id,
         location: {
-          latitude: result.rows[0].sender_location_latitude,
-          longitude: result.rows[0].sender_location_longitude,
+          latitude: result.sender_location_latitude,
+          longitude: result.sender_location_longitude,
         },
       },
       receiver: {
-        id: result.rows[0].receiver_id,
+        id: result.receiver_id,
         location: {
-          latitude: result.rows[0].receiver_location_latitude,
-          longitude: result.rows[0].receiver_location_longitude,
+          latitude: result.receiver_location_latitude,
+          longitude: result.receiver_location_longitude,
         },
       },
       source: {
-        ip: result.rows[0].source_ip,
-        browser: result.rows[0].source_browser,
-        referrer: result.rows[0].source_referrer,
+        ip: result.source_ip,
+        browser: result.source_browser,
+        referrer: result.source_referrer,
       },
-      createdOn: result.rows[0].created_on,
+      createdOn: result.created_on,
     });
   }
 
   /**
    * Inserts an entry in the database.
    *
-   * @param {OrderDatabase} orderData
+   * @param {OrderWithoutPaymentCard} {
+   *     id,
+   *     sender,
+   *     receiver,
+   *     source,
+   *     createdOn,
+   *   } - order details
+   * @return {string} - order id
    */
   async function insert({
     id,
@@ -75,8 +91,9 @@ export default function makeOrdersDatabase({
     receiver,
     source,
     createdOn,
-  }: OrderWithoutPaymentCard) {
-    const result: queryResultType = await databaseClient.query(`
+  }: OrderWithoutPaymentCard): Promise<{ id: string } | { error: string; }> {
+    const resultRows: void | DatabaseQueryResults<OrderDatabaseSchema> = await
+    databaseClient.query(`
       INSERT INTO ${databaseTable}
       (
         id,
@@ -108,7 +125,12 @@ export default function makeOrdersDatabase({
     ],
     ).catch((e: Error) => console.log(e));
 
-    return result.rows[0].id;
+    if (!resultRows) {
+      return {error: 'No such order found.'};
+    }
+
+    const result = resultRows.rows[0];
+    return {id: result.id};
   }
 
   return Object.freeze({

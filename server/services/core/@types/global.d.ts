@@ -1,105 +1,116 @@
+import {Connection} from 'amqplib';
+import {ConsumeMessage, Options, Replies} from 'amqplib/properties';
 import {ParamsDictionary} from 'express-serve-static-core';
+import {QueryConfig, QueryResult, QueryResultRow} from 'pg';
 import Stripe from 'stripe';
 
 /**
  * Validator object structure.
  *
+ * @exports
  * @interface Validator
  */
-interface Validator {
-  validateIdentifier: (identifier: string) => void,
-  validateLocation: (location: Location) => void,
-  validateRoute: (
+export interface Validator {
+  validateIdentifier(identifier: string): void;
+  validateLocation(location: Location): void;
+  validateRoute(
     homeLocation: Location,
     senderLocation: Location,
     receiverLocation: Location,
     maxDistance: number,
-  ) => number,
-  validatePaymentCard: (paymentCard: PaymentCard) => void
+  ): number;
+  validatePaymentCard(paymentCard: PaymentCard): void;
 }
 
 /**
  * Location object structure.
  *
+ * @exports
  * @interface Location
  */
-interface Location {
-  latitude: number,
-  longitude: number
+export interface Location {
+  latitude: number;
+  longitude: number;
 }
 
 /**
  * Location export object structure.
- *
+ * @exports
  * @interface LocationExport
  */
 interface LocationExport {
-  getLatitude: () => number,
-  getLongitude: () => number
+  getLatitude(): number;
+  getLongitude(): number;
 }
 
 /**
  * Sender/Receiver object structure.
  *
+ * @exports
  * @interface Person
  */
-interface Person {
-  id: string,
-  location: Location,
+export interface Person {
+  id: string;
+  location: Location;
 }
 
 /**
  * Sender/Receiver export object structure.
  *
+ * @exports
  * @interface PersonExport
  */
-interface PersonExport {
-  getId: () => string,
-  getLocation: () => LocationExport
+export interface PersonExport {
+  getId(): string;
+  getLocation(): LocationExport;
 }
 
 /**
  * PaymentCard object structure.
  *
+ * @exports
  * @interface PaymentCard
  */
-interface PaymentCard {
-  number: string,
-  date: string,
-  CVC: string
+export interface PaymentCard {
+  number: string;
+  date: string;
+  CVC: string;
 }
 
 /**
  * PaymentCard export object structure.
  *
+ * @exports
  * @interface PaymentCardExport
  */
-interface PaymentCardExport {
-  getNumber: () => string,
-  getDate: () => string,
-  getCVC: () => string
+export interface PaymentCardExport {
+  getNumber(): string;
+  getDate(): string;
+  getCVC(): string;
 }
 
 /**
  * Request Source object structure.
  *
+ * @exports
  * @interface Source
  */
-interface Source {
-  ip: string,
-  browser: string,
-  referrer: string,
+export interface Source {
+  ip: string;
+  browser: string;
+  referrer: string;
 }
 
 /**
  * Source export object structure.
  *
+ * @exports
  * @interface SourceExport
  */
-interface SourceExport {
-  getIp: () => string,
-  getBrowser: () => string,
-  getReferrer: () => string
+export interface SourceExport {
+  getIp(): string;
+  getBrowser(): string;
+  getReferrer(): string;
 }
 
 /**
@@ -107,154 +118,161 @@ interface SourceExport {
  *
  * @interface OrderWithoutPaymentCard
  */
-interface OrderWithoutPaymentCard {
-  id?: string,
-  sender: Person,
-  receiver: Person,
-  source: Source,
-  createdOn?: number
+export interface OrderWithoutPaymentCard {
+  id?: string;
+  sender: Person;
+  receiver: Person;
+  source: Source;
+  createdOn?: number;
 }
 
 /**
  * Order object structure.
  *
+ * @exports
  * @interface Order
  */
-interface Order extends OrderWithoutPaymentCard {
-  paymentCard: PaymentCard,
+export interface Order extends OrderWithoutPaymentCard {
+  paymentCard: PaymentCard;
 }
 
 /**
  * Order export object structure.
  *
+ * @exports
  * @interface OrderExport
  */
-interface OrderExport {
-  getId: () => string,
-  getSender: () => PersonExport,
-  getReceiver: () => PersonExport,
-  getPaymentCard: () => PaymentCardExport,
-  getSource: () => SourceExport,
-  getCreatedOn: () => number,
+export interface OrderExport {
+  getId(): string;
+  getSender(): PersonExport;
+  getReceiver(): PersonExport;
+  getPaymentCard(): PaymentCardExport;
+  getSource(): SourceExport;
+  getCreatedOn(): number;
 }
 
 /* eslint-disable camelcase */
 /**
  * Order object database schema.
  *
- * @interface OrderDbSchema
+ * @exports
+ * @interface OrderDatabaseSchema
  */
-interface OrderDbSchema {
-  id: string,
-  sender_id: string,
-  sender_location_latitude: number,
-  sender_location_longitude: number,
-  receiver_id: Person,
-  receiver_location_latitude: number,
-  receiver_location_longitude: number,
-  source_ip: string,
-  source_browser: string,
-  source_referrer: string,
-  created_on: number
+export interface OrderDatabaseSchema {
+  id: string;
+  sender_id: string;
+  sender_location_latitude: number;
+  sender_location_longitude: number;
+  receiver_id: string;
+  receiver_location_latitude: number;
+  receiver_location_longitude: number;
+  source_ip: string;
+  source_browser: string;
+  source_referrer: string;
+  created_on: number;
 }
 /* eslint-enable camelcase */
 
 /**
  * Payment object structure.
  *
+ * @exports
  * @interface Payment
  */
-interface Payment {
-  orderId: string,
-  paymentCard: PaymentCard,
+export interface Payment {
+  orderId: string;
+  paymentCard: PaymentCard;
 }
 
 /**
  * Payment export object structure.
  *
+ * @exports
  * @interface PaymentExport
  */
-interface PaymentExport {
-  getOrderId: () => string,
-  getPaymentCard: () => PaymentCardExport,
+export interface PaymentExport {
+  getOrderId(): string;
+  getPaymentCard(): PaymentCardExport;
 }
 
 /**
  * Drone object structure.
  *
+ * @exports
  * @interface Drone
  */
-interface Drone {
-  source: Source,
-  homeLocation: Location,
+export interface Drone {
+  source: Source;
+  homeLocation: Location;
 }
 
 /**
  * Drone export object structure.
- * TO-DO fix this mess of an interface.
  *
  * @interface DroneExport
  */
 interface DroneExport {
-    getId: () => string,
-    getDroneSource: () => Source,
-    getHomeLocation: () => Location,
-    getIsBusy: () => boolean,
-    getDrone: () => DroneExport,
-    getConnectedOn: () => number,
-    markAsBusy: Function,
-    markAsNotBusy: Function,
+    getId(): string;
+    getDroneSource(): Source;
+    getHomeLocation(): Location;
+    getIsBusy(): boolean;
+    getDrone(): DroneExport;
+    getConnectedOn(): number;
+    markAsBusy(): boolean;
+    markAsNotBusy(): boolean;
 }
 
 /**
  * Delivery object structure.
  *
+ * @exports
  * @interface Delivery
  */
-interface Delivery {
-  orderId: string,
-  drone: DroneExport,
-  senderLocation: Location,
-  receiverLocation: Location,
-  source: SourceExport,
+export interface Delivery {
+  orderId: string;
+  drone: DroneExport;
+  senderLocation: Location;
+  receiverLocation: Location;
+  source: SourceExport;
 }
 
 /**
  * Delivery object structure.
  *
+ * @exports
  * @interface DeliveryExport
  */
-interface DeliveryExport {
-  getOrderId: () => string,
-  getDrone: () => DroneExport,
-  getSenderLocation: () => LocationExport,
-  getReceiverLocation: () => LocationExport,
-  getSource: () => SourceExport,
+export interface DeliveryExport {
+  getOrderId(): string;
+  getDrone(): DroneExport;
+  getSenderLocation(): LocationExport;
+  getReceiverLocation(): LocationExport;
+  getSource(): SourceExport;
 }
 
 /**
  * HTTP Request object structure.
  *
+ * @exports
  * @interface HttpRequest
- * @extends {Request}
  */
-interface HttpRequest {
-  headers: any,
-  body: any,
-  params?: ParamsDictionary,
-  ip?: string,
-  method?: string,
-  path?: string,
-  query?: any
+export interface HttpRequest {
+  headers: any;
+  body: any;
+  params?: ParamsDictionary;
+  ip?: string;
+  method?: string;
+  path?: string;
+  query?: any;
 }
 
 /**
  * HTTP Response object structure.
  *
+ * @exports
  * @interface HttpResponse
- * @extends {Response}
  */
-interface HttpResponse {
+export interface HttpResponse {
   headers: any;
   body: any;
   statusCode: number;
@@ -263,9 +281,10 @@ interface HttpResponse {
 /**
  * Shared Queue object structure.
  *
+ * @exports
  * @interface SharedQueue
  */
-interface SharedQueue {
+export interface SharedQueue {
   emit(queueNames: Array<string>, message: QueueMessage): Promise<void>;
   listen(
     queueName: string,
@@ -276,18 +295,23 @@ interface SharedQueue {
 /**
  * Queue Library object structure.
  *
+ * @exports
  * @interface QueueLibrary
  */
-interface QueueLibrary {
-  connect: Function;
+export interface QueueLibrary {
+  connect(
+    url: string | Options.Connect,
+    socketOptions?: any
+  ): Promise<Connection>;
 }
 
 /**
  * Queue Connection object structure.
  *
+ * @exports
  * @interface QueueConnection
  */
-interface QueueConnection {
+export interface QueueConnection {
   close(): Promise<void>;
   createChannel(): Promise<QueueChannel>;
   connection: {
@@ -306,59 +330,44 @@ interface QueueConnection {
 /**
  * Queue Channel object structure.
  *
+ * @exports
  * @interface QueueChannel
  */
-interface QueueChannel {
+export interface QueueChannel {
   consume(
     queue: string,
-    onMessage: (msg: QueueMessageRaw | null) => void,
-    options?: object
-  ): Promise<void>;
+    onMessage: (msg: ConsumeMessage | null) => void,
+    options?: Options.Consume,
+  ): Promise<Replies.Consume>;
 
   assertQueue(
-    queue?: string,
-    options?: object
-  ): Promise<void>;
+    queue: string,
+    options?: Options.AssertQueue,
+  ): Promise<Replies.AssertQueue>;
 
   sendToQueue(
     queue: string,
     content: Buffer,
-    options?: object
-  ): Promise<boolean>;
+    options?: Options.Publish,
+  ): boolean;
 
-  prefetch(count: number, global?: boolean): Promise<any>;
+  consume(
+    queue: string,
+    onMessage: (msg: ConsumeMessage | null) => void,
+    options?: Options.Consume,
+  ): Promise<Replies.Consume>;
 
-  close(callback: (err: any) => void): void;
+  close(): Promise<void>;
 }
 
-interface QueueMessageRaw {
-  content: Buffer;
-  fields: {
-    messageCount?: number;
-    consumerTag?: string;
-  };
-  properties: {
-    contentType: any | undefined;
-    contentEncoding: any | undefined;
-    headers: {
-      'x-first-death-exchange'?: string;
-      'x-first-death-queue'?: string;
-      'x-first-death-reason'?: string;
-      [key: string]: any;
-    };
-    deliveryMode: any | undefined;
-    priority: any | undefined;
-    correlationId: any | undefined;
-    replyTo: any | undefined;
-    expiration: any | undefined;
-    messageId: any | undefined;
-    timestamp: any | undefined;
-    type: any | undefined;
-    userId: any | undefined;
-    appId: any | undefined;
-    clusterId: any | undefined;
-  };
-}
+/**
+ * Queue Message (raw) object structure.
+ *
+ * @export
+ * @interface QueueMessageRaw
+ * @extends {ConsumeMessage}
+ */
+export interface QueueMessageRaw extends ConsumeMessage {}
 
 /**
  * Queue message object structure.
@@ -374,23 +383,43 @@ export interface QueueMessage {
 /**
  * Database client object structure.
  *
+ * @exports
  * @interface DatabaseClient
  */
-interface DatabaseClient {
-  connect: Function,
-  query: Function,
-  end: Function,
+export interface DatabaseClient {
+  query<R extends QueryResultRow = any, I extends any[] = any[]>(
+    queryTextOrConfig: string | QueryConfig<I>,
+    values?: I,
+  ): Promise<QueryResult<R>>;
 }
 
 /**
- * Database Controller object structure.
+ * Order Database Controller object structure.
  *
- * @interface DatabaseController
+ * @exports
+ * @interface OrderDatabaseController
  */
-interface DatabaseController {
-  insert: Function,
-  findById: Function,
+export interface OrderDatabaseController {
+  insert({
+    id,
+    sender,
+    receiver,
+    source,
+    createdOn,
+  }: OrderWithoutPaymentCard): Promise<{ id: string } | { error: string; }>;
+  findById(
+    orderId: string,
+): Promise<OrderWithoutPaymentCard | { error: string; }>;
 }
+
+/**
+ * Order Database Query Results object structure.
+ *
+ * @export
+ * @interface OrderDatabaseQueryResults
+ * @extends {QueryResult<OrderDatabaseSchema>}
+ */
+export interface DatabaseQueryResults<T> extends QueryResult<T> {}
 
 /**
  * Payment API object structure.
@@ -401,7 +430,7 @@ interface DatabaseController {
 export interface PaymentApi {
   paymentCardToToken(
     paymentCard: PaymentCard,
-  ): Promise<string>
+  ): Promise<string>;
 
   charge(
     token: string,
@@ -428,34 +457,3 @@ export interface PaymentLibrary {
  * @interface PaymentApiToken
  */
 export interface PaymentApiCharge extends Stripe.Response<Stripe.Charge> {}
-
-export {
-  Validator,
-  Location,
-  LocationExport,
-  Person,
-  PersonExport,
-  PaymentCard,
-  PaymentCardExport,
-  Source,
-  SourceExport,
-  OrderWithoutPaymentCard,
-  Order,
-  OrderExport,
-  OrderDbSchema,
-  Payment,
-  PaymentExport,
-  Drone,
-  DroneExport,
-  Delivery,
-  HttpRequest,
-  DeliveryExport,
-  HttpResponse,
-  SharedQueue,
-  QueueLibrary,
-  QueueConnection,
-  QueueChannel,
-  QueueMessageRaw,
-  DatabaseClient,
-  DatabaseController,
-};
