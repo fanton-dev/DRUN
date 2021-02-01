@@ -1,6 +1,7 @@
 import {
   QueueLibrary,
   QueueMessage,
+  QueueMessageRaw,
   SharedQueue,
 } from '../../@types/global';
 
@@ -22,12 +23,12 @@ export default function makeSharedQueue({
    * Emits a message to a list of shared queues.
    *
    * @param {Array<string>} queueNames
-   * @param {object} message
+   * @param {QueueMessage} message
    * @return {Promise<void>}
    */
   async function emit(
       queueNames: Array<string>,
-      message: object,
+      message: QueueMessage,
   ): Promise<void> {
     const connection = await queueLibrary.connect(queueUrl);
     const channel = await connection.createChannel();
@@ -50,7 +51,7 @@ export default function makeSharedQueue({
    */
   async function listen(
       queueName: string,
-      callback: (message: object) => any,
+      callback: (message: QueueMessage) => any | Promise<any>,
   ): Promise<void> {
     const connection = await queueLibrary.connect(queueUrl);
     const channel = await connection.createChannel();
@@ -58,7 +59,7 @@ export default function makeSharedQueue({
     await channel.prefetch(1);
     await channel.consume(
         queueName,
-        (msg: QueueMessage | null) => {
+        (msg: QueueMessageRaw | null) => {
           callback(JSON.parse(String(msg?.content.toString())));
         },
         {noAck: false},

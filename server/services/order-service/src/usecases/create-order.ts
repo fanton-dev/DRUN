@@ -32,8 +32,8 @@ export default function buildCreateOrder({
       sharedQueue.emit([
         config.inboundLoggerServiceQueue,
       ], {
-        event: 'ORDER_DENIED',
-        message: e.message,
+        subject: 'ORDER_DENIED',
+        body: e.message,
       });
       throw e;
     }
@@ -45,8 +45,8 @@ export default function buildCreateOrder({
       config.inboundDeliveryServiceQueue,
       config.inboundLoggerServiceQueue,
     ], {
-      event: 'ORDER_ACCEPTED',
-      message: decompressedOrder,
+      subject: 'ORDER_ACCEPTED',
+      body: decompressedOrder,
     });
 
     // Creating an entry in local database

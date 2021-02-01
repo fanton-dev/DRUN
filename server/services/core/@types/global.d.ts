@@ -266,10 +266,10 @@ interface HttpResponse {
  * @interface SharedQueue
  */
 interface SharedQueue {
-  emit(queueNames: Array<string>, message: object): Promise<void>;
+  emit(queueNames: Array<string>, message: QueueMessage): Promise<void>;
   listen(
     queueName: string,
-    callback: (message: object) => any,
+    callback: (message: QueueMessage) => any,
   ): Promise<void>;
 }
 
@@ -311,7 +311,7 @@ interface QueueConnection {
 interface QueueChannel {
   consume(
     queue: string,
-    onMessage: (msg: QueueMessage | null) => void,
+    onMessage: (msg: QueueMessageRaw | null) => void,
     options?: object
   ): Promise<void>;
 
@@ -331,7 +331,7 @@ interface QueueChannel {
   close(callback: (err: any) => void): void;
 }
 
-interface QueueMessage {
+interface QueueMessageRaw {
   content: Buffer;
   fields: {
     messageCount?: number;
@@ -358,6 +358,17 @@ interface QueueMessage {
     appId: any | undefined;
     clusterId: any | undefined;
   };
+}
+
+/**
+ * Queue message object structure.
+ *
+ * @export
+ * @interface QueueMessage
+ */
+export interface QueueMessage {
+  subject: string;
+  body: string | object;
 }
 
 /**
@@ -390,7 +401,7 @@ interface PaymentApi {
   charge(
     token: string,
     description: string,
-  ): Promise<PaymentApiCharge>;
+  ): Promise<PaymentApiResponse>;
 }
 
 /**
@@ -446,7 +457,7 @@ export {
   QueueLibrary,
   QueueConnection,
   QueueChannel,
-  QueueMessage,
+  QueueMessageRaw,
   DatabaseClient,
   DatabaseController,
   PaymentApi,
