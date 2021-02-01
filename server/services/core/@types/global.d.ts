@@ -1,4 +1,5 @@
 import {ParamsDictionary} from 'express-serve-static-core';
+import Stripe from 'stripe';
 
 /**
  * Validator object structure.
@@ -380,6 +381,45 @@ interface DatabaseController {
   findById: Function,
 }
 
+/**
+ * Payment API object structure.
+ *
+ * @interface PaymentApi
+ */
+interface PaymentApi {
+  charge(
+    token: string,
+    description: string,
+  ): Promise<PaymentApiCharge>;
+}
+
+/**
+ * Payment library object structure.
+ *
+ * @interface PaymentLibrary
+ */
+interface PaymentLibrary {
+  charges: Stripe.ChargesResource;
+  tokens: Stripe.TokensResource;
+}
+
+/**
+ * Payment API response object structure.
+ *
+ * @interface PaymentApiResponse
+ */
+interface PaymentApiResponse {
+  headers: {[key: string]: string};
+  lastResponse: {
+    requestId: string;
+    statusCode: number;
+    apiVersion?: string;
+    idempotencyKey?: string;
+    stripeAccount?: string;
+  };
+}
+
+
 export {
   Validator,
   Location,
@@ -409,4 +449,7 @@ export {
   QueueMessage,
   DatabaseClient,
   DatabaseController,
+  PaymentApi,
+  PaymentLibrary,
+  PaymentApiResponse,
 };
