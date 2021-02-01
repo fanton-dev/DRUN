@@ -4,6 +4,7 @@ dotenv.config();
 
 const config = Object.freeze({
   rabbitMqUrl: String(process.env.RABBITMQ_URL),
+  rabbitMqUrlTest: String(process.env.RABBITMQ_URL_TEST),
   postgresUrl: String(process.env.POSTGRES_URL),
   postgresPort: parseInt(String(process.env.POSTGRES_PORT)),
 
