@@ -1,4 +1,4 @@
-import amqp from 'amqplib/callback_api';
+import amqp from 'amqplib';
 import config from '../../config';
 import makeSharedQueue from './shared-queue';
 

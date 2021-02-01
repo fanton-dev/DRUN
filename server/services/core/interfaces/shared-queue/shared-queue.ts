@@ -1,6 +1,4 @@
 import {
-  QueueChannel,
-  QueueConnection,
   QueueLibrary,
   QueueMessage,
   SharedQueue,
@@ -25,35 +23,22 @@ export default function makeSharedQueue({
    *
    * @param {Array<string>} queueNames
    * @param {object} message
+   * @return {Promise<void>}
    */
-  function emit(queueNames: Array<string>, message: object): void {
-    queueLibrary.connect(queueUrl, (e0: Error, connection: QueueConnection) => {
-      queueNames.map((queueName) => {
-        if (e0) {
-          throw e0;
-        }
-
-        connection.createChannel((
-            e1: Error,
-            channel: QueueChannel,
-        ) => {
-          if (e1) {
-            throw e1;
-          }
-
-          channel.assertQueue(queueName, {durable: true});
-          channel.sendToQueue(
-              queueName,
-              Buffer.from(JSON.stringify(message)),
-              {persistent: true},
-          );
-        });
-      });
-
-      setTimeout(function() {
-        connection.close();
-      }, 500);
-    });
+  async function emit(
+      queueNames: Array<string>,
+      message: object,
+  ): Promise<void> {
+    const connection = await queueLibrary.connect(queueUrl);
+    const channel = await connection.createChannel();
+    Promise.all(queueNames.map(async (queueName) => {
+      await channel.assertQueue(queueName, {durable: true});
+      await channel.sendToQueue(
+          queueName,
+          Buffer.from(JSON.stringify(message)),
+          {persistent: true},
+      );
+    })).then(async () => await connection.close());
   }
 
   /**
@@ -61,31 +46,23 @@ export default function makeSharedQueue({
    *
    * @param {string} queueName
    * @param {Function} callback
+   * @return {Promise<void>}
    */
-  function listen(
+  async function listen(
       queueName: string,
-      callback: (message: string) => any,
-  ): void {
-    queueLibrary.connect(queueUrl, (e0: Error, connection: QueueConnection) => {
-      if (e0) {
-        throw e0;
-      }
-      connection.createChannel((e1:Error, channel: QueueChannel) => {
-        if (e1) {
-          throw e1;
-        }
-
-        channel.assertQueue(queueName, {durable: true});
-        channel.prefetch(1);
-        channel.consume(
-            queueName,
-            (msg: QueueMessage | null) => {
-              callback(JSON.stringify(msg?.content.toString()));
-            },
-            {noAck: false},
-        );
-      });
-    });
+      callback: (message: object) => any,
+  ): Promise<void> {
+    const connection = await queueLibrary.connect(queueUrl);
+    const channel = await connection.createChannel();
+    await channel.assertQueue(queueName, {durable: true});
+    await channel.prefetch(1);
+    await channel.consume(
+        queueName,
+        (msg: QueueMessage | null) => {
+          callback(JSON.parse(String(msg?.content.toString())));
+        },
+        {noAck: false},
+    );
   }
 
   return Object.freeze({

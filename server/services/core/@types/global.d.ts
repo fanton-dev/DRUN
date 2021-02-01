@@ -265,11 +265,11 @@ interface HttpResponse {
  * @interface SharedQueue
  */
 interface SharedQueue {
-  emit(queueNames: Array<string>, message: object): void;
+  emit(queueNames: Array<string>, message: object): Promise<void>;
   listen(
     queueName: string,
-    callback: (message: string) => any,
-  ): void;
+    callback: (message: object) => any,
+  ): Promise<void>;
 }
 
 /**
@@ -278,10 +278,7 @@ interface SharedQueue {
  * @interface QueueLibrary
  */
 interface QueueLibrary {
-  connect(
-    url: string,
-    callback: (err: any, connection: QueueConnection) => void
-  ): void,
+  connect: Function;
 }
 
 /**
@@ -290,8 +287,8 @@ interface QueueLibrary {
  * @interface QueueConnection
  */
 interface QueueConnection {
-  close(callback?: (err: any) => void): void;
-  createChannel(callback: (err: any, channel: QueueChannel) => void): void;
+  close(): Promise<void>;
+  createChannel(): Promise<QueueChannel>;
   connection: {
     serverProperties: {
       host: string;
@@ -315,20 +312,20 @@ interface QueueChannel {
     queue: string,
     onMessage: (msg: QueueMessage | null) => void,
     options?: object
-  ): void;
+  ): Promise<void>;
 
   assertQueue(
     queue?: string,
     options?: object
-  ): void;
+  ): Promise<void>;
 
   sendToQueue(
     queue: string,
     content: Buffer,
     options?: object
-  ): boolean;
+  ): Promise<boolean>;
 
-  prefetch(count: number, global?: boolean): void;
+  prefetch(count: number, global?: boolean): Promise<any>;
 
   close(callback: (err: any) => void): void;
 }
