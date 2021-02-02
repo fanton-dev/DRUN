@@ -404,7 +404,7 @@ export interface QueueMessage {
 export interface DatabaseClient {
   query<R extends QueryResultRow = any, I extends any[] = any[]>(
     queryTextOrConfig: string | QueryConfig<I>,
-    values?: I,
+    values?: any[],
   ): Promise<QueryResult<R>>;
 }
 

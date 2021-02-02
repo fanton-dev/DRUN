@@ -20,8 +20,8 @@ export function exportToNormalEntity<T extends Object, U extends Object>(
         // Checking whether there is a nested object within the value. If there
         // is, this function is run on it. Otherwise only the result from the
         // getter is stored.
-        typeof entry[1] === 'object' ? exportToNormalEntity(entry[1]()) :
-                                       entry[1](),
+        typeof entry[1]() === 'object' ? exportToNormalEntity(entry[1]()) :
+                                         entry[1](),
       ] : []),
   );
 }

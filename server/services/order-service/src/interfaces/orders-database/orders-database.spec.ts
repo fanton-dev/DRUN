@@ -1,13 +1,20 @@
 import makeOrdersDatabase from './orders-database';
 import makeFakeOrder from '../../../test/fixtures/order';
-import makeOrder, {decompressOrder} from '../../entities/order';
+import makeOrder from '../../entities/order';
 import makeFakeDatabaseClient from '../../../test/fixtures/database-client';
-import {OrderDatabaseController} from '../../../../core/@types/global';
+import {
+  Order,
+  OrderDatabaseController,
+  OrderExport,
+} from '../../../../core/@types/global';
+import {exportToNormalEntity} from '../../../../core/entities/utilities';
 
 
 describe('order-database', () => {
   let ordersDatabase: OrderDatabaseController;
-  const order = decompressOrder(makeOrder(makeFakeOrder()));
+  const order = exportToNormalEntity<OrderExport, Order>(
+      makeOrder(makeFakeOrder()),
+  );
   const databaseClient = makeFakeDatabaseClient(order);
 
   beforeEach(async () => {
