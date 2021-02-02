@@ -140,27 +140,32 @@ describe('payment', () => {
     expect(uuidValidate(makePayment(payment).getId())).toBe(true);
   });
 
-  it('must export getPaymentCardNumber', () => {
+  it('must export getPaymentCard.getNumber', () => {
     const payment = makeFakePayment();
-    expect(makePayment(payment).getPaymentCardNumber())
+    expect(makePayment(payment).getPaymentCard().getNumber())
         .toBe(payment.paymentCard.number);
   });
 
-  it('must export getPaymentCardDate', () => {
+  it('must export getPaymentCard.getDate', () => {
     const payment = makeFakePayment();
-    expect(makePayment(payment).getPaymentCardDate())
+    expect(makePayment(payment).getPaymentCard().getDate())
         .toBe(payment.paymentCard.date);
   });
 
-  it('must export getPaymentCardCVC', () => {
+  it('must export getPaymentCard.getCVC', () => {
     const payment = makeFakePayment();
-    expect(makePayment(payment).getPaymentCardCVC())
+    expect(makePayment(payment).getPaymentCard().getCVC())
         .toBe(payment.paymentCard.CVC);
+  });
+
+  it('must export getPaymentCardToken', () => {
+    const payment = makeFakePayment();
+    expect(makePayment(payment).getPaymentCardToken()).toBe(undefined);
   });
 
   it('must export getCreatedOn', () => {
     const payment = makeFakePayment();
-    expect(Date(makePayment(payment).getCreatedOn()));
+    expect(Date.parse(makePayment(payment).getCreatedOn()));
   });
 
   it('must export getCompletedOn', () => {
@@ -176,11 +181,20 @@ describe('payment', () => {
     expect(createdPayment.isCompleted()).toBe(true);
   });
 
+  it('must export setPaymentCardToken', () => {
+    const payment = makeFakePayment();
+    const createdPayment = makePayment(payment);
+    const token = 'tok_1IG38FFW07knbpCOuaVOb7R7';
+    expect(createdPayment.getPaymentCardToken()).toBe(undefined);
+    createdPayment.setPaymentCardToken(token);
+    expect(createdPayment.getPaymentCardToken()).toBe(token);
+  });
+
   it('must export markAsCompleted', () => {
     const payment = makeFakePayment();
     const createdPayment = makePayment(payment);
     expect(createdPayment.getCompletedOn()).toBe(undefined);
     createdPayment.markAsCompleted();
-    expect(Date(createdPayment.getCompletedOn()));
+    expect(Date.parse(makePayment(payment).getCompletedOn()));
   });
 });

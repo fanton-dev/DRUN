@@ -1,4 +1,9 @@
-import {Payment, Validator} from '../../../../core/@types/global';
+import {
+  Payment,
+  PaymentCardExport,
+  PaymentExport,
+  Validator,
+} from '../../../../core/@types/global';
 
 /**
  * Payment entity containing all the information of card payment.
@@ -10,33 +15,38 @@ import {Payment, Validator} from '../../../../core/@types/global';
  * } - dependency injection
  * @return {Function}
  */
-export default function buildCreatePayment({
+export default function buildMakePayment({
   validator,
   generateIdentifier,
 }: {validator: Validator, generateIdentifier: () => string}): Function {
-  return function createPayment({
+  return function makePayment({
     orderId,
     paymentCard,
-  }: Payment): object {
+  }: Payment): PaymentExport {
     // Internal parameters
     const id = generateIdentifier();
     const createdOn = Date.now();
-    let completedOn: number = undefined;
+    let paymentCardToken: string | undefined = undefined;
+    let completedOn: number | undefined = undefined;
 
     // Payment card validation
     validator.validatePaymentCard(paymentCard);
 
     // Module exporting
     return Object.freeze({
-      getId: () => id,
-      getOrderId: () => orderId,
-      getPaymentCardNumber: () => paymentCard.number,
-      getPaymentCardDate: () => paymentCard.date,
-      getPaymentCardCVC: () => paymentCard.CVC,
-      getCreatedOn: () => createdOn,
-      getCompletedOn: () => completedOn,
-      isCompleted: () => completedOn ? true : false,
-      markAsCompleted: () => completedOn = Date.now(),
+      getId: (): string => id,
+      getOrderId: (): string => orderId,
+      getPaymentCard: (): PaymentCardExport => Object.freeze({
+        getNumber: (): string => paymentCard.number,
+        getDate: (): string => paymentCard.date,
+        getCVC: (): string => paymentCard.CVC,
+      }),
+      getPaymentCardToken: (): string | undefined => paymentCardToken,
+      getCreatedOn: (): number => createdOn,
+      getCompletedOn: (): number | undefined => completedOn,
+      isCompleted: (): boolean => completedOn ? true : false,
+      setPaymentCardToken: (token: string): string => paymentCardToken = token,
+      markAsCompleted: (): number => completedOn = Date.now(),
     });
   };
 }

@@ -180,8 +180,12 @@ export interface OrderDatabaseSchema {
  * @interface Payment
  */
 export interface Payment {
+  id?: string;
   orderId: string;
   paymentCard: PaymentCard;
+  paymentCardToken?: string | undefined;
+  createdOn?: number;
+  completedOn?: number | undefined;
 }
 
 /**
@@ -191,8 +195,15 @@ export interface Payment {
  * @interface PaymentExport
  */
 export interface PaymentExport {
+  getId(): string;
   getOrderId(): string;
   getPaymentCard(): PaymentCardExport;
+  getPaymentCardToken(): string | undefined;
+  getCreatedOn(): number;
+  getCompletedOn(): number | undefined;
+  isCompleted(): boolean;
+  setPaymentCardToken(token: string): string;
+  markAsCompleted(): number;
 }
 
 /**
