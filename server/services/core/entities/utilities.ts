@@ -13,16 +13,19 @@ export function exportToNormalEntity<T extends Object, U extends Object>(
   // @ts-ignore ts(2322) - This is so we still get return typing without TS
   // complaining about potential type mismatch.
   return Object.fromEntries(
-      Object.entries(object).map((entry) => entry[0].startsWith('get') ? [
-        // Converting object key from 'getKeyName' to 'keyName'
-        entry[0].replace(/get[A-Z]/, entry[0][3].toLowerCase()),
+      Object.entries(object)
+          .filter((entry) => entry[0].startsWith('get'))
+          .filter((entry) => typeof entry[1] === 'function')
+          .map((entry) => [
+            // Converting object key from 'getKeyName' to 'keyName'
+            entry[0].replace(/get[A-Z]/, entry[0][3].toLowerCase()),
 
-        // Checking whether there is a nested object within the value. If there
-        // is, this function is run on it. Otherwise only the result from the
-        // getter is stored.
-        typeof entry[1]() === 'object' ? exportToNormalEntity(entry[1]()) :
+            // Checking whether there is a nested object within the value. If
+            // there is, this function is run on it. Otherwise only the
+            // result from the getter is stored.
+            typeof entry[1]() === 'object' ? exportToNormalEntity(entry[1]()) :
                                          entry[1](),
-      ] : []),
+          ]),
   );
 }
 
