@@ -39,7 +39,7 @@ export default function buildMakePayment({
       getPaymentCard: (): PaymentCardExport => Object.freeze({
         getNumber: (): string => paymentCard.number,
         getDate: (): string => paymentCard.date,
-        getCVC: (): string => paymentCard.CVC,
+        getCvc: (): string => paymentCard.cvc,
       }),
       getPaymentCardToken: (): string | undefined => paymentCardToken,
       getCreatedOn: (): number => createdOn,

@@ -40,7 +40,7 @@ export default function makePaymentApi({
         number: paymentCard.number,
         exp_month: expMonth,
         exp_year: expYear,
-        cvc: paymentCard.CVC,
+        cvc: paymentCard.cvc,
       },
     });
     return token.id;

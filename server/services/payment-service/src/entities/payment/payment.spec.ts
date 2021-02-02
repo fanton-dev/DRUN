@@ -19,7 +19,7 @@ describe('payment', () => {
       paymentCard: {
         number: null,
         date: '12/68',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -32,23 +32,23 @@ describe('payment', () => {
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: null,
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(() => makePayment(payment))
         .toThrow('Card must have a date defined.');
   });
 
-  it('must have a payment card CVC', () => {
+  it('must have a payment card cvc', () => {
     const payment = makeFakePayment({
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '12/68',
-        CVC: null,
+        cvc: null,
       },
     });
     expect(() => makePayment(payment))
-        .toThrow('Card must have a CVC defined.');
+        .toThrow('Card must have a cvc defined.');
   });
 
   it('must have a payment card number of only numbers and spaces', () => {
@@ -56,7 +56,7 @@ describe('payment', () => {
       paymentCard: {
         number: 'g4242o4242s4242 h4242o',
         date: '12/68',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -69,7 +69,7 @@ describe('payment', () => {
       paymentCard: {
         number: '4242 4242 4242 424',
         date: '12/68',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -82,7 +82,7 @@ describe('payment', () => {
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '13/65',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -95,7 +95,7 @@ describe('payment', () => {
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '10/16',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -103,17 +103,17 @@ describe('payment', () => {
     ).toThrow('Card date must not have expired.');
   });
 
-  it('must have a payment card CVC of only numbers', () => {
+  it('must have a payment card cvc of only numbers', () => {
     const payment = makeFakePayment({
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '12/68',
-        CVC: '42a0',
+        cvc: '42a0',
       },
     });
     expect(
         () => makePayment(payment),
-    ).toThrow('Card CVC can only contain numbers.');
+    ).toThrow('Card cvc can only contain numbers.');
   });
 
   it('must have a payment card number of 3 digits', () => {
@@ -121,12 +121,12 @@ describe('payment', () => {
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '12/68',
-        CVC: '4202',
+        cvc: '4202',
       },
     });
     expect(
         () => makePayment(payment),
-    ).toThrow('Card CVC must contain 3 digits.');
+    ).toThrow('Card cvc must contain 3 digits.');
   });
 
   it('must export getId', () => {
@@ -152,10 +152,10 @@ describe('payment', () => {
         .toBe(payment.paymentCard.date);
   });
 
-  it('must export getPaymentCard.getCVC', () => {
+  it('must export getPaymentCard.getCvc', () => {
     const payment = makeFakePayment();
-    expect(makePayment(payment).getPaymentCard().getCVC())
-        .toBe(payment.paymentCard.CVC);
+    expect(makePayment(payment).getPaymentCard().getCvc())
+        .toBe(payment.paymentCard.cvc);
   });
 
   it('must export getPaymentCardToken', () => {

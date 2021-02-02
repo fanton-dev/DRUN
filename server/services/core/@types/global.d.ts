@@ -74,7 +74,7 @@ export interface PersonExport {
 export interface PaymentCard {
   number: string;
   date: string;
-  CVC: string;
+  cvc: string;
 }
 
 /**
@@ -86,7 +86,7 @@ export interface PaymentCard {
 export interface PaymentCardExport {
   getNumber(): string;
   getDate(): string;
-  getCVC(): string;
+  getCvc(): string;
 }
 
 /**
@@ -174,18 +174,28 @@ export interface OrderDatabaseSchema {
 /* eslint-enable camelcase */
 
 /**
- * Payment object structure.
+ * Payment object structure without payment data.
  *
  * @exports
  * @interface Payment
  */
-export interface Payment {
+export interface PaymentWithoutPaymentCard {
   id?: string;
   orderId: string;
-  paymentCard: PaymentCard;
   paymentCardToken?: string | undefined;
   createdOn?: number;
   completedOn?: number | undefined;
+}
+
+/**
+ * Payment object structure.
+ *
+ * @export
+ * @interface Payment
+ * @extends {PaymentWithoutPaymentCard}
+ */
+export interface Payment extends PaymentWithoutPaymentCard {
+  paymentCard: PaymentCard;
 }
 
 /**
@@ -205,6 +215,22 @@ export interface PaymentExport {
   setPaymentCardToken(token: string): string;
   markAsCompleted(): number;
 }
+
+/* eslint-disable camelcase */
+/**
+ * Payment object database schema.
+ *
+ * @exports
+ * @interface PaymentDatabaseSchema
+ */
+export interface PaymentDatabaseSchema {
+  id: string;
+  order_id: string;
+  payment_card_token: string;
+  created_on: number;
+  completed_on: number;
+}
+/* eslint-enable camelcase */
 
 /**
  * Drone object structure.
@@ -422,9 +448,30 @@ export interface OrderDatabaseController {
     source,
     createdOn,
   }: OrderWithoutPaymentCard): Promise<{ id: string } | { error: string; }>;
+
   findById(
     orderId: string,
 ): Promise<OrderWithoutPaymentCard | { error: string; }>;
+}
+
+/**
+ * Payment Database Controller object structure.
+ *
+ * @exports
+ * @interface PaymentDatabaseController
+ */
+export interface PaymentDatabaseController {
+  insert({
+    id,
+    orderId,
+    paymentCardToken,
+    createdOn,
+    completedOn,
+  }: PaymentWithoutPaymentCard): Promise<{ id: string } | { error: string; }>;
+
+  findById(
+    paymentId: string,
+  ): Promise<PaymentWithoutPaymentCard | { error: string; }>;
 }
 
 /**

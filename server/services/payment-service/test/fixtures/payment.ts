@@ -14,7 +14,7 @@ export default function makeFakePayment(overrides?: object): Payment {
     paymentCard: {
       number: '4242 4242 4242 4242',
       date: '12/68',
-      CVC: '420',
+      cvc: '420',
     },
   };
 

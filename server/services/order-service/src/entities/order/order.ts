@@ -119,7 +119,7 @@ export default function buildMakeOrder({
       getPaymentCard: () => Object.freeze({
         getNumber: () => paymentCard.number,
         getDate: () => paymentCard.date,
-        getCVC: () => paymentCard.CVC,
+        getCvc: () => paymentCard.cvc,
       }),
       getSource: () => validSource,
       getCreatedOn: () => createdOn,

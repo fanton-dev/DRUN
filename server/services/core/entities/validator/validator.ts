@@ -166,8 +166,8 @@ export default function buildValidator({
       throw new Error('Card must have a date defined.');
     }
 
-    if (!paymentCard.CVC) {
-      throw new Error('Card must have a CVC defined.');
+    if (!paymentCard.cvc) {
+      throw new Error('Card must have a cvc defined.');
     }
 
     if (!paymentCard.number.match(/^[0-9 ]+$/)) {
@@ -186,12 +186,12 @@ export default function buildValidator({
       throw new Error('Card date must not have expired.');
     }
 
-    if (!paymentCard.CVC.match(/^[0-9]+$/)) {
-      throw new Error('Card CVC can only contain numbers.');
+    if (!paymentCard.cvc.match(/^[0-9]+$/)) {
+      throw new Error('Card cvc can only contain numbers.');
     }
 
-    if (paymentCard.CVC.length !== 3) {
-      throw new Error('Card CVC must contain 3 digits.');
+    if (paymentCard.cvc.length !== 3) {
+      throw new Error('Card cvc must contain 3 digits.');
     }
   }
 

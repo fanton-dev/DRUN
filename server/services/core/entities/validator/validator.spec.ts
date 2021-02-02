@@ -82,7 +82,7 @@ describe('validator.validateLocation', () => {
 describe('validator.paymentCard', () => {
   it('must pass on valid card', () => {
     expect(() => val.validatePaymentCard(
-        {number: '4242 4242 4242 4242', date: '12/68', CVC: '666'},
+        {number: '4242 4242 4242 4242', date: '12/68', cvc: '666'},
     )).not.toThrow();
   });
 
@@ -92,55 +92,55 @@ describe('validator.paymentCard', () => {
 
   it('must find undefined card number', () => {
     expect(() => val.validatePaymentCard(
-        {number: null, date: '12/68', CVC: '666'},
+        {number: null, date: '12/68', cvc: '666'},
     )).toThrow('Card must have a number defined.');
   });
 
   it('must find undefined card date', () => {
     expect(() => val.validatePaymentCard(
-        {number: '4242 4242 4242 4242', date: null, CVC: '666'},
+        {number: '4242 4242 4242 4242', date: null, cvc: '666'},
     )).toThrow('Card must have a date defined.');
   });
 
-  it('must find undefined card CVC', () => {
+  it('must find undefined card cvc', () => {
     expect(() => val.validatePaymentCard(
-        {number: '4242 4242 4242 4242', date: '12/68', CVC: null},
-    )).toThrow('Card must have a CVC defined.');
+        {number: '4242 4242 4242 4242', date: '12/68', cvc: null},
+    )).toThrow('Card must have a cvc defined.');
   });
 
   it('must find invalid card number (containing non-digits)', () => {
     expect(() => val.validatePaymentCard(
-        {number: '4242 4242 4242 424a', date: '12/68', CVC: '666'},
+        {number: '4242 4242 4242 424a', date: '12/68', cvc: '666'},
     )).toThrow('Card number can only have numbers.');
   });
 
   it('must find invalid card number (not 16 digits)', () => {
     expect(() => val.validatePaymentCard(
-        {number: '4242 4242 4242 424', date: '12/68', CVC: '666'},
+        {number: '4242 4242 4242 424', date: '12/68', cvc: '666'},
     )).toThrow('Card number must contain 16 digits.');
   });
 
   it('must find invalid card date (format)', () => {
     expect(() => val.validatePaymentCard(
-        {number: '4242 4242 4242 4242', date: '13/68', CVC: '666'},
+        {number: '4242 4242 4242 4242', date: '13/68', cvc: '666'},
     )).toThrow('Card date must be in MM/YY format.');
   });
 
   it('must find invalid card date (expired)', () => {
     expect(() => val.validatePaymentCard(
-        {number: '4242 4242 4242 4242', date: '12/18', CVC: '666'},
+        {number: '4242 4242 4242 4242', date: '12/18', cvc: '666'},
     )).toThrow('Card date must not have expired.');
   });
 
-  it('must find invalid card CVC (containing non-digits)', () => {
+  it('must find invalid card cvc (containing non-digits)', () => {
     expect(() => val.validatePaymentCard(
-        {number: '4242 4242 4242 4242', date: '12/68', CVC: '69a'},
-    )).toThrow('Card CVC can only contain numbers.');
+        {number: '4242 4242 4242 4242', date: '12/68', cvc: '69a'},
+    )).toThrow('Card cvc can only contain numbers.');
   });
 
-  it('must find invalid card CVC (not 3 digits)', () => {
+  it('must find invalid card cvc (not 3 digits)', () => {
     expect(() => val.validatePaymentCard(
-        {number: '4242 4242 4242 4242', date: '12/68', CVC: '6969'},
-    )).toThrow('Card CVC must contain 3 digits.');
+        {number: '4242 4242 4242 4242', date: '12/68', cvc: '6969'},
+    )).toThrow('Card cvc must contain 3 digits.');
   });
 });

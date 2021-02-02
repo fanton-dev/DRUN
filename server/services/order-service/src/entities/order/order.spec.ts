@@ -339,7 +339,7 @@ describe('order', () => {
       paymentCard: {
         number: null,
         date: '12/68',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -352,23 +352,23 @@ describe('order', () => {
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: null,
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(() => makeOrder(order))
         .toThrow('Order payment card error: Card must have a date defined.');
   });
 
-  it('must have a payment card CVC', () => {
+  it('must have a payment card cvc', () => {
     const order = makeFakeOrder({
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '12/68',
-        CVC: null,
+        cvc: null,
       },
     });
     expect(() => makeOrder(order))
-        .toThrow('Order payment card error: Card must have a CVC defined.');
+        .toThrow('Order payment card error: Card must have a cvc defined.');
   });
 
   it('must have a payment card number of only numbers and spaces', () => {
@@ -376,7 +376,7 @@ describe('order', () => {
       paymentCard: {
         number: 'g4242o4242s4242 h4242o',
         date: '12/68',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -389,7 +389,7 @@ describe('order', () => {
       paymentCard: {
         number: '4242 4242 4242 424',
         date: '12/68',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -402,7 +402,7 @@ describe('order', () => {
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '13/65',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -415,7 +415,7 @@ describe('order', () => {
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '10/16',
-        CVC: '420',
+        cvc: '420',
       },
     });
     expect(
@@ -423,17 +423,17 @@ describe('order', () => {
     ).toThrow('Order payment card error: Card date must not have expired.');
   });
 
-  it('must have a payment card CVC of only numbers', () => {
+  it('must have a payment card cvc of only numbers', () => {
     const order = makeFakeOrder({
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '12/68',
-        CVC: '42a0',
+        cvc: '42a0',
       },
     });
     expect(
         () => makeOrder(order),
-    ).toThrow('Order payment card error: Card CVC can only contain numbers.');
+    ).toThrow('Order payment card error: Card cvc can only contain numbers.');
   });
 
   it('must have a payment card number of 3 digits', () => {
@@ -441,12 +441,12 @@ describe('order', () => {
       paymentCard: {
         number: '4242 4242 4242 4242',
         date: '12/68',
-        CVC: '4202',
+        cvc: '4202',
       },
     });
     expect(
         () => makeOrder(order),
-    ).toThrow('Order payment card error: Card CVC must contain 3 digits.');
+    ).toThrow('Order payment card error: Card cvc must contain 3 digits.');
   });
 
   it('must export getId', () => {
@@ -500,10 +500,10 @@ describe('order', () => {
         .toBe(order.paymentCard.date);
   });
 
-  it('must export getPaymentCard.getCVC', () => {
+  it('must export getPaymentCard.getCvc', () => {
     const order = makeFakeOrder();
-    expect(makeOrder(order).getPaymentCard().getCVC())
-        .toBe(order.paymentCard.CVC);
+    expect(makeOrder(order).getPaymentCard().getCvc())
+        .toBe(order.paymentCard.cvc);
   });
 
   it('must export getSource.getIp', () => {
