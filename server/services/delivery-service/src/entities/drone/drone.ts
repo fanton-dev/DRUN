@@ -1,4 +1,11 @@
-import {Drone, Source, SourceExport, Validator} from '../../../../core/@types/global';
+import {
+  Drone,
+  DroneExport,
+  LocationExport,
+  Source,
+  SourceExport,
+  Validator,
+} from '../../../../core/@types/global';
 
 /**
  * Drones entity containing the information of a delivery drone.
@@ -23,11 +30,11 @@ export default function buildCreateDrone({
   validator: Validator,
   generateIdentifier: () => string,
   makeSource: ({ip, browser, referrer}: Source) => SourceExport
-}) {
+}): Function {
   return function createDrone({
     source,
     homeLocation,
-  }: Drone) {
+  }: Drone): DroneExport {
     // Internal parameters
     const id = generateIdentifier();
     let isBusy = false;
@@ -62,14 +69,16 @@ export default function buildCreateDrone({
 
     // Module exporting
     return Object.freeze({
-      getId: () => id,
-      getDroneSource: () => validSource,
-      getHomeLocation: () => homeLocation,
-      getIsBusy: () => isBusy,
-      getSource: () => validSource,
-      getConnectedOn: () => connectedOn,
-      markAsBusy: () => isBusy = true,
-      markAsNotBusy: () => isBusy = false,
+      getId: (): string => id,
+      getSource: (): SourceExport => validSource,
+      getHomeLocation: (): LocationExport => Object.freeze({
+        getLatitude: (): number => homeLocation.latitude,
+        getLongitude: (): number => homeLocation.longitude,
+      }),
+      getIsBusy: (): boolean => isBusy,
+      getConnectedOn: (): number => connectedOn,
+      markAsBusy: (): boolean => isBusy = true,
+      markAsNotBusy: (): boolean => isBusy = false,
     });
   };
 }

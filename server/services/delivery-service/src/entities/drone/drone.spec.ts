@@ -157,9 +157,18 @@ describe('drone', () => {
     expect(createdSource.getReferrer()).toBe(drone.source.referrer);
   });
 
-  it('must export getHomeLocation', () => {
+  it('must export getHomeLocation.getLatitude', () => {
     const drone = makeFakeDrone();
-    expect(makeDrone(drone).getHomeLocation()).toBe(drone.homeLocation);
+    expect(
+        makeDrone(drone).getHomeLocation().getLatitude(),
+    ).toBe(drone.homeLocation.latitude);
+  });
+
+  it('must export getHomeLocation.getLongitude', () => {
+    const drone = makeFakeDrone();
+    expect(
+        makeDrone(drone).getHomeLocation().getLongitude(),
+    ).toBe(drone.homeLocation.longitude);
   });
 
   it('must export getIsBusy', () => {

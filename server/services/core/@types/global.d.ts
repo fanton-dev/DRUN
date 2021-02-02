@@ -224,10 +224,9 @@ export interface Drone {
  */
 interface DroneExport {
     getId(): string;
-    getDroneSource(): Source;
-    getHomeLocation(): Location;
+    getSource(): SourceExport;
+    getHomeLocation(): LocationExport;
     getIsBusy(): boolean;
-    getDrone(): DroneExport;
     getConnectedOn(): number;
     markAsBusy(): boolean;
     markAsNotBusy(): boolean;
