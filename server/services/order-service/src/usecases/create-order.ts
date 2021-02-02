@@ -1,10 +1,12 @@
 import {
   Order,
   SharedQueue,
-  DatabaseController,
+  OrderDatabaseController,
+  OrderExport,
 } from '../../../core/@types/global';
-import makeOrder, {decompressOrder} from '../entities/order';
+import makeOrder from '../entities/order';
 import config from '../../../core/config';
+import {exportToNormalEntity} from '../../../core/entities/utilities';
 
 /**
  * Handles a user order request, stores it in local db and notifies other
@@ -20,26 +22,29 @@ import config from '../../../core/config';
 export default function buildCreateOrder({
   sharedQueue,
   ordersDatabase,
-}: {sharedQueue: SharedQueue, ordersDatabase: DatabaseController}): Function {
+}: {
+  sharedQueue: SharedQueue,
+  ordersDatabase: OrderDatabaseController
+}): Function {
   return async function createOrder(orderInfo: Order) {
     // Internal parameter
     let order;
 
-    // Emitting an 'ORDER_DENIED' event in shared queue on invalid order
+    // Emitting an 'ORDER_DECLINED' event in shared queue on invalid order
     try {
       order = makeOrder(orderInfo);
     } catch (e) {
       sharedQueue.emit([
         config.inboundLoggerServiceQueue,
       ], {
-        subject: 'ORDER_DENIED',
+        subject: 'ORDER_DECLINED',
         body: e.message,
       });
       throw e;
     }
 
     // Emitting an 'ORDER_APPROVED' event in shared queue on valid order
-    const decompressedOrder = decompressOrder(order);
+    const decompressedOrder = exportToNormalEntity<OrderExport, Order>(order);
     sharedQueue.emit([
       config.inboundPaymentServiceQueue,
       config.inboundDeliveryServiceQueue,

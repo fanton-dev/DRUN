@@ -1,4 +1,9 @@
-import {Delivery, Validator} from '../../../../core/@types/global';
+import {
+  Delivery,
+  LocationExport,
+  Validator,
+} from '../../../../core/@types/global';
+import {exportToNormalEntity} from '../../../../core/entities/utilities';
 
 // Defining the maximum flight distance in kilometers.
 const maxDistanceRoute = 5;
@@ -26,7 +31,7 @@ export default function buildCreateDelivery({
     // Internal parameters
     const id = generateIdentifier();
     const createdOn = Date.now();
-    let completedOn: number = undefined;
+    let completedOn: number | undefined = undefined;
 
     // Construction data validation
     // Identifier validation
@@ -49,7 +54,9 @@ export default function buildCreateDelivery({
     }
 
     try {
-      validator.validateLocation(drone.getHomeLocation());
+      validator.validateLocation(
+          exportToNormalEntity(drone.getHomeLocation()),
+      );
     } catch (e) {
       throw new Error('Delivery drone location error: ' + e.message);
     }
@@ -71,7 +78,7 @@ export default function buildCreateDelivery({
     // Route length validation
     try {
       validator.validateRoute(
-          drone.getHomeLocation(),
+          exportToNormalEntity(drone.getHomeLocation()),
           senderLocation,
           receiverLocation,
           maxDistanceRoute,
@@ -87,10 +94,16 @@ export default function buildCreateDelivery({
 
     // Module exporting
     return Object.freeze({
-      getId: () => id,
-      getOrderId: () => orderId,
-      getSenderLocation: () => senderLocation,
-      getReceiverLocation: () => receiverLocation,
+      getId: (): string => id,
+      getOrderId: (): string => orderId,
+      getSenderLocation: (): LocationExport => Object.freeze({
+        getLatitude: (): number => senderLocation.latitude,
+        getLongitude: (): number => senderLocation.longitude,
+      }),
+      getReceiverLocation: (): LocationExport => Object.freeze({
+        getLatitude: (): number => receiverLocation.latitude,
+        getLongitude: (): number => receiverLocation.longitude,
+      }),
       getDrone: () => drone,
       getCreatedOn: () => createdOn,
       getCompletedOn: () => completedOn,
