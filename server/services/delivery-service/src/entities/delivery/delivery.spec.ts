@@ -241,16 +241,28 @@ describe('delivery', () => {
     expect(makeDelivery(delivery).getOrderId()).toBe(delivery.orderId);
   });
 
-  it('must export getSenderLocation', () => {
+  it('must export getSenderLocation.getLatitude', () => {
     const delivery = makeFakeDelivery();
-    expect(makeDelivery(delivery).getSenderLocation())
-        .toBe(delivery.senderLocation);
+    expect(makeDelivery(delivery).getSenderLocation().getLatitude())
+        .toBe(delivery.senderLocation.latitude);
   });
 
-  it('must export getReceiverLocation', () => {
+  it('must export getSenderLocation.getLongitude', () => {
     const delivery = makeFakeDelivery();
-    expect(makeDelivery(delivery).getReceiverLocation())
-        .toBe(delivery.receiverLocation);
+    expect(makeDelivery(delivery).getSenderLocation().getLongitude())
+        .toBe(delivery.senderLocation.longitude);
+  });
+
+  it('must export getReceiverLocation.getLatitude', () => {
+    const delivery = makeFakeDelivery();
+    expect(makeDelivery(delivery).getReceiverLocation().getLatitude())
+        .toBe(delivery.receiverLocation.latitude);
+  });
+
+  it('must export getReceiverLocation.getLongitude', () => {
+    const delivery = makeFakeDelivery();
+    expect(makeDelivery(delivery).getReceiverLocation().getLongitude())
+        .toBe(delivery.receiverLocation.longitude);
   });
 
   it('must export getDrone', () => {

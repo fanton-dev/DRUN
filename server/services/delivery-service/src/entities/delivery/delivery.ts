@@ -1,5 +1,7 @@
 import {
   Delivery,
+  DeliveryExport,
+  DroneExport,
   LocationExport,
   Validator,
 } from '../../../../core/@types/global';
@@ -27,7 +29,7 @@ export default function buildCreateDelivery({
     drone,
     senderLocation,
     receiverLocation,
-  }: Delivery): object {
+  }: Delivery): DeliveryExport {
     // Internal parameters
     const id = generateIdentifier();
     const createdOn = Date.now();
@@ -96,6 +98,7 @@ export default function buildCreateDelivery({
     return Object.freeze({
       getId: (): string => id,
       getOrderId: (): string => orderId,
+      getDrone: (): DroneExport => drone,
       getSenderLocation: (): LocationExport => Object.freeze({
         getLatitude: (): number => senderLocation.latitude,
         getLongitude: (): number => senderLocation.longitude,
@@ -104,10 +107,9 @@ export default function buildCreateDelivery({
         getLatitude: (): number => receiverLocation.latitude,
         getLongitude: (): number => receiverLocation.longitude,
       }),
-      getDrone: () => drone,
-      getCreatedOn: () => createdOn,
-      getCompletedOn: () => completedOn,
-      markAsCompleted: () => completedOn = Date.now(),
+      getCreatedOn: (): number => createdOn,
+      getCompletedOn: (): number | undefined => completedOn,
+      markAsCompleted: (): number => completedOn = Date.now(),
     });
   };
 }

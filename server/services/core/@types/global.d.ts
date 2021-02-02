@@ -239,25 +239,30 @@ interface DroneExport {
  * @interface Delivery
  */
 export interface Delivery {
+  id?: string;
   orderId: string;
   drone: DroneExport;
   senderLocation: Location;
   receiverLocation: Location;
-  source: SourceExport;
+  createdOn: number;
+  completedOn: number | undefined
 }
 
 /**
- * Delivery object structure.
+ * Delivery export object structure.
  *
  * @exports
  * @interface DeliveryExport
  */
 export interface DeliveryExport {
+  getId(): string;
   getOrderId(): string;
   getDrone(): DroneExport;
   getSenderLocation(): LocationExport;
   getReceiverLocation(): LocationExport;
-  getSource(): SourceExport;
+  getCreatedOn(): number;
+  getCompletedOn(): number | undefined;
+  markAsCompleted(): number;
 }
 
 /**
