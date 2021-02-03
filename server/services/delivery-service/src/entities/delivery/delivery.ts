@@ -5,7 +5,6 @@ import {
   LocationExport,
   Validator,
 } from '../../../../core/@types/global';
-import {exportToNormalEntity} from '../../../../core/entities/utilities';
 
 // Defining the maximum flight distance in kilometers.
 const maxDistanceRoute = 5;
@@ -23,7 +22,12 @@ const maxDistanceRoute = 5;
 export default function buildCreateDelivery({
   validator,
   generateIdentifier,
-}: {validator: Validator, generateIdentifier: () => string}): Function {
+  exportToNormalEntity,
+}: {
+  validator: Validator;
+  generateIdentifier(): string;
+  exportToNormalEntity<T extends Object, U extends Object>(object: T): U;
+}): Function {
   return function createDelivery({
     orderId,
     drone,

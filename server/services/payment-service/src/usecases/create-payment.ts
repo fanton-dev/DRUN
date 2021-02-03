@@ -7,7 +7,7 @@ import {
   Payment,
 } from '../../../core/@types/global';
 import config from '../../../core/config';
-import {exportToNormalEntity} from '../../../core/entities/utilities';
+import {} from '../../../core/entities/utilities';
 import makePayment from '../entities/payment';
 
 /**
@@ -15,10 +15,16 @@ import makePayment from '../entities/payment';
  * payment and notifies the delivery service about it.
  *
  * @export
- * @param {{sharedQueue: SharedQueue, paymentsDatabase: DatabaseController}} {
- *    paymentApi
+ * @param {{
+ *   paymentApi: PaymentApi,
+ *   sharedQueue: SharedQueue,
+ *   paymentsDatabase: PaymentDatabaseController,
+ *   exportToNormalEntity: Function,
+ * }} {
+ *   paymentApi,
  *   sharedQueue,
  *   paymentsDatabase,
+ *   exportToNormalEntity,
  * } - dependency injection
  * @return {Function} - payment creation function
  */
@@ -26,10 +32,12 @@ export default function buildCreatePayment({
   paymentApi,
   sharedQueue,
   paymentsDatabase,
+  exportToNormalEntity,
 }: {
   paymentApi: PaymentApi;
   sharedQueue: SharedQueue;
   paymentsDatabase: PaymentDatabaseController;
+  exportToNormalEntity<T extends Object, U extends Object>(object: T): U;
 }): Function {
   return async function createPayment(orderInfo: Order) {
     // Internal parameter
