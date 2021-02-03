@@ -4,6 +4,7 @@ import {ParamsDictionary} from 'express-serve-static-core';
 import {QueryConfig, QueryResult, QueryResultRow} from 'pg';
 import * as Bluebird from 'bluebird';
 import Stripe from 'stripe';
+import {AxiosRequestConfig, AxiosResponse} from 'axios';
 
 /**
  * Validator object structure.
@@ -512,7 +513,6 @@ export interface PaymentLibrary {
   charges: Stripe.ChargesResource;
 }
 
-
 /**
  * Payment API charge object structure.
  *
@@ -520,3 +520,24 @@ export interface PaymentLibrary {
  * @interface PaymentApiToken
  */
 export interface PaymentApiCharge extends Stripe.Response<Stripe.Charge> {}
+
+/**
+ * Drone API object structure.
+ *
+ * @export
+ * @interface DroneApi
+ */
+export interface DroneApi {
+  sendDeliveryTask(
+    droneSource: SourceExport,
+    deliveryInfo: Delivery,
+  ): Promise<void>;
+}
+
+export interface RequestLibrary {
+  post<T = any, R = AxiosResponse<T>>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<R>;
+}
