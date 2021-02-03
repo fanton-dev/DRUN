@@ -2,6 +2,7 @@ import {Connection} from 'amqplib';
 import {ConsumeMessage, Options, Replies} from 'amqplib/properties';
 import {ParamsDictionary} from 'express-serve-static-core';
 import {QueryConfig, QueryResult, QueryResultRow} from 'pg';
+import * as Bluebird from 'bluebird';
 import Stripe from 'stripe';
 
 /**
@@ -343,7 +344,7 @@ export interface QueueLibrary {
   connect(
     url: string | Options.Connect,
     socketOptions?: any
-  ): Promise<Connection>;
+  ): Bluebird<Connection>;
 }
 
 /**
