@@ -1,17 +1,16 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import makeExpressCallback from '../../core/express-callback';
+import {postDrone, deleteDrone, notFound} from './interfaces/controllers';
+import config from '../../core/config';
 
+const apiRoot = config.apiRoot;
 const app = express();
 app.use(bodyParser.json());
 
-const dummy = async () => {
-  return Object.freeze({});
-};
-
-app.post('/drones/connect', makeExpressCallback(dummy));
-
-// app.use(makeExpressCallback(notFound));
+app.post(`${apiRoot}/drones`, makeExpressCallback(postDrone));
+app.delete(`${apiRoot}/drones`, makeExpressCallback(deleteDrone));
+app.use(makeExpressCallback(notFound));
 
 app.listen(3002, () => {
   console.log('Delivery service started on "/api/deliveries"...');
