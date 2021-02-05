@@ -26,3 +26,20 @@ CREATE TABLE IF NOT EXISTS payments (
     created_on TIMESTAMPTZ NOT NULL,
     completed_on TIMESTAMPTZ NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS deliveries (
+    id UUID PRIMARY KEY,
+    order_id UUID REFERENCES orders(id) NOT NULL,
+    drone_id UUID NOT NULL,
+    drone_home_location_latitude FLOAT8 NOT NULL,
+    drone_home_location_longitude FLOAT8 NOT NULL,
+    drone_source_ip TEXT NOT NULL,
+    drone_source_browser TEXT,
+    drone_source_referrer TEXT,
+    sender_location_latitude FLOAT8 NOT NULL,
+    sender_location_longitude FLOAT8 NOT NULL,
+    receiver_location_latitude FLOAT8 NOT NULL,
+    receiver_location_longitude FLOAT8 NOT NULL,
+    created_on TIMESTAMPTZ NOT NULL,
+    completed_on TIMESTAMPTZ
+);

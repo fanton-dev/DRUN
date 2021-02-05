@@ -2,7 +2,7 @@ import {Connection} from 'amqplib';
 import {ConsumeMessage, Options, Replies} from 'amqplib/properties';
 import {ParamsDictionary} from 'express-serve-static-core';
 import {QueryConfig, QueryResult, QueryResultRow} from 'pg';
-import * as Bluebird from 'bluebird';
+import Bluebird from 'bluebird';
 import Stripe from 'stripe';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
 
@@ -269,7 +269,7 @@ interface DroneExport {
 export interface Delivery {
   id?: string;
   orderId: string;
-  drone: DroneExport;
+  drone?: DroneExport;
   senderLocation: Location;
   receiverLocation: Location;
   createdOn: number;
@@ -292,6 +292,31 @@ export interface DeliveryExport {
   getCompletedOn(): number | undefined;
   markAsCompleted(): number;
 }
+
+/* eslint-disable camelcase */
+/**
+ * Payment object database schema.
+ *
+ * @exports
+ * @interface DeliveryDatabaseSchema
+ */
+export interface DeliveryDatabaseSchema {
+  id: string;
+  order_id: string;
+  drone_id: string;
+  drone_home_location_latitude: number;
+  drone_home_location_longitude: number;
+  drone_ip: string;
+  drone_browser: string;
+  drone_referrer: string;
+  sender_location_latitude: number;
+  sender_location_longitude: number;
+  receiver_location_latitude: number;
+  receiver_location_longitude: number;
+  created_on: number;
+  completed_on: number;
+}
+/* eslint-enable camelcase */
 
 /**
  * HTTP Request object structure.
@@ -420,7 +445,7 @@ export interface QueueMessageRaw extends ConsumeMessage {}
  */
 export interface QueueMessage {
   subject: string;
-  body: string | object;
+  body: object;
 }
 
 /**
@@ -477,11 +502,34 @@ export interface PaymentDatabaseController {
 }
 
 /**
- * Order Database Query Results object structure.
+ * Delivery Database Controller object structure.
  *
  * @export
- * @interface OrderDatabaseQueryResults
- * @extends {QueryResult<OrderDatabaseSchema>}
+ * @interface DeliveryDatabaseController
+ */
+export interface DeliveryDatabaseController {
+  insert({
+    id,
+    orderId,
+    drone,
+    senderLocation,
+    receiverLocation,
+    createdOn,
+    completedOn,
+  }: Delivery): Promise<{ id: string } | { error: string; }>;
+
+  findById(
+    paymentId: string,
+  ): Promise<PaymentWithoutPaymentCard | { error: string; }>;
+}
+
+/**
+ * Database Query Results object structure.
+ *
+ * @export
+ * @interface DatabaseQueryResults
+ * @extends {QueryResult<T>}
+ * @template T
  */
 export interface DatabaseQueryResults<T> extends QueryResult<T> {}
 
@@ -534,6 +582,12 @@ export interface DroneApi {
   ): Promise<void>;
 }
 
+/**
+ * HTTP Request Library object structure.
+ *
+ * @export
+ * @interface RequestLibrary
+ */
 export interface RequestLibrary {
   post<T = any, R = AxiosResponse<T>>(
     url: string,
