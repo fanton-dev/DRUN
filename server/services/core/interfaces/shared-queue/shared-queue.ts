@@ -26,9 +26,9 @@ export default function makeSharedQueue({
    * @param {QueueMessage} message
    * @return {Promise<void>}
    */
-  async function emit(
+  async function emit <T extends Object>(
       queueNames: Array<string>,
-      message: QueueMessage,
+      message: QueueMessage<T>,
   ): Promise<void> {
     const connection = await queueLibrary.connect(queueUrl);
     const channel = await connection.createChannel();
@@ -51,7 +51,7 @@ export default function makeSharedQueue({
    */
   async function listen(
       queueName: string,
-      callback: (message: QueueMessage) => any | Promise<any>,
+      callback: (message: QueueMessage<any>) => any,
   ): Promise<void> {
     const connection = await queueLibrary.connect(queueUrl);
     const channel = await connection.createChannel();

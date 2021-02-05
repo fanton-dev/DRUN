@@ -2,7 +2,7 @@ import {Connection} from 'amqplib';
 import {ConsumeMessage, Options, Replies} from 'amqplib/properties';
 import {ParamsDictionary} from 'express-serve-static-core';
 import {QueryConfig, QueryResult, QueryResultRow} from 'pg';
-import Bluebird from 'bluebird';
+import * as Bluebird from 'bluebird';
 import Stripe from 'stripe';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
 
@@ -353,10 +353,14 @@ export interface HttpResponse {
  * @interface SharedQueue
  */
 export interface SharedQueue {
-  emit(queueNames: Array<string>, message: QueueMessage): Promise<void>;
+  emit <T extends Object>(
+    queueNames: Array<string>,
+    message: QueueMessage<T>
+  ): Promise<void>;
+
   listen(
     queueName: string,
-    callback: (message: QueueMessage) => any,
+    callback: (message: QueueMessage<any>) => any,
   ): Promise<void>;
 }
 
@@ -442,10 +446,11 @@ export interface QueueMessageRaw extends ConsumeMessage {}
  *
  * @export
  * @interface QueueMessage
+ * @template T
  */
-export interface QueueMessage {
+export interface QueueMessage<T extends Object> {
   subject: string;
-  body: object;
+  body: T;
 }
 
 /**
