@@ -529,6 +529,11 @@ export interface DeliveryDatabaseController {
   findById(
     paymentId: string,
   ): Promise<PaymentWithoutPaymentCard | { error: string; }>;
+
+  updateCompletedOn(
+    deliveryId: string,
+    completedOn: number | undefined,
+  ): Promise<void>;
 }
 
 /**

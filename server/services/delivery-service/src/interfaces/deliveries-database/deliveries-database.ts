@@ -31,7 +31,7 @@ export default function makeDeliveriesDatabase({
    *
    * @param {string} deliveryId
    * @return {
-   *    Promise<DeliveryWithoutPaymentCard | { error: string; }>
+   *    Promise<Delivery | { error: string; }>
    * } - delivery entry from database
    */
   async function findById(
@@ -67,7 +67,7 @@ export default function makeDeliveriesDatabase({
   /**
    * Inserts an entry in the database.
    *
-   * @param {DeliveryWithoutPaymentCard} {
+   * @param {Delivery} {
    *     id,
    *     sender,
    *     receiver,
@@ -135,8 +135,27 @@ export default function makeDeliveriesDatabase({
     return {id: result.id};
   }
 
+  /**
+   * Updates completedOn timestamp on a database entry.
+   *
+   * @param {string} deliveryId
+   * @param {number} completedOn
+   */
+  async function updateCompletedOn(
+      deliveryId: string,
+      completedOn: number | undefined,
+  ): Promise<void> {
+    await databaseClient.query(`
+      UPDATE ${databaseTable}
+      SET completed_on = to_timestamp($1)
+      WHERE id = $2
+    `, [completedOn, deliveryId],
+    );
+  }
+
   return Object.freeze({
     findById: findById,
     insert: insert,
+    updateCompletedOn: updateCompletedOn,
   });
 }

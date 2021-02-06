@@ -1,5 +1,6 @@
 import {
   DeliveryDatabaseController,
+  DeliveryExport,
   DroneExport,
   SharedQueue,
 } from '../../../core/@types/global';
@@ -34,10 +35,12 @@ export default function buildCompleteDelivery({
     exportToNormalEntity<T extends Object, U extends Object>(object: T): U;
   }): Function {
   return async function completeDelivery(deliveryId: string, droneIp: string) {
+    let delivery: DeliveryExport;
+
     // Emitting an 'DELIVERY_FAILED' event in shared queue on invalid request
     try {
       // Finding the delivery in the database and marking it as completed
-      const delivery = makeDelivery(deliveriesDatabase.findById(deliveryId));
+      delivery = makeDelivery(deliveriesDatabase.findById(deliveryId));
       delivery.markAsCompleted();
       deliveriesDatabase.updateCompletedOn(
           deliveryId,
@@ -71,7 +74,7 @@ export default function buildCompleteDelivery({
       config.inboundLoggerServiceQueue,
     ], {
       subject: 'DRONE_COMPLETE',
-      body: {orderId: orderId},
+      body: {orderId: delivery.getOrderId()},
     });
   };
 }
