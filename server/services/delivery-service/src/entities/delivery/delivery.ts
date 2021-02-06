@@ -19,7 +19,7 @@ const maxDistanceRoute = 5;
  * } - dependency injection
  * @return {Function} - delivery object builder
  */
-export default function buildCreateDelivery({
+export default function buildMakeDelivery({
   validator,
   generateIdentifier,
   exportToNormalEntity,
@@ -28,17 +28,15 @@ export default function buildCreateDelivery({
   generateIdentifier(): string;
   exportToNormalEntity<T extends Object, U extends Object>(object: T): U;
 }): Function {
-  return function createDelivery({
+  return function makeDelivery({
+    id = generateIdentifier(),
     orderId,
     drone,
     senderLocation,
     receiverLocation,
+    createdOn = Date.now(),
+    completedOn = undefined,
   }: Delivery): DeliveryExport {
-    // Internal parameters
-    const id = generateIdentifier();
-    const createdOn = Date.now();
-    let completedOn: number | undefined = undefined;
-
     // Construction data validation
     // Identifier validation
     try {

@@ -22,7 +22,7 @@ import {
  * } - dependency injection
  * @return {Function} - drone object builder
  */
-export default function buildCreateDrone({
+export default function buildMakeDrone({
   validator,
   generateIdentifier,
   makeSource,
@@ -31,14 +31,14 @@ export default function buildCreateDrone({
   generateIdentifier: () => string,
   makeSource: ({ip, browser, referrer}: Source) => SourceExport
 }): Function {
-  return function createDrone({
+  return function makeDrone({
+    id = generateIdentifier(),
     source,
     homeLocation,
+    isBusy = false,
+    connectedOn = Date.now(),
   }: Drone): DroneExport {
     // Internal parameters
-    const id = generateIdentifier();
-    let isBusy = false;
-    const connectedOn = Date.now();
     let validSource: SourceExport;
 
     // Source validation + parsing

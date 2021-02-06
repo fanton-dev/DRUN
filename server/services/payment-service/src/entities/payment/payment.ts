@@ -20,15 +20,13 @@ export default function buildMakePayment({
   generateIdentifier,
 }: {validator: Validator, generateIdentifier: () => string}): Function {
   return function makePayment({
+    id = generateIdentifier(),
     orderId,
     paymentCard,
+    createdOn = Date.now(),
+    paymentCardToken = undefined,
+    completedOn = undefined,
   }: Payment): PaymentExport {
-    // Internal parameters
-    const id = generateIdentifier();
-    const createdOn = Date.now();
-    let paymentCardToken: string | undefined = undefined;
-    let completedOn: number | undefined = undefined;
-
     // Payment card validation
     validator.validatePaymentCard(paymentCard);
 

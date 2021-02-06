@@ -30,14 +30,14 @@ export default function buildMakeOrder({
   makeSource: ({ip, browser, referrer}: Source) => SourceExport
 }): Function {
   return function makeOrder({
+    id = generateIdentifier(),
     sender,
     receiver,
     paymentCard,
     source,
+    createdOn = Date.now(),
   }: Order): object {
     // Internal parameters
-    const id = generateIdentifier();
-    const createdOn = Date.now();
     let validSource: SourceExport;
 
     // Construction data validation

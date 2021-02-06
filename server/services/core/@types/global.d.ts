@@ -241,8 +241,11 @@ export interface PaymentDatabaseSchema {
  * @interface Drone
  */
 export interface Drone {
+  id?: string;
   source: Source;
   homeLocation: Location;
+  isBusy: boolean;
+  connectedOn: number;
 }
 
 /**

@@ -1,11 +1,11 @@
 import {v4 as uuidv4} from 'uuid';
 import ipRegex from 'ip-regex';
-import buildCreateDrone from './drone';
+import buildMakeDrone from './drone';
 import buildSource from '../../../../core/entities/source';
 import validator from '../../../../core/entities/validator';
 
 const makeSource = buildSource({isValidIp});
-const createDrone = buildCreateDrone({
+const makeDrone = buildMakeDrone({
   validator: validator,
   generateIdentifier: uuidv4,
   makeSource: makeSource,
@@ -21,5 +21,5 @@ function isValidIp(ip: string): boolean {
   return ipRegex({exact: true}).test(ip);
 }
 
-export default createDrone;
+export default makeDrone;
 
