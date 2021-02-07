@@ -1,11 +1,11 @@
-import {QueueMessage} from '../../core/@types/global';
+import {Order, QueueMessage} from '../../core/@types/global';
 import config from '../../core/config';
 import sharedQueue from '../../core/interfaces/shared-queue';
 import {createPayment} from './usecases';
 
 setTimeout(() => sharedQueue.listen(
     config.inboundPaymentServiceQueue,
-    async (message: QueueMessage) => {
+    async (message: QueueMessage<Order>) => {
       if (message.subject === 'ORDER_ACCEPTED') createPayment(message.body);
     },
 ), 10000);
