@@ -1,9 +1,9 @@
 import buildRetrieveOrderLogs from './retrieve-order-logs';
-import buildStoreLogMessage from './store-log-message';
-import logsDatabase from '../interfaces/logs-database';
+import buildStoreLogMessage from './create-log-message';
+import orderLogsDatabase from '../interfaces/order-logs-database';
 
-const retrieveOrderLogs = buildRetrieveOrderLogs({logsDatabase});
-const storeLogMessage = buildStoreLogMessage({logsDatabase});
+const retrieveOrderLogs = buildRetrieveOrderLogs({orderLogsDatabase});
+const storeLogMessage = buildStoreLogMessage({orderLogsDatabase});
 
 const ordersService = Object.freeze({
   retrieveOrderLogs,

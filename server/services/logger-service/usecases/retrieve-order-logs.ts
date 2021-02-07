@@ -4,15 +4,15 @@ import {OrderLogsDatabaseController} from '../../core/@types/global';
  * Retrieves logs for a concrete order from the database.
  *
  * @export
- * @param {{ordersDatabase: OrderLogsDatabaseController}} {
- *   ordersDatabase,
+ * @param {{orderLogsDatabase: OrderLogsDatabaseController}} {
+ *   orderLogsDatabase,
  * } - dependency injection
  * @return {Function} - order logs retrieval function
  */
 export default function buildRetrieveOrderLogs({
-  ordersDatabase,
-}: {ordersDatabase: OrderLogsDatabaseController}): Function {
+  orderLogsDatabase,
+}: {orderLogsDatabase: OrderLogsDatabaseController}): Function {
   return async function retrieveOrder(orderId: string) {
-    return await ordersDatabase.findLogsOfOrder(orderId);
+    return await orderLogsDatabase.findLogsOfOrder(orderId);
   };
 }
