@@ -10,5 +10,6 @@ COPY ./tsconfig.json ./tsconfig.json
 EXPOSE 3001
 EXPOSE 3002
 EXPOSE 3003
+EXPOSE 3004
 
 CMD [ "npm", "run", "start:dev" ]

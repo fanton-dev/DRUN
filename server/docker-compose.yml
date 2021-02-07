@@ -52,6 +52,24 @@ services:
       - ./services/delivery-service/src:/usr/src/app/service/src:cached
       - ./services/core:/usr/src/app/core:cached
 
+  logger-service:
+    image: logger-service
+    build:
+      context: .
+      network: "host"
+    command: bash -c "npm run start:dev"
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - database
+      - queue
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./services/logger-service/src:/usr/src/app/service/src:cached
+      - ./services/core:/usr/src/app/core:cached
+
   user-service:
     image: user-service
     build:
@@ -64,7 +82,7 @@ services:
       - database
       - queue
     ports:
-      - "3003:3003"
+      - "3004:3004"
     volumes:
       - ./services/user-service/src:/usr/src/app/service/src:cached
       - ./services/core:/usr/src/app/core:cached
