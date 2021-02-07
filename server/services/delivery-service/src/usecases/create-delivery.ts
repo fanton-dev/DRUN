@@ -47,15 +47,15 @@ export default function buildCreateDelivery({
 
     // Emitting an 'DELIVERY_DENIED' event in shared queue on invalid request
     try {
-      // Creating new delivery entity
-      delivery = makeDelivery(deliveryInfo);
-      normalizedDelivery = exportToNormalEntity(delivery);
-
       // Finding a free drone and throwing an error if there are none
       const drone = connectedDronesList.find((i) => !i.getIsBusy());
       if (!drone) {
         throw new Error('No free drones available.');
       }
+
+      // Creating new delivery entity
+      delivery = {drone: drone, ...makeDelivery(deliveryInfo)};
+      normalizedDelivery = exportToNormalEntity(delivery);
 
       // Sending delivery task to drone
       droneApi.sendDeliveryTask(drone.getSource(), normalizedDelivery);
@@ -70,7 +70,7 @@ export default function buildCreateDelivery({
         subject: 'DELIVERY_DENIED',
         body: e.message,
       });
-      throw e;
+      return;
     }
 
     // Notifying the logger service on success

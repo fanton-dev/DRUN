@@ -23,7 +23,7 @@ app.use(makeExpressCallback(notFound));
 
 const ordersToProcess: Array<Order> = [];
 setTimeout(() => sharedQueue.listen(
-    config.inboundPaymentServiceQueue,
+    config.inboundDeliveryServiceQueue,
     async (message: QueueMessage<Order | Payment>) => {
       switch (message.subject) {
         case 'ORDER_ACCEPTED':
@@ -32,10 +32,15 @@ setTimeout(() => sharedQueue.listen(
           break;
 
         case 'PAYMENT_APPROVED':
-          createDelivery(
+          const order = ordersToProcess.find(
               // @ts-ignore - only payment service emits Payment objects
-              ordersToProcess.find((i) => i.id === message.body.orderId),
+              (i) => i.id === message.body.orderId,
           );
+          createDelivery({
+            orderId: order?.id,
+            senderLocation: order?.sender.location,
+            receiverLocation: order?.receiver.location,
+          });
           break;
       }
     },
