@@ -456,6 +456,15 @@ export interface QueueMessage<T extends Object> {
   body: T;
 }
 
+/* eslint-disable camelcase */
+export interface OrderLogsDatabaseSchema {
+  id: string;
+  order_id: string;
+  subject: string;
+  body: string;
+}
+/* eslint-enable camelcase */
+
 /**
  * Database client object structure.
  *
@@ -534,6 +543,17 @@ export interface DeliveryDatabaseController {
     deliveryId: string,
     completedOn: number | undefined,
   ): Promise<void>;
+}
+
+export interface OrderLogsDatabaseController {
+  findLogsOfOrder(
+    orderId: string,
+  ): Promise<Array<QueueMessage<any>> | { error: string; }>;
+
+  insert({
+    subject,
+    body,
+  }: QueueMessage<any>): Promise<{ id: string } | { error: string; }>;
 }
 
 /**

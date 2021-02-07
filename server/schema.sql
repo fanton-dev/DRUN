@@ -43,3 +43,10 @@ CREATE TABLE IF NOT EXISTS deliveries (
     created_on TIMESTAMPTZ NOT NULL,
     completed_on TIMESTAMPTZ
 );
+
+CREATE TABLE IF NOT EXISTS order_logs (
+    id SERIAL PRIMARY KEY,
+    order_id UUID REFERENCES orders(id),
+    subject TEXT NOT NULL,
+    body TEXT NOT NULL
+)
