@@ -1,4 +1,4 @@
-import {HttpRequest} from '../../../core/@types/global';
+import {HttpRequest} from '../../../../core/@types/global';
 
 /**
  * Express controller for handling of GET "/logs/order".

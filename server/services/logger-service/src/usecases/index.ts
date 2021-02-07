@@ -1,5 +1,5 @@
 import buildRetrieveOrderLogs from './retrieve-order-logs';
-import buildStoreLogMessage from './create-log-message';
+import buildStoreLogMessage from './store-log-message';
 import orderLogsDatabase from '../interfaces/order-logs-database';
 
 const retrieveOrderLogs = buildRetrieveOrderLogs({orderLogsDatabase});

@@ -1,6 +1,6 @@
 import {Pool as PostgresPool} from 'pg';
 import makeOrderLogsDatabase from './order-logs-database';
-import config from '../../../core/config';
+import config from '../../../../core/config';
 
 const databasePool = new PostgresPool({
   host: config.postgresUrl,

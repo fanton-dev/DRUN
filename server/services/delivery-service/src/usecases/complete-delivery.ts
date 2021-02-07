@@ -35,17 +35,16 @@ export default function buildCompleteDelivery({
     exportToNormalEntity<T extends Object, U extends Object>(object: T): U;
   }): Function {
   return async function completeDelivery(deliveryId: string, droneIp: string) {
+    // Finding the delivery in the database and marking it as completed
     const delivery = makeDelivery(deliveriesDatabase.findById(deliveryId));
+    delivery.markAsCompleted();
+    deliveriesDatabase.updateCompletedOn(
+        deliveryId,
+        delivery.getCompletedOn(),
+    );
 
     // Emitting an 'DELIVERY_FAILED' event in shared queue on invalid request
     try {
-      // Finding the delivery in the database and marking it as completed
-      delivery.markAsCompleted();
-      deliveriesDatabase.updateCompletedOn(
-          deliveryId,
-          delivery.getCompletedOn(),
-      );
-
       // Finding the drone in the array of drones
       const drone = connectedDronesList.find(
           (i) => i.getSource().getIp() === droneIp,

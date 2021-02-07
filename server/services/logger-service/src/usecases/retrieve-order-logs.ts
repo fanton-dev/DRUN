@@ -1,4 +1,4 @@
-import {OrderLogsDatabaseController} from '../../core/@types/global';
+import {OrderLogsDatabaseController} from '../../../core/@types/global';
 
 /**
  * Retrieves logs for a concrete order from the database.
