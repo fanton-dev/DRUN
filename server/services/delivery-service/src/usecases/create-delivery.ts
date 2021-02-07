@@ -77,7 +77,7 @@ export default function buildCreateDelivery({
     sharedQueue.emit([
       config.inboundLoggerServiceQueue,
     ], {
-      subject: 'DRONE_CONNECTED',
+      subject: 'DELIVERY_ACCEPTED',
       body: exportToNormalEntity(delivery),
     });
   };

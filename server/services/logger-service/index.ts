@@ -22,6 +22,6 @@ setTimeout(() => sharedQueue.listen(
     },
 ), 10000);
 
-app.listen(3003, () => {
+app.listen(3002, () => {
   console.log('Logger service started on "/api/logs"...');
 });

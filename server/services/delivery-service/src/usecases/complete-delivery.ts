@@ -73,7 +73,7 @@ export default function buildCompleteDelivery({
     sharedQueue.emit([
       config.inboundLoggerServiceQueue,
     ], {
-      subject: 'DRONE_COMPLETE',
+      subject: 'DELIVERY_COMPLETE',
       body: {orderId: delivery.getOrderId()},
     });
   };
