@@ -41,7 +41,7 @@ export default function buildDisconnectDrone({
         config.inboundLoggerServiceQueue,
       ], {
         subject: 'DRONE_NOTFOUND',
-        body: e.message,
+        body: {error: e.message},
       });
       throw e;
     }

@@ -35,12 +35,11 @@ export default function buildCompleteDelivery({
     exportToNormalEntity<T extends Object, U extends Object>(object: T): U;
   }): Function {
   return async function completeDelivery(deliveryId: string, droneIp: string) {
-    let delivery: DeliveryExport;
+    const delivery = makeDelivery(deliveriesDatabase.findById(deliveryId));
 
     // Emitting an 'DELIVERY_FAILED' event in shared queue on invalid request
     try {
       // Finding the delivery in the database and marking it as completed
-      delivery = makeDelivery(deliveriesDatabase.findById(deliveryId));
       delivery.markAsCompleted();
       deliveriesDatabase.updateCompletedOn(
           deliveryId,
@@ -64,7 +63,7 @@ export default function buildCompleteDelivery({
         config.inboundLoggerServiceQueue,
       ], {
         subject: 'DELIVERY_FAILED',
-        body: e.message,
+        body: {orderId: delivery.getOrderId(), error: e.message},
       });
       throw e;
     }

@@ -49,7 +49,7 @@ export default function buildConnectDrone({
         config.inboundLoggerServiceQueue,
       ], {
         subject: 'DRONE_DENIED',
-        body: e.message,
+        body: {error: e.message},
       });
       throw e;
     }

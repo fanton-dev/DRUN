@@ -67,8 +67,8 @@ export default function buildCreateDelivery({
       sharedQueue.emit([
         config.inboundLoggerServiceQueue,
       ], {
-        subject: 'DELIVERY_DENIED',
-        body: e.message,
+        subject: 'DELIVERY_DECLINED',
+        body: {orderId: deliveryInfo.orderId, error: e.message},
       });
       return;
     }
