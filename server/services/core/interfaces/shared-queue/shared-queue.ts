@@ -59,8 +59,12 @@ export default function makeSharedQueue({
     await channel.prefetch(1);
     await channel.consume(
         queueName,
-        (msg: QueueMessageRaw | null) => {
-          callback(JSON.parse(String(msg?.content.toString())));
+        async (msg: QueueMessageRaw | null) => {
+          await callback(JSON.parse(String(msg?.content.toString())));
+          if (!msg) {
+            throw new Error('Null message');
+          }
+          channel.ack(msg);
         },
         {noAck: false},
     );
