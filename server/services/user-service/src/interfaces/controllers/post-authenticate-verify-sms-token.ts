@@ -9,14 +9,15 @@ import {HttpRequest} from '../../../../core/@types/global';
  * } - dependency injection
  * @return {Function} - post users send sms token controller builder function
  */
-export default function buildPostAuthenticateVerifyToken({
+export default function buildPostAuthenticateVerifyCode({
   verifyAuthenticationSmsCode,
 }: {verifyAuthenticationSmsCode: Function}): Function {
-  return async function postAuthenticateVerifyToken(httpRequest: HttpRequest) {
+  return async function postAuthenticateVerifyCode(httpRequest: HttpRequest) {
     try {
       const verificationInfo = httpRequest.body;
       const verificationInstance = await verifyAuthenticationSmsCode(
-          verificationInfo,
+          verificationInfo.phoneNumber,
+          verificationInfo.code,
       );
       return {
         headers: {
