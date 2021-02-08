@@ -5,7 +5,13 @@ import {QueryConfig, QueryResult, QueryResultRow} from 'pg';
 import * as Bluebird from 'bluebird';
 import Stripe from 'stripe';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
-import {MessageBird} from 'messagebird';
+import Twilio from 'twilio';
+import {
+  VerificationInstance,
+} from 'twilio/lib/rest/verify/v2/service/verification';
+import {
+  VerificationCheckInstance
+} from 'twilio/lib/rest/verify/v2/service/verificationCheck';
 
 /**
  * Validator object structure.
@@ -630,12 +636,51 @@ export interface RequestLibrary {
   ): Promise<R>;
 }
 
+/**
+ * SMS Client object structure.
+ *
+ * @export
+ * @interface SMSClient
+ */
 export interface SMSClient {
-  verify: MessageBird['verify'];
+  verify: Twilio.Twilio['verify'];
 }
+
+/**
+ * SMS Verification Instance object structure.
+ *
+ * @export
+ * @interface SMSVerificationInstance
+ * @extends {VerificationInstance}
+ */
+export interface SMSVerificationInstance extends VerificationInstance {}
+
+/**
+ * SMS Verification Instance object structure.
+ *
+ * @export
+ * @interface SMSVerificationInstance
+ * @extends {VerificationInstance}
+ */
+export interface SMSVerificationCheckInstance
+extends VerificationCheckInstance {}
+
+/**
+ * SMS API object structure.
+ *
+ * @export
+ * @interface SMSApi
+ */
 export interface SMSApi {
   sendToken(
     phoneNumber: string,
-    callback: (id: string) => any,
+    callback: (verificationInstance: SMSVerificationInstance) => any,
+    channel: 'sms' | 'call',
+  ): void;
+
+  verifyCode(
+    phoneNumber: string,
+    code: string,
+    callback: (phoneNumber: any) => any,
   ): void;
 }

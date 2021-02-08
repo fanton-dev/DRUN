@@ -6,7 +6,9 @@ const config = Object.freeze({
   postgresUser: String(process.env.POSTGRES_USER),
   postgresPassword: String(process.env.POSTGRES_PASSWORD),
   stripeSecretKey: String(process.env.STRIPE_SECRET_KEY),
-  messagebirdSecretKey: String(process.env.MESSAGEBIRD_SECRET_KEY),
+  twilioServiceId: String(process.env.TWILIO_SERVICE_ID),
+  twilioAccountSid: String(process.env.TWILIO_ACCOUNT_SID),
+  twilioAuthToken: String(process.env.TWILIO_AUTH_TOKEN),
 
   rabbitMqUrl: String(process.env.RABBITMQ_URL),
   rabbitMqUrlTest: String(process.env.RABBITMQ_URL_TEST),

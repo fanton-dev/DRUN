@@ -1,4 +1,9 @@
-import {SMSApi, SMSClient} from '../../../../core/@types/global';
+import {
+  SMSApi,
+  SMSClient,
+  SMSVerificationCheckInstance,
+  SMSVerificationInstance,
+} from '../../../../core/@types/global';
 
 /**
  * SMS API interactions interface.
@@ -13,47 +18,60 @@ import {SMSApi, SMSClient} from '../../../../core/@types/global';
  */
 export default function buildSmsApi({
   smsClient,
+  serviceId,
 }: {
   smsClient: SMSClient,
+  serviceId: string,
 }): SMSApi {
   /**
    * Sends a SMS with an authentication token to a given number.
    *
-   * @param {string} phoneNumber - number to send an SMS to
-   * @param {Function} callback - callback for obtaining the sent SMS id
+   * @param {string} phoneNumber - number to send verification to
+   * @param {Function} callback - callback containing the verification instance
+   * @param {('sms' | 'call')} channel - whether to voice call or send a SMS
    */
   function sendToken(
       phoneNumber: string,
-      callback: (smsId: string) => any,
+      callback: (verificationInstance: SMSVerificationInstance) => any,
+      channel: 'sms' | 'call',
   ): void {
-    smsClient.verify.create(phoneNumber, {
-      template: '[DRUN] %token is your authentication code.',
-    }, (e, res) => {
-      if (e) throw e;
-      callback(String(res?.id));
-    });
+    smsClient.verify
+        .services(serviceId)
+        .verifications
+        .create({
+          to: phoneNumber,
+          channel: channel,
+        })
+        .then(callback);
   }
 
   /**
-   * Verifies a SMS token.
+   * Verifies a SMS code.
    *
-   * @param {string} smsId - sent SMS id
-   * @param {string} token - token input from client
+   * @param {string} phoneNumber - sent SMS id
+   * @param {string} code - code input from client
    * @param {Function} callback - callback for obtaining the phone number
    */
-  function verifyToken(
-      smsId: string,
-      token: string,
-      callback: (phoneNumber: string) => any,
+  function verifyCode(
+      phoneNumber: string,
+      code: string,
+      callback: (data: SMSVerificationCheckInstance) => any,
   ): void {
-    smsClient.verify.verify(smsId, token, (e, res) => {
-      if (e) throw e;
-      callback(String(res?.recipient.toString()));
-    });
+    smsClient.verify
+        .services(serviceId)
+        .verificationChecks
+        .create({
+          to: phoneNumber,
+          code: code,
+        })
+        .then((data) => {
+          if (data.status !== 'approved') throw new Error('Invalid SMS code.');
+          callback(data);
+        });
   }
 
   return Object.freeze({
     sendToken: sendToken,
-    verifyToken: verifyToken,
+    verifyCode: verifyCode,
   });
 }

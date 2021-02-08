@@ -1,9 +1,15 @@
 import config from '../../../../core/config';
-import messagebird from 'messagebird';
+import twilio from 'twilio';
 import buildSmsApi from './sms-api';
 
-const messagebirdClient = messagebird(config.messagebirdSecretKey);
+const twilioClient = twilio(
+    config.twilioAccountSid,
+    config.twilioAuthToken,
+);
 
-const smsApi = buildSmsApi({smsClient: messagebirdClient});
+const smsApi = buildSmsApi({
+  smsClient: twilioClient,
+  serviceId: config.twilioServiceId,
+});
 
 export default smsApi;

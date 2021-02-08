@@ -50,3 +50,9 @@ CREATE TABLE IF NOT EXISTS order_logs (
     subject TEXT NOT NULL,
     body TEXT NOT NULL
 )
+
+CREATE TABLE users(
+  id INTEGER PRIMARY KEY,
+  token TEXT NOT NULL,
+  phone_number TEXT NOT NULL
+)

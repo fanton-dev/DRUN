@@ -35,12 +35,12 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "faker": "^5.3.1",
-    "messagebird": "^3.5.0",
     "moment": "^2.29.1",
     "pg": "^8.5.1",
     "pgmock2": "^2.0.6",
     "stripe": "^8.134.0",
     "ts-node": "^9.1.1",
+    "twilio": "^3.55.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
