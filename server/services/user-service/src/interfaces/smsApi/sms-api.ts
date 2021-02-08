@@ -27,51 +27,52 @@ export default function buildSmsApi({
    * Sends a SMS with an authentication token to a given number.
    *
    * @param {string} phoneNumber - number to send verification to
-   * @param {Function} callback - callback containing the verification instance
    * @param {('sms' | 'call')} channel - whether to voice call or send a SMS
+   * @return {Promise<SMSVerificationInstance>}
    */
-  function sendToken(
+  async function sendCode(
       phoneNumber: string,
-      callback: (verificationInstance: SMSVerificationInstance) => any,
       channel: 'sms' | 'call',
-  ): void {
-    smsClient.verify
-        .services(serviceId)
-        .verifications
-        .create({
-          to: phoneNumber,
-          channel: channel,
-        })
-        .then(callback);
+  ): Promise<SMSVerificationInstance> {
+    return await new Promise((resolve, reject) => {
+      smsClient.verify
+          .services(serviceId)
+          .verifications
+          .create({
+            to: phoneNumber,
+            channel: channel,
+          })
+          .then((response) => resolve(response))
+          .catch((response) => reject(response));
+    });
   }
 
   /**
    * Verifies a SMS code.
    *
-   * @param {string} phoneNumber - sent SMS id
-   * @param {string} code - code input from client
-   * @param {Function} callback - callback for obtaining the phone number
+   * @param {string} phoneNumber - number to send verification to
+   * @param {string} code - verification code received on the phone
+   * @return {Promise<SMSVerificationCheckInstance>} - API response
    */
-  function verifyCode(
+  async function verifyCode(
       phoneNumber: string,
       code: string,
-      callback: (data: SMSVerificationCheckInstance) => any,
-  ): void {
-    smsClient.verify
-        .services(serviceId)
-        .verificationChecks
-        .create({
-          to: phoneNumber,
-          code: code,
-        })
-        .then((data) => {
-          if (data.status !== 'approved') throw new Error('Invalid SMS code.');
-          callback(data);
-        });
+  ): Promise<SMSVerificationCheckInstance> {
+    return await new Promise((resolve, reject) => {
+      smsClient.verify
+          .services(serviceId)
+          .verificationChecks
+          .create({
+            to: phoneNumber,
+            code: code,
+          })
+          .then((response) => resolve(response))
+          .catch((response) => reject(response));
+    });
   }
 
   return Object.freeze({
-    sendToken: sendToken,
+    sendCode: sendCode,
     verifyCode: verifyCode,
   });
 }

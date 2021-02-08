@@ -672,15 +672,13 @@ extends VerificationCheckInstance {}
  * @interface SMSApi
  */
 export interface SMSApi {
-  sendToken(
+  sendCode(
     phoneNumber: string,
-    callback: (verificationInstance: SMSVerificationInstance) => any,
     channel: 'sms' | 'call',
-  ): void;
+): Promise<SMSVerificationInstance>;
 
   verifyCode(
     phoneNumber: string,
     code: string,
-    callback: (phoneNumber: any) => any,
-  ): void;
+  ): Promise<SMSVerificationCheckInstance>;
 }
