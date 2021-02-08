@@ -5,6 +5,7 @@ import {QueryConfig, QueryResult, QueryResultRow} from 'pg';
 import * as Bluebird from 'bluebird';
 import Stripe from 'stripe';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
+import {MessageBird} from 'messagebird';
 
 /**
  * Validator object structure.
@@ -627,4 +628,14 @@ export interface RequestLibrary {
     data?: any,
     config?: AxiosRequestConfig
   ): Promise<R>;
+}
+
+export interface SMSClient {
+  verify: MessageBird['verify'];
+}
+export interface SMSApi {
+  sendToken(
+    phoneNumber: string,
+    callback: (id: string) => any,
+  ): void;
 }
