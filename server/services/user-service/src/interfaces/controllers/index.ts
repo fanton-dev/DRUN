@@ -1,6 +1,6 @@
 import notFound from '../../../../core/interfaces/controllers/not-found';
 import buildPostAuthenticateSendSms from './post-authenticate-send-sms-token';
-import buildPostAuthenticateVerifyToken
+import buildPostAuthenticateVerifyCode
   from './post-authenticate-verify-sms-token';
 import {
   sendAuthenticationSmsCode,
@@ -11,19 +11,19 @@ const postAuthenticateSendSms = buildPostAuthenticateSendSms({
   sendAuthenticationSmsCode,
 });
 
-const postAuthenticateVerifyToken = buildPostAuthenticateVerifyToken({
+const postAuthenticateVerifyCode = buildPostAuthenticateVerifyCode({
   verifyAuthenticationSmsCode,
 });
 
 const orderController = Object.freeze({
   postAuthenticateSendSms,
-  postAuthenticateVerifyToken,
+  postAuthenticateVerifyCode,
   notFound,
 });
 
 export default orderController;
 export {
   postAuthenticateSendSms,
-  postAuthenticateVerifyToken,
+  postAuthenticateVerifyCode,
   notFound,
 };

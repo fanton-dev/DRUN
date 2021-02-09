@@ -1,6 +1,5 @@
 import {
   DeliveryDatabaseController,
-  DeliveryExport,
   DroneExport,
   SharedQueue,
 } from '../../../core/@types/global';
