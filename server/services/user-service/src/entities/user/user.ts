@@ -16,13 +16,15 @@ import {User, UserExport, Validator} from '../../../../core/@types/global';
 export default function buildMakeUser({
   validator,
   generateIdentifier,
+  generateToken,
 }: {
   validator: Validator;
   generateIdentifier: () => string;
+  generateToken: () => string;
 }): Function {
   return function makeOrder({
     id = generateIdentifier(),
-    token,
+    token = generateToken(),
     phoneNumber,
   }: User): UserExport {
     // TO-DO data validation
