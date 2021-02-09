@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
-    id UUID PRIMARY KEY,
-    phone_number TEXT NOT NULL,
-    joined_on TIMESTAMPTZ NOT NULL
+  id UUID PRIMARY KEY,
+  token TEXT NOT NULL UNIQUE,
+  phone_number TEXT NOT NULL UNIQUE
 );
 
 -- TO-DO REFERENCES users(id)
@@ -49,10 +49,4 @@ CREATE TABLE IF NOT EXISTS order_logs (
     order_id UUID REFERENCES orders(id),
     subject TEXT NOT NULL,
     body TEXT NOT NULL
-)
-
-CREATE TABLE users(
-  id INTEGER PRIMARY KEY,
-  token TEXT NOT NULL,
-  phone_number TEXT NOT NULL
 )
