@@ -24,6 +24,7 @@ const config = Object.freeze({
   apiRoot: String(process.env.API_ROOT),
 
   rabbitReconnectInterval: String(process.env.RABBIT_RECONNECT_INTERVAL),
+  inboundOrderServiceQueue: String(process.env.INBOUND_ORDER_SERVICE_QUEUE),
   inboundPaymentServiceQueue: String(process.env.INBOUND_PAYMENT_SERVICE_QUEUE),
   inboundDeliveryServiceQueue: String(
       process.env.INBOUND_DELIVERY_SERVICE_QUEUE,

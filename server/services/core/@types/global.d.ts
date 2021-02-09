@@ -335,8 +335,8 @@ export interface DeliveryDatabaseSchema {
  * @interface User
  */
 export interface User {
-  id: string;
-  token: string;
+  id?: string;
+  token?: string;
   phoneNumber: string;
 }
 
@@ -729,4 +729,14 @@ export interface SMSApi {
     phoneNumber: string,
     code: string,
   ): Promise<SMSVerificationCheckInstance>;
+}
+
+export interface UserTokenVerificationRequest {
+  id: string;
+  token: string;
+}
+
+export interface UserTokenVerificationResponse
+extends UserTokenVerificationRequest {
+  isValid: boolean;
 }
