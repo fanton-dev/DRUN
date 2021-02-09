@@ -605,6 +605,10 @@ export interface UserDatabaseController {
   findById(
     userId: string,
   ): Promise<User>;
+
+  findByPhoneNumber(
+    phoneNumber: string,
+): Promise<User>;
 }
 
 /**

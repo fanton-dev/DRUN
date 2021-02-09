@@ -56,6 +56,35 @@ export default function makeUsersDatabase({
   }
 
   /**
+   * Finds an entry in the database.
+   *
+   * @param {string} phoneNumber
+   * @return {
+   *    Promise<User>
+   * } - user entry from database
+   */
+  async function findByPhoneNumber(
+      phoneNumber: string,
+  ): Promise<User> {
+    const resultRows: void | DatabaseQueryResults<UserDatabaseSchema> = await
+    databaseClient.query(`
+      SELECT * FROM ${databaseTable} WHERE phone_number = $1
+    `, [phoneNumber],
+    ).catch((e: Error) => console.log(e));
+
+    if (!resultRows) {
+      throw new Error('No such user found.');
+    }
+
+    const result = resultRows.rows[0];
+    return Object.freeze({
+      id: result.id,
+      token: result.token,
+      phoneNumber: result.phone_number,
+    });
+  }
+
+  /**
    * Inserts an entry in the database.
    *
    * @param {User} {
@@ -78,7 +107,7 @@ export default function makeUsersDatabase({
       (
         id,
         token,
-        phone_number,
+        phone_number
       )
       VALUES ($1, $2, $3)
       RETURNING id
@@ -95,6 +124,7 @@ export default function makeUsersDatabase({
 
   return Object.freeze({
     findById: findById,
+    findByPhoneNumber: findByPhoneNumber,
     insert: insert,
   });
 }
