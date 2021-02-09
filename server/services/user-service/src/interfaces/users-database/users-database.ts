@@ -31,12 +31,12 @@ export default function makeUsersDatabase({
    *
    * @param {string} userId
    * @return {
-   *    Promise<User | { error: string; }>
+   *    Promise<User>
    * } - user entry from database
    */
   async function findById(
       userId: string,
-  ): Promise<User | { error: string; }> {
+  ): Promise<User> {
     const resultRows: void | DatabaseQueryResults<UserDatabaseSchema> = await
     databaseClient.query(`
       SELECT * FROM ${databaseTable} WHERE id = $1
@@ -44,7 +44,7 @@ export default function makeUsersDatabase({
     ).catch((e: Error) => console.log(e));
 
     if (!resultRows) {
-      return {error: 'No such user found.'};
+      throw new Error('No such user found.');
     }
 
     const result = resultRows.rows[0];
@@ -65,13 +65,13 @@ export default function makeUsersDatabase({
    *     source,
    *     createdOn,
    *   } - user details
-   * @return {string} - user id
+   * @return {{id: string}} - user id
    */
   async function insert({
     id,
     token,
     phoneNumber,
-  }: User): Promise<{ id: string } | { error: string; }> {
+  }: User): Promise<{ id: string }> {
     const resultRows: void | DatabaseQueryResults<UserDatabaseSchema> = await
     databaseClient.query(`
       INSERT INTO ${databaseTable}
@@ -86,7 +86,7 @@ export default function makeUsersDatabase({
     ).catch((e: Error) => console.log(e));
 
     if (!resultRows) {
-      return {error: 'Error creating user.'};
+      throw new Error('Error creating user.');
     }
 
     const result = resultRows.rows[0];

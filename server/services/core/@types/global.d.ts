@@ -600,11 +600,11 @@ export interface UserDatabaseController {
     id,
     token,
     phoneNumber,
-  }: User): Promise<{ id: string } | { error: string; }>;
+  }: User): Promise<{ id: string }>;
 
   findById(
     userId: string,
-  ): Promise<User | { error: string; }>;
+  ): Promise<User>;
 }
 
 /**
