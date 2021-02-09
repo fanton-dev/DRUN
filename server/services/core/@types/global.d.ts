@@ -10,7 +10,7 @@ import {
   VerificationInstance,
 } from 'twilio/lib/rest/verify/v2/service/verification';
 import {
-  VerificationCheckInstance
+  VerificationCheckInstance,
 } from 'twilio/lib/rest/verify/v2/service/verificationCheck';
 
 /**
@@ -327,6 +327,30 @@ export interface DeliveryDatabaseSchema {
   completed_on: number;
 }
 /* eslint-enable camelcase */
+
+/**
+ * User object database schema.
+ *
+ * @export
+ * @interface User
+ */
+export interface User {
+  id: string;
+  token: string;
+  phoneNumber: string;
+}
+
+/**
+ * User export object database schema.
+ *
+ * @export
+ * @interface UserExport
+ */
+export interface UserExport {
+  getId(): string;
+  getToken(): string;
+  getPhoneNumber(): string;
+}
 
 /**
  * HTTP Request object structure.
