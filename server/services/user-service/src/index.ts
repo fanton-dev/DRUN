@@ -4,7 +4,7 @@ import makeExpressCallback from '../../core/express-callback';
 import config from '../../core/config';
 import {
   postAuthenticateSendSms,
-  postAuthenticateVerifyToken,
+  postAuthenticateVerifyCode,
   notFound,
 } from './interfaces/controllers';
 
@@ -13,12 +13,12 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post(
-    `${apiRoot}/users/authenticate/step1`,
+    `${apiRoot}/users/authenticate/send-sms-code`,
     makeExpressCallback(postAuthenticateSendSms),
 );
 app.post(
-    `${apiRoot}/users/authenticate/step1`,
-    makeExpressCallback(postAuthenticateVerifyToken),
+    `${apiRoot}/users/authenticate/verify-sms-code`,
+    makeExpressCallback(postAuthenticateVerifyCode),
 );
 app.use(makeExpressCallback(notFound));
 

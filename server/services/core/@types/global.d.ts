@@ -352,6 +352,14 @@ export interface UserExport {
   getPhoneNumber(): string;
 }
 
+/* eslint-disable camelcase */
+export interface UserDatabaseSchema {
+  id: string;
+  token: string;
+  phone_number: string;
+}
+/* eslint-enable camelcase */
+
 /**
  * HTTP Request object structure.
  *
@@ -585,6 +593,18 @@ export interface OrderLogsDatabaseController {
     subject,
     body,
   }: QueueMessage<any>): Promise<{ id: string } | { error: string; }>;
+}
+
+export interface UserDatabaseController {
+  insert({
+    id,
+    token,
+    phoneNumber,
+  }: User): Promise<{ id: string } | { error: string; }>;
+
+  findById(
+    userId: string,
+  ): Promise<User | { error: string; }>;
 }
 
 /**
