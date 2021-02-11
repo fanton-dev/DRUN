@@ -8,6 +8,6 @@ setTimeout(() => sharedQueue.listen(
     async (message: QueueMessage<Order>) => {
       if (message.subject === 'ORDER_ACCEPTED') createPayment(message.body);
     },
-), 10000);
+), 20000);
 
 console.log('Payment service started...');

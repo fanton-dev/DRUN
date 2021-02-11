@@ -18,7 +18,7 @@ app.use(makeExpressCallback(notFound));
 setTimeout(() => sharedQueue.listen(
     config.inboundLoggerServiceQueue,
     async (message: QueueMessage<any>) => storeLogMessage(message),
-), 10000);
+), 20000);
 
 app.listen(3003, () => {
   console.log('Logger service started on "/api/logs"...');

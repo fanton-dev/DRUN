@@ -40,7 +40,7 @@ setTimeout(() => sharedQueue.listen(
         );
       }
     },
-), 10000);
+), 20000);
 
 app.listen(3004, () => {
   console.log('Users service started on "/api/users"...');
