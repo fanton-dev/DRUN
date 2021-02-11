@@ -18,8 +18,10 @@ void main() {
   });
 
   final tPhoneNumber = '+359735780085';
-  final tAuthenticationSmsStatus =
-      AuthenticationSmsStatus(succeeded: true, phoneNumber: '+359735780085');
+  final tAuthenticationSmsStatus = AuthenticationSmsStatus(
+    phoneNumber: '+359735780085',
+    succeeded: true,
+  );
 
   test(
     'should request an authentication sms from the repository',
@@ -34,7 +36,8 @@ void main() {
       // Assert
       expect(result, Right(tAuthenticationSmsStatus));
       verify(
-          mockUserAuthenticationRepository.sendAuthenticationSms(tPhoneNumber));
+        mockUserAuthenticationRepository.sendAuthenticationSms(tPhoneNumber),
+      );
       verifyNoMoreInteractions(mockUserAuthenticationRepository);
     },
   );

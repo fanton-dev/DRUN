@@ -20,26 +20,31 @@ void main() {
   final tPhoneNumber = '+359735780085';
   final tCode = '888888';
   final tUserCredentials = UserCredentials(
-      userId: '4ade5874-c573-4c8f-b2b8-7db5fccd983b',
-      userToken:
-          '79B13ADC1F515B3E0BBDF964DBAE6257A5B8A617115816A1705EACF9C00394A5');
+    userId: '4ade5874-c573-4c8f-b2b8-7db5fccd983b',
+    userToken: '713ADC1F515B3E0BBDF964DBAE6257A5B8A617115816A1705EACF9C00394A5',
+  );
 
   test(
     'should verify an authentication sms from the repository',
     () async {
       // Arrange
       when(mockUserAuthenticationRepository.verifyAuthenticationSms(
-              tPhoneNumber, tCode))
-          .thenAnswer((_) async => Right(tUserCredentials));
+        tPhoneNumber,
+        tCode,
+      )).thenAnswer((_) async => Right(tUserCredentials));
 
       // Act
-      final result =
-          await usecase(Params(phoneNumber: tPhoneNumber, code: tCode));
+      final result = await usecase(Params(
+        phoneNumber: tPhoneNumber,
+        code: tCode,
+      ));
 
       // Assert
       expect(result, Right(tUserCredentials));
       verify(mockUserAuthenticationRepository.verifyAuthenticationSms(
-          tPhoneNumber, tCode));
+        tPhoneNumber,
+        tCode,
+      ));
       verifyNoMoreInteractions(mockUserAuthenticationRepository);
     },
   );

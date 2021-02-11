@@ -2,12 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 class AuthenticationSmsStatus extends Equatable {
-  final bool succeeded;
   final String phoneNumber;
+  final bool succeeded;
 
-  AuthenticationSmsStatus(
-      {@required this.succeeded, @required this.phoneNumber});
+  AuthenticationSmsStatus({
+    @required this.phoneNumber,
+    @required this.succeeded,
+  });
 
   @override
-  List<Object> get props => [succeeded, phoneNumber];
+  List<Object> get props => [phoneNumber, succeeded];
 }

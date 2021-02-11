@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/failures.dart';
 import '../entities/authentication_sms_status.dart';
 import '../entities/user_credentials.dart';
 

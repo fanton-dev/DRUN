@@ -17,7 +17,9 @@ void main() {
     () async {
       // Assert
       expect(
-          tAuthenticationSmsStatusModelSuccess, isA<AuthenticationSmsStatus>());
+        tAuthenticationSmsStatusModelSuccess,
+        isA<AuthenticationSmsStatus>(),
+      );
     },
   );
 

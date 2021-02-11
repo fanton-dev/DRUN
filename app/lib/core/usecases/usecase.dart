@@ -1,4 +1,4 @@
-import 'package:DRUN/core/errors/failure.dart';
+import 'package:DRUN/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class UseCase<Type, Params> {
