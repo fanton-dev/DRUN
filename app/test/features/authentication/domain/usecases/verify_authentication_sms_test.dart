@@ -37,7 +37,7 @@ void main() {
           await usecase(Params(phoneNumber: tPhoneNumber, code: tCode));
 
       // Assert
-      expect(Right(tUserCredentials), result);
+      expect(result, Right(tUserCredentials));
       verify(mockUserAuthenticationRepository.verifyAuthenticationSms(
           tPhoneNumber, tCode));
       verifyNoMoreInteractions(mockUserAuthenticationRepository);
