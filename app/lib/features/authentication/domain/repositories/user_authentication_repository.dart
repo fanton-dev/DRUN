@@ -8,6 +8,6 @@ abstract class UserAuthenticationRepository {
   Future<Either<Failure, AuthenticationSmsStatus>> sendAuthenticationSms(
       String phoneNumber);
 
-  Future<Either<Failure, UserCredential>> verifyAuthenticationSms(
+  Future<Either<Failure, UserCredentials>> verifyAuthenticationSms(
       String phoneNumber, String code);
 }
