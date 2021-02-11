@@ -1,4 +1,4 @@
-package com.fanton.DRUN
+package com.example.DRUN
 
 import io.flutter.embedding.android.FlutterActivity
 
