@@ -6,8 +6,13 @@ import '../entities/user_credentials.dart';
 
 abstract class UserAuthenticationRepository {
   Future<Either<Failure, AuthenticationSmsStatus>> sendAuthenticationSms(
-      String phoneNumber);
+    String phoneNumber,
+  );
 
   Future<Either<Failure, UserCredentials>> verifyAuthenticationSms(
-      String phoneNumber, String code);
+    String phoneNumber,
+    String code,
+  );
+
+  Future<Either<Failure, UserCredentials>> getLoggedInUser();
 }
