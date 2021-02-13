@@ -5,13 +5,28 @@ abstract class Failure extends Equatable {
 
   @override
   List<Object> get props => [properties];
+
+  String get message => 'Generic failure.';
 }
 
-// General failures
-class ServerFailure extends Failure {}
+// Generic failures
+class ServerFailure extends Failure {
+  @override
+  String get message => 'Server failure.';
+}
 
-class NetworkFailure extends Failure {}
+class NetworkFailure extends Failure {
+  @override
+  String get message => 'Network failure.';
+}
 
-class CacheFailure extends Failure {}
+class CacheFailure extends Failure {
+  @override
+  String get message => 'Cache failure.';
+}
 
-class InvalidInputFailure extends Failure {}
+class InvalidInputFailure extends Failure {
+  @override
+  String get message =>
+      'Invalid input - Make sure you inputed a valid phone number.';
+}
