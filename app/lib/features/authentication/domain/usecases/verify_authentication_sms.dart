@@ -23,6 +23,11 @@ class Params extends Equatable {
   final String phoneNumber;
   final String code;
 
-  Params({@required this.phoneNumber, @required this.code})
-      : super([phoneNumber, code]);
+  Params({
+    @required this.phoneNumber,
+    @required this.code,
+  });
+
+  @override
+  List<Object> get props => [phoneNumber, code];
 }

@@ -21,5 +21,8 @@ class SendAuthenticationSms extends UseCase<AuthenticationSmsStatus, Params> {
 class Params extends Equatable {
   final String phoneNumber;
 
-  Params({@required this.phoneNumber}) : super([phoneNumber]);
+  Params({@required this.phoneNumber});
+
+  @override
+  List<Object> get props => [phoneNumber];
 }
