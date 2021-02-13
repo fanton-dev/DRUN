@@ -14,4 +14,11 @@ class UserCredentialsModel extends UserCredentials {
       userToken: json['userToken'],
     );
   }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'userId': this.userId,
+      'userToken': this.userToken,
+    };
+  }
 }

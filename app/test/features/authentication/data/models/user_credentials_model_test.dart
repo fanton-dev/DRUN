@@ -37,4 +37,15 @@ void main() {
       expect(result, tUserCredentialsModelSuccess);
     },
   );
+
+  test(
+    'should convert to JSON',
+    () async {
+      // Act
+      final result = tUserCredentialsModelSuccess.toJSON();
+
+      // Assert
+      expect(result, json.decode(fixture('user_credentials_success.json')));
+    },
+  );
 }
