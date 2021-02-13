@@ -23,7 +23,7 @@ class UserAuthenticationLocalSourceImpl
 
   UserAuthenticationLocalSourceImpl({
     @required this.sharedPreferences,
-  });
+  }) : assert(sharedPreferences != null);
 
   @override
   Future<UserCredentialsModel> getUserCredentials() {

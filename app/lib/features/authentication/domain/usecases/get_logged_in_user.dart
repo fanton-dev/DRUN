@@ -8,7 +8,7 @@ import '../repositories/user_authentication_repository.dart';
 class GetLoggedInUser extends UseCase<UserCredentials, NoParams> {
   final UserAuthenticationRepository repository;
 
-  GetLoggedInUser(this.repository);
+  GetLoggedInUser(this.repository) : assert(repository != null);
 
   @override
   Future<Either<Failure, UserCredentials>> call(NoParams params) async {

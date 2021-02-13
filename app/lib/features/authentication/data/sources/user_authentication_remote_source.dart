@@ -31,7 +31,7 @@ class UserAuthenticationRemoteSourceImpl
 
   UserAuthenticationRemoteSourceImpl({
     @required this.httpClient,
-  });
+  }) : assert(httpClient != null);
 
   @override
   Future<AuthenticationSmsStatusModel> sendAuthenticationSms(

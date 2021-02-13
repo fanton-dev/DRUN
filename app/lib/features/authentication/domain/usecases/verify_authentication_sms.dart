@@ -26,7 +26,8 @@ class Params extends Equatable {
   Params({
     @required this.phoneNumber,
     @required this.code,
-  });
+  })  : assert(phoneNumber != null),
+        assert(code != null);
 
   @override
   List<Object> get props => [phoneNumber, code];

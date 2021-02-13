@@ -8,7 +8,8 @@ class AuthenticationSmsStatus extends Equatable {
   AuthenticationSmsStatus({
     @required this.phoneNumber,
     @required this.succeeded,
-  });
+  })  : assert(phoneNumber != null),
+        assert(phoneNumber != null);
 
   @override
   List<Object> get props => [phoneNumber, succeeded];

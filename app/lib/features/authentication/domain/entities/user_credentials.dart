@@ -8,7 +8,8 @@ class UserCredentials extends Equatable {
   UserCredentials({
     @required this.userId,
     @required this.userToken,
-  });
+  })  : assert(userId != null),
+        assert(userToken != null);
 
   @override
   List<Object> get props => [userId, userToken];

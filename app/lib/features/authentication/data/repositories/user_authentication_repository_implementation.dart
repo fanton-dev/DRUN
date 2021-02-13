@@ -20,7 +20,9 @@ class UserAuthenticationRepositoryImplementation
     @required this.remoteSource,
     @required this.localSource,
     @required this.networkInfo,
-  });
+  })  : assert(remoteSource != null),
+        assert(localSource != null),
+        assert(networkInfo != null);
 
   @override
   Future<Either<Failure, AuthenticationSmsStatus>> sendAuthenticationSms(

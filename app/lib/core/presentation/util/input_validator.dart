@@ -8,7 +8,7 @@ class InputValidator {
     //
     // Reference: https://coflutter.com/how-to-validate-phone-number-in-dart-flutter
     RegExp regExp = new RegExp(
-      r'^[+][(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9()]{9,13}$',
+      r'^[+][(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9()]{9,14}$',
     );
 
     if (string.length == 0 || !regExp.hasMatch(string)) {

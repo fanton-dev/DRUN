@@ -10,7 +10,7 @@ import '../repositories/user_authentication_repository.dart';
 class SendAuthenticationSms extends UseCase<AuthenticationSmsStatus, Params> {
   final UserAuthenticationRepository repository;
 
-  SendAuthenticationSms(this.repository);
+  SendAuthenticationSms(this.repository) : assert(repository != null);
 
   @override
   Future<Either<Failure, AuthenticationSmsStatus>> call(Params params) async {

@@ -6,7 +6,9 @@ class UserCredentialsModel extends UserCredentials {
   UserCredentialsModel({
     @required userId,
     @required userToken,
-  }) : super(userId: userId, userToken: userToken);
+  })  : assert(userId != null),
+        assert(userToken != null),
+        super(userId: userId, userToken: userToken);
 
   factory UserCredentialsModel.fromJSON(Map<String, dynamic> json) {
     return UserCredentialsModel(

@@ -6,7 +6,9 @@ class AuthenticationSmsStatusModel extends AuthenticationSmsStatus {
   AuthenticationSmsStatusModel({
     @required phoneNumber,
     @required succeeded,
-  }) : super(phoneNumber: phoneNumber, succeeded: succeeded);
+  })  : assert(phoneNumber != null),
+        assert(succeeded != null),
+        super(phoneNumber: phoneNumber, succeeded: succeeded);
 
   factory AuthenticationSmsStatusModel.fromJSON(Map<String, dynamic> json) {
     return AuthenticationSmsStatusModel(
