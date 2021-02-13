@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:DRUN/core/constants/constants.dart';
 import 'package:DRUN/core/errors/exceptions.dart';
 import 'package:DRUN/features/authentication/data/models/user_credentials_model.dart';
 import 'package:DRUN/features/authentication/data/sources/user_authentication_local_source.dart';
@@ -10,8 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../fixtures/fixture_parser.dart';
 
 class MockSharedPreferences extends Mock implements SharedPreferences {}
-
-const CACHE_KEY = 'CACHED_USER_CREDENTIALS';
 
 void main() {
   UserAuthenticationLocalSourceImpl dataSource;
@@ -40,7 +39,7 @@ void main() {
         final result = await dataSource.getUserCredentials();
 
         // Assert
-        verify(mockSharedPreferences.getString(CACHE_KEY));
+        verify(mockSharedPreferences.getString(USER_CREDENTIALS_CACHE_NAME));
         expect(result, tUserCredentialsModelSuccess);
       },
     );
@@ -75,7 +74,10 @@ void main() {
 
         // Assert
         final jsonString = json.encode(tUserCredentialsModelSuccess.toJSON());
-        verify(mockSharedPreferences.setString(CACHE_KEY, jsonString));
+        verify(mockSharedPreferences.setString(
+          USER_CREDENTIALS_CACHE_NAME,
+          jsonString,
+        ));
       },
     );
   });
