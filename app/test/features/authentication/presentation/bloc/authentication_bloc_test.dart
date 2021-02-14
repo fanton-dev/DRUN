@@ -1,11 +1,13 @@
 import 'package:DRUN/core/errors/failures.dart';
 import 'package:DRUN/core/presentation/util/input_validator.dart';
+import 'package:DRUN/core/usecases/usecase.dart';
 import 'package:DRUN/features/authentication/domain/entities/authentication_sms_status.dart';
 import 'package:DRUN/features/authentication/domain/entities/user_credentials.dart';
 import 'package:DRUN/features/authentication/domain/usecases/get_logged_in_user.dart';
 import 'package:DRUN/features/authentication/domain/usecases/send_authentication_sms.dart';
 import 'package:DRUN/features/authentication/domain/usecases/verify_authentication_sms.dart';
 import 'package:DRUN/features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:DRUN/features/home/presentation/bloc/home_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -51,6 +53,59 @@ void main() {
       userId: "4ade5874-c573-4c8f-b2b8-7db5fccd983b",
       userToken:
           "713ADC1F515B3E0BBDF964DBAE6257A5B8A617115816A1705EACF9C00394A5",
+    );
+
+    test(
+      'should get data from the GetLoggedInUser usecase',
+      () async {
+        // Arrange
+        when(mockGetLoggedInUser(any))
+            .thenAnswer((_) async => Right(tUserCredentials));
+
+        // Act
+        bloc.add(GetLoggedInUserEvent());
+        await untilCalled(mockGetLoggedInUser(any));
+
+        // Assert
+        verify(mockGetLoggedInUser(NoParams()));
+      },
+    );
+
+    test(
+      'should do nothing when there are no cached UserCredentials',
+      () async {
+        // Arrange
+        when(mockGetLoggedInUser(any))
+            .thenAnswer((_) async => Left(CacheFailure()));
+
+        // Assert later
+        final expected = [
+          AuthenticationInitialState(),
+        ];
+        expectLater(bloc, emitsInOrder(expected));
+
+        // Act
+        bloc.add(GetLoggedInUserEvent());
+      },
+    );
+
+    test(
+      'should emit HomeAuthenticatedState when there are UserCredentials cached',
+      () async {
+        // Arrange
+        when(mockGetLoggedInUser(any))
+            .thenAnswer((_) async => Right(tUserCredentials));
+
+        // Assert later
+        final expected = [
+          AuthenticationInitialState(),
+          HomeAuthenticatedState(tUserCredentials),
+        ];
+        // expectLater(bloc, emitsInOrder(expected));
+
+        // Act
+        bloc.add(GetLoggedInUserEvent());
+      },
     );
   });
 

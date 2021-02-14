@@ -1,10 +1,12 @@
 import 'dart:async';
 
-import 'package:DRUN/core/presentation/util/input_validator.dart';
+import 'package:DRUN/features/home/presentation/bloc/home_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../core/presentation/util/input_validator.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../../domain/entities/authentication_sms_status.dart';
 import '../../domain/usecases/get_logged_in_user.dart';
 import '../../domain/usecases/send_authentication_sms.dart';
@@ -34,6 +36,16 @@ class AuthenticationBloc
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
+    if (event is GetLoggedInUserEvent) {
+      // Getting cached user credentials
+      // On failure -> nothing is changed
+      // On success -> the HomeAuthenticatedState is generated
+      final cacheEither = await getLoggedInUser(NoParams());
+      if (cacheEither.isRight()) {
+        // yield HomeAuthenticatedState(Right(userCredentials));
+      }
+    }
+
     if (event is SendAuthenticationSmsEvent) {
       final inputEither = inputValidator.stringAsPhoneNumber(event.phoneNumber);
       // Validating user input
@@ -53,13 +65,16 @@ class AuthenticationBloc
           // Handling usecase response
           // On failure -> the AuthenticationErrorState is generated
           // On success -> the AuthenticationCodeInputState is generated
-          yield* responseEither.fold((failure) async* {
-            yield AuthenticationErrorState(message: failure.message);
-          }, (authenticationSmsStatus) async* {
-            yield AuthenticationCodeInputState(
-              authenticationSmsStatus: authenticationSmsStatus,
-            );
-          });
+          yield* responseEither.fold(
+            (failure) async* {
+              yield AuthenticationErrorState(message: failure.message);
+            },
+            (authenticationSmsStatus) async* {
+              yield AuthenticationCodeInputState(
+                authenticationSmsStatus: authenticationSmsStatus,
+              );
+            },
+          );
         },
       );
     }
