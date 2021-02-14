@@ -7,23 +7,23 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/user_credentials.dart';
 import '../repositories/user_authentication_repository.dart';
 
-class VerifyAuthenticationSms extends UseCase<UserCredentials, Params> {
+class VerifyAuthenticationSms extends UseCase<UserCredentials, VerifyParams> {
   final UserAuthenticationRepository repository;
 
   VerifyAuthenticationSms(this.repository);
 
   @override
-  Future<Either<Failure, UserCredentials>> call(Params params) async {
+  Future<Either<Failure, UserCredentials>> call(VerifyParams params) async {
     return await repository.verifyAuthenticationSms(
         params.phoneNumber, params.code);
   }
 }
 
-class Params extends Equatable {
+class VerifyParams extends Equatable {
   final String phoneNumber;
   final String code;
 
-  Params({
+  VerifyParams({
     @required this.phoneNumber,
     @required this.code,
   })  : assert(phoneNumber != null),

@@ -31,7 +31,7 @@ void main() {
           .thenAnswer((_) async => Right(tAuthenticationSmsStatus));
 
       // Act
-      final result = await usecase(Params(phoneNumber: tPhoneNumber));
+      final result = await usecase(SendParams(phoneNumber: tPhoneNumber));
 
       // Assert
       expect(result, Right(tAuthenticationSmsStatus));

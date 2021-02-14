@@ -7,21 +7,23 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/authentication_sms_status.dart';
 import '../repositories/user_authentication_repository.dart';
 
-class SendAuthenticationSms extends UseCase<AuthenticationSmsStatus, Params> {
+class SendAuthenticationSms
+    extends UseCase<AuthenticationSmsStatus, SendParams> {
   final UserAuthenticationRepository repository;
 
   SendAuthenticationSms(this.repository) : assert(repository != null);
 
   @override
-  Future<Either<Failure, AuthenticationSmsStatus>> call(Params params) async {
+  Future<Either<Failure, AuthenticationSmsStatus>> call(
+      SendParams params) async {
     return await repository.sendAuthenticationSms(params.phoneNumber);
   }
 }
 
-class Params extends Equatable {
+class SendParams extends Equatable {
   final String phoneNumber;
 
-  Params({@required this.phoneNumber});
+  SendParams({@required this.phoneNumber});
 
   @override
   List<Object> get props => [phoneNumber];

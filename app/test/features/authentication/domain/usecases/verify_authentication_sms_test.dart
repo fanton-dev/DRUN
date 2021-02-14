@@ -34,7 +34,7 @@ void main() {
       )).thenAnswer((_) async => Right(tUserCredentials));
 
       // Act
-      final result = await usecase(Params(
+      final result = await usecase(VerifyParams(
         phoneNumber: tPhoneNumber,
         code: tCode,
       ));
