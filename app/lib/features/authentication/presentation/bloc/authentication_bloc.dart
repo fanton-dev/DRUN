@@ -46,6 +46,10 @@ class AuthenticationBloc
       }
     }
 
+    if (event is StartAuthenticationEvent) {
+      yield AuthenticationPhoneInputState();
+    }
+
     if (event is SendAuthenticationSmsEvent) {
       final inputEither = inputValidator.stringAsPhoneNumber(event.phoneNumber);
       // Validating user input

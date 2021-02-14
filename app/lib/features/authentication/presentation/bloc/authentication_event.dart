@@ -11,6 +11,10 @@ class GetLoggedInUserEvent extends AuthenticationEvent {
   GetLoggedInUserEvent();
 }
 
+class StartAuthenticationEvent extends AuthenticationEvent {
+  StartAuthenticationEvent();
+}
+
 class SendAuthenticationSmsEvent extends AuthenticationEvent {
   final String phoneNumber;
 

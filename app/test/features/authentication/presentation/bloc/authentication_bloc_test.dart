@@ -109,6 +109,23 @@ void main() {
     );
   });
 
+  group('StartAuthenticationEvent', () {
+    test(
+      'should emit AuthenticationPhoneInputState',
+      () async {
+        // Assert later
+        final expected = [
+          AuthenticationInitialState(),
+          AuthenticationPhoneInputState(),
+        ];
+        expectLater(bloc, emitsInOrder(expected));
+
+        // Act
+        bloc.add(StartAuthenticationEvent());
+      },
+    );
+  });
+
   group('SendAuthenticationSmsEvent', () {
     final tPhoneNumber = '+359735780085';
     final tAuthenticationSmsStatus = AuthenticationSmsStatus(
