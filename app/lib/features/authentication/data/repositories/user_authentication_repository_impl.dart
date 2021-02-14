@@ -10,13 +10,12 @@ import '../../domain/repositories/user_authentication_repository.dart';
 import '../sources/user_authentication_local_source.dart';
 import '../sources/user_authentication_remote_source.dart';
 
-class UserAuthenticationRepositoryImplementation
-    implements UserAuthenticationRepository {
+class UserAuthenticationRepositoryImpl implements UserAuthenticationRepository {
   final UserAuthenticationRemoteSource remoteSource;
   final UserAuthenticationLocalSource localSource;
   final NetworkInfo networkInfo;
 
-  UserAuthenticationRepositoryImplementation({
+  UserAuthenticationRepositoryImpl({
     @required this.remoteSource,
     @required this.localSource,
     @required this.networkInfo,

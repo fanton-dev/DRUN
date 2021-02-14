@@ -3,7 +3,7 @@ import 'package:DRUN/core/errors/failures.dart';
 import 'package:DRUN/core/data/sources/network_info.dart';
 import 'package:DRUN/features/authentication/data/models/authentication_sms_status_model.dart';
 import 'package:DRUN/features/authentication/data/models/user_credentials_model.dart';
-import 'package:DRUN/features/authentication/data/repositories/user_authentication_repository_implementation.dart';
+import 'package:DRUN/features/authentication/data/repositories/user_authentication_repository_impl.dart';
 import 'package:DRUN/features/authentication/data/sources/user_authentication_local_source.dart';
 import 'package:DRUN/features/authentication/data/sources/user_authentication_remote_source.dart';
 import 'package:dartz/dartz.dart';
@@ -19,7 +19,7 @@ class MockUserAuthenticationLocalSource extends Mock
 class MockNetworkInfo extends Mock implements NetworkInfo {}
 
 void main() {
-  UserAuthenticationRepositoryImplementation repository;
+  UserAuthenticationRepositoryImpl repository;
   MockUserAuthenticationRemoteSource mockUserAuthenticationRemoteSource;
   MockUserAuthenticationLocalSource mockUserAuthenticationLocalSource;
   MockNetworkInfo mockNetworkInfo;
@@ -28,7 +28,7 @@ void main() {
     mockUserAuthenticationRemoteSource = MockUserAuthenticationRemoteSource();
     mockUserAuthenticationLocalSource = MockUserAuthenticationLocalSource();
     mockNetworkInfo = MockNetworkInfo();
-    repository = UserAuthenticationRepositoryImplementation(
+    repository = UserAuthenticationRepositoryImpl(
       remoteSource: mockUserAuthenticationRemoteSource,
       localSource: mockUserAuthenticationLocalSource,
       networkInfo: mockNetworkInfo,
