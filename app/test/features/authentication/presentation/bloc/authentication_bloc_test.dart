@@ -99,7 +99,7 @@ void main() {
         // Assert later
         final expected = [
           AuthenticationInitialState(),
-          HomeAuthenticatedState(tUserCredentials),
+          HomeAuthenticatedState(userCredentials: tUserCredentials),
         ];
         // expectLater(bloc, emitsInOrder(expected));
 
@@ -216,7 +216,7 @@ void main() {
     );
 
     test(
-      'should emit AuthenticationLoadingState and AuthenticationErrorState when usecase fails',
+      'should emit AuthenticationLoadingState and AuthenticationErrorState when the usecase fails',
       () async {
         // Arrange
         when(mockInputValidator.stringAsPhoneNumber(tPhoneNumber))
@@ -246,6 +246,67 @@ void main() {
       userId: "4ade5874-c573-4c8f-b2b8-7db5fccd983b",
       userToken:
           "713ADC1F515B3E0BBDF964DBAE6257A5B8A617115816A1705EACF9C00394A5",
+    );
+
+    test(
+      'should get data from the VerifyAuthenticationSms usecase',
+      () async {
+        // Arrange
+        when(mockVerifyAuthenticationSms(any))
+            .thenAnswer((_) async => Right(tUserCredentials));
+
+        // Act
+        bloc.add(VerifyAuthenticationSmsEvent(tPhoneNumber, tCode));
+        await untilCalled(mockVerifyAuthenticationSms(any));
+
+        // Assert
+        verify(
+          mockVerifyAuthenticationSms(VerifyParams(
+            phoneNumber: tPhoneNumber,
+            code: tCode,
+          )),
+        );
+      },
+    );
+
+    test(
+      'should emit AuthenticationLoadingState and HomeAuthenticatedState when data is gotten',
+      () async {
+        // Arrange
+        when(mockVerifyAuthenticationSms(any))
+            .thenAnswer((_) async => Right(tUserCredentials));
+
+        // Assert later
+        final expected = [
+          AuthenticationInitialState(),
+          AuthenticationLoadingState(),
+          HomeAuthenticatedState(userCredentials: tUserCredentials),
+        ];
+        // expectLater(bloc, emitsInOrder(expected));
+
+        // Act
+        bloc.add(VerifyAuthenticationSmsEvent(tPhoneNumber, tCode));
+      },
+    );
+
+    test(
+      'should emit AuthenticationLoadingState and AuthenticationErrorState when the usecase fails',
+      () async {
+        // Arrange
+        when(mockVerifyAuthenticationSms(any))
+            .thenAnswer((_) async => Left(ServerFailure()));
+
+        // Assert later
+        final expected = [
+          AuthenticationInitialState(),
+          AuthenticationLoadingState(),
+          AuthenticationErrorState(message: ServerFailure().message),
+        ];
+        // expectLater(bloc, emitsInOrder(expected));
+
+        // Act
+        bloc.add(VerifyAuthenticationSmsEvent(tPhoneNumber, tCode));
+      },
     );
   });
 }

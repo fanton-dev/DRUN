@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:DRUN/features/home/presentation/bloc/home_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -79,6 +78,25 @@ class AuthenticationBloc
               );
             },
           );
+        },
+      );
+    }
+
+    if (event is VerifyAuthenticationSmsEvent) {
+      yield AuthenticationLoadingState();
+      final responseEither = await verifyAuthenticationSms(
+        VerifyParams(phoneNumber: event.phoneNumber, code: event.code),
+      );
+
+      // Handling usecase response
+      // On failure -> the AuthenticationErrorState is generated
+      // On success -> the HomeAuthenticatedState is generated
+      yield* responseEither.fold(
+        (failure) async* {
+          yield AuthenticationErrorState(message: failure.message);
+        },
+        (userCredentials) async* {
+          // yield HomeAuthenticatedState(userCredentials: userCredentials);
         },
       );
     }
