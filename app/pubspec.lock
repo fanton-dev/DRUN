@@ -106,6 +106,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0-nullsafety.3"
+  contacts_service:
+    dependency: "direct main"
+    description:
+      name: contacts_service
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.6"
   convert:
     dependency: transitive
     description:
@@ -188,6 +195,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.0"
+  flutter_sim_country_code:
+    dependency: "direct main"
+    description:
+      name: flutter_sim_country_code
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -233,6 +247,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
+  intl_phone_number_input:
+    dependency: "direct main"
+    description:
+      name: intl_phone_number_input
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
   js:
     dependency: transitive
     description:
@@ -240,6 +261,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.2"
+  libphonenumber:
+    dependency: transitive
+    description:
+      name: libphonenumber
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
+  libphonenumber_platform_interface:
+    dependency: transitive
+    description:
+      name: libphonenumber_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
+  libphonenumber_plugin:
+    dependency: transitive
+    description:
+      name: libphonenumber_plugin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
+  libphonenumber_web:
+    dependency: transitive
+    description:
+      name: libphonenumber_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   logging:
     dependency: transitive
     description:
@@ -331,6 +380,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.2"
+  permission_handler:
+    dependency: "direct main"
+    description:
+      name: permission_handler
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.0+2"
+  permission_handler_platform_interface:
+    dependency: transitive
+    description:
+      name: permission_handler_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   platform:
     dependency: transitive
     description:
@@ -520,4 +583,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.10.0 <2.11.0"
-  flutter: ">=1.16.0 <2.0.0"
+  flutter: ">=1.20.0 <2.0.0"
