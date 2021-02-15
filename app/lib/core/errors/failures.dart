@@ -28,5 +28,10 @@ class CacheFailure extends Failure {
 class InvalidInputFailure extends Failure {
   @override
   String get message =>
-      'Invalid input - Make sure you inputed a valid phone number.';
+      'Invalid input - Make sure you inputted a valid phone number.';
+}
+
+class PermissionFailure extends Failure {
+  @override
+  String get message => 'Insufficient permissions.';
 }
