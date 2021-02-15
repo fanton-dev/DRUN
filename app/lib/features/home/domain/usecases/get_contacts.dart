@@ -3,16 +3,16 @@ import 'package:meta/meta.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../entities/user_contacts.dart';
-import '../repositories/user_contacts_repository.dart';
+import '../entities/complete_contact.dart';
+import '../repositories/contacts_repository.dart';
 
-class GetUserContacts extends UseCase<UserContacts, NoParams> {
-  final UserContactsRepository repository;
+class GetContacts extends UseCase<List<CompleteContact>, NoParams> {
+  final ContactsRepository repository;
 
-  GetUserContacts({@required this.repository}) : assert(repository != null);
+  GetContacts({@required this.repository}) : assert(repository != null);
 
   @override
-  Future<Either<Failure, UserContacts>> call(NoParams params) async {
+  Future<Either<Failure, List<CompleteContact>>> call(NoParams params) async {
     final localContacts = await repository.getLocalContacts();
     return localContacts.fold(
       (failure) => Left(failure),
