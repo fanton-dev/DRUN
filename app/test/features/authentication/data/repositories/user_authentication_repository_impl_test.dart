@@ -87,7 +87,7 @@ void main() {
       );
 
       test(
-        'should return server failure when the call to remote data source is unsuccesful',
+        'should return server failure when the call to remote data source is unsuccessful',
         () async {
           // Arrange
           when(mockUserAuthenticationRemoteSource.sendAuthenticationSms(
@@ -202,7 +202,7 @@ void main() {
       );
 
       test(
-        'should return server failure when the call to remote data source is unsuccesful',
+        'should return server failure when the call to remote data source is unsuccessful',
         () async {
           // Arrange
           when(mockUserAuthenticationRemoteSource.verifyAuthenticationSms(
