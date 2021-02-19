@@ -7,15 +7,15 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockUserContactsRepository extends Mock implements ContactsRepository {}
+class MockContactsRepository extends Mock implements ContactsRepository {}
 
 void main() {
   GetContacts usecase;
-  MockUserContactsRepository mockUserContactsRepository;
+  MockContactsRepository mockContactsRepository;
 
   setUp(() {
-    mockUserContactsRepository = MockUserContactsRepository();
-    usecase = GetContacts(repository: mockUserContactsRepository);
+    mockContactsRepository = MockContactsRepository();
+    usecase = GetContacts(repository: mockContactsRepository);
   });
 
   final tLocalContacts = <LocalContact>[
@@ -41,14 +41,14 @@ void main() {
     'should get local phone contacts list from the repository',
     () async {
       // Arrange
-      when(mockUserContactsRepository.getLocalContacts())
+      when(mockContactsRepository.getLocalContacts())
           .thenAnswer((_) async => Right(tLocalContacts));
 
       // Act
       await usecase(NoParams());
 
       // Assert
-      verify(mockUserContactsRepository.getLocalContacts());
+      verify(mockContactsRepository.getLocalContacts());
     },
   );
 
@@ -56,10 +56,10 @@ void main() {
     'should get registered users from local contacts list from the repository',
     () async {
       // Arrange
-      when(mockUserContactsRepository.getLocalContacts())
+      when(mockContactsRepository.getLocalContacts())
           .thenAnswer((_) async => Right(tLocalContacts));
 
-      when(mockUserContactsRepository.getRegisteredUsersInLocalContacts(any))
+      when(mockContactsRepository.getRegisteredUsersInLocalContacts(any))
           .thenAnswer((_) async => Right(tRegisteredContacts));
 
       // Act
@@ -67,7 +67,7 @@ void main() {
 
       // Assert
       expect(result, Right(tRegisteredContacts));
-      verify(mockUserContactsRepository.getRegisteredUsersInLocalContacts(
+      verify(mockContactsRepository.getRegisteredUsersInLocalContacts(
         tLocalContacts,
       ));
     },
