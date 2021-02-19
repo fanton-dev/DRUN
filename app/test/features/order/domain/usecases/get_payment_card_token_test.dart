@@ -23,7 +23,7 @@ void main() {
     () async {
       // Arrange
       when(
-        mockOrderRepository.getCardPaymentToken(),
+        mockOrderRepository.getPaymentCardToken(),
       ).thenAnswer((_) async => Right(tPaymentCardToken));
 
       // Act
@@ -32,7 +32,7 @@ void main() {
       // Assert
       expect(result, Right(tPaymentCardToken));
       verify(
-        mockOrderRepository.getCardPaymentToken(),
+        mockOrderRepository.getPaymentCardToken(),
       );
       verifyNoMoreInteractions(mockOrderRepository);
     },
