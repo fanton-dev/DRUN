@@ -55,51 +55,45 @@ export default function buildVerifyAuthenticationSmsCode({
         config.inboundLoggerServiceQueue,
       ], {
         subject: 'USER_INVALID_CODE',
-        body: {phoneNumber: phoneNumber, error: e.message},
+        body: {phoneNumber: phoneNumber, error: 'Invalid verification code.'},
       });
-      return {error: e.message};
+      return {error: 'Invalid verification code.'};
     }
 
-    usersDatabase.findByPhoneNumber(verificationInstance.to).catch((_) => {
-      try {
-        // Creating user object
-        user = makeUser({
-          phoneNumber: verificationInstance.to,
-        });
-        normalizedUser = exportToNormalEntity(user);
+    // If user is not found in the database we create a new user and store it
+    return usersDatabase.findByPhoneNumber(
+        verificationInstance.to,
+    ).catch((_) => {
+      // Creating user object
+      user = makeUser({
+        phoneNumber: verificationInstance.to,
+      });
+      normalizedUser = exportToNormalEntity(user);
 
-        // Inserts into database
-        usersDatabase.insert(normalizedUser).catch((e) => {
-          throw e;
-        });
+      // Inserts into database
+      usersDatabase.insert(normalizedUser).catch((e) => {
+        throw e;
+      });
 
-        // Notifying logger for a registered user
-        sharedQueue.emit([
-          config.inboundLoggerServiceQueue,
-        ], {
-          subject: 'USER_REGISTERED',
-          body: {phoneNumber: phoneNumber},
-        });
-      } catch (e) {
-        sharedQueue.emit([
-          config.inboundLoggerServiceQueue,
-        ], {
-          subject: 'USER_FAILED_REGISTRATION',
-          body: {phoneNumber: phoneNumber, error: e.message},
-        });
-        return {error: e.message};
-      }
+      // Notifying logger for a registered user
+      sharedQueue.emit([
+        config.inboundLoggerServiceQueue,
+      ], {
+        subject: 'USER_REGISTERED',
+        body: {phoneNumber: phoneNumber},
+      });
+      return normalizedUser;
+    }).then((user) => {
+      // Emitting an 'USER_LOGGED_IN' event in shared queue on valid code
+      sharedQueue.emit([
+        config.inboundDeliveryServiceQueue,
+        config.inboundLoggerServiceQueue,
+      ], {
+        subject: 'USER_LOGGED_IN',
+        body: {phoneNumber: phoneNumber},
+      });
+
+      return {'userId': user.id, 'userToken': user.token};
     });
-
-    // Emitting an 'USER_LOGGED_IN' event in shared queue on valid code
-    sharedQueue.emit([
-      config.inboundDeliveryServiceQueue,
-      config.inboundLoggerServiceQueue,
-    ], {
-      subject: 'USER_LOGGED_IN',
-      body: {phoneNumber: phoneNumber},
-    });
-
-    return verificationInstance;
   };
 }

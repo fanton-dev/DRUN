@@ -1,7 +1,6 @@
 import {
   SharedQueue,
   SMSApi,
-  SMSVerificationInstance,
 } from '../../../core/@types/global';
 import config from '../../../core/config';
 
@@ -27,16 +26,10 @@ export default function buildSendAuthenticationSmsCode({
   sharedQueue: SharedQueue;
 }): Function {
   return async function sendAuthenticationSmsCode(phoneNumber: string) {
-    // Internal parameter
-    let verificationInstance: SMSVerificationInstance;
-
     // Emitting an 'USER_INVALID_NUMBER' event in shared queue on invalid number
     try {
       // Sending verification code
-      verificationInstance = await smsApi.sendCode(
-          phoneNumber,
-          'sms',
-      );
+      await smsApi.sendCode(phoneNumber, 'sms');
     } catch (e) {
       sharedQueue.emit([
         config.inboundLoggerServiceQueue,
@@ -44,7 +37,7 @@ export default function buildSendAuthenticationSmsCode({
         subject: 'USER_INVALID_NUMBER',
         body: {phoneNumber: phoneNumber, error: e.message},
       });
-      return;
+      return {phoneNumber: phoneNumber, succeeded: false};
     }
 
     // Emitting an 'USER_SMS_SEND' event in shared queue on valid number
@@ -56,6 +49,6 @@ export default function buildSendAuthenticationSmsCode({
       body: {phoneNumber: phoneNumber},
     });
 
-    return verificationInstance;
+    return {phoneNumber: phoneNumber, succeeded: true};
   };
 }

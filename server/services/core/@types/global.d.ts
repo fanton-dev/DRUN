@@ -608,7 +608,7 @@ export interface UserDatabaseController {
 
   findByPhoneNumber(
     phoneNumber: string,
-): Promise<User>;
+  ): Promise<User>;
 }
 
 /**

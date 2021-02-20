@@ -15,15 +15,15 @@ export default function buildPostAuthenticateSendSms({
   return async function postAuthenticateSendSms(httpRequest: HttpRequest) {
     try {
       const phoneNumber = httpRequest.body['phoneNumber'];
-      const verificationInstance = await sendAuthenticationSmsCode(
+      const authenticationSmsStatus = await sendAuthenticationSmsCode(
           phoneNumber,
       );
       return {
         headers: {
           'Content-Type': 'application/json',
         },
-        statusCode: 201,
-        body: {verificationInstance},
+        statusCode: 200,
+        body: authenticationSmsStatus,
       };
     } catch (e) {
       return {

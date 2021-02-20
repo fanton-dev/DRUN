@@ -23,8 +23,8 @@ export default function buildPostAuthenticateVerifyCode({
         headers: {
           'Content-Type': 'application/json',
         },
-        statusCode: 201,
-        body: {verificationInstance},
+        statusCode: 200,
+        body: verificationInstance,
       };
     } catch (e) {
       return {
