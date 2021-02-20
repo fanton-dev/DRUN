@@ -11,8 +11,13 @@ ThemeData buildLightThemeData() {
         fontWeight: FontWeight.bold,
         color: Colors.indigo,
       ),
+      headline2: TextStyle(
+        fontSize: 24.0,
+        fontWeight: FontWeight.normal,
+        color: Colors.black54,
+      ),
       headline4: TextStyle(
-        fontSize: 28.0,
+        fontSize: 24.0,
         fontWeight: FontWeight.normal,
         color: Colors.indigo,
       ),
@@ -20,6 +25,11 @@ ThemeData buildLightThemeData() {
         fontSize: 16.0,
         fontWeight: FontWeight.normal,
         color: Colors.black54,
+      ),
+      headline6: TextStyle(
+        fontSize: 16.0,
+        fontWeight: FontWeight.normal,
+        color: Colors.white,
       ),
     ),
   );
@@ -35,6 +45,11 @@ ThemeData buildDarkThemeData() {
         fontSize: 100.0,
         fontWeight: FontWeight.bold,
         color: Colors.white,
+      ),
+      headline2: TextStyle(
+        fontSize: 24.0,
+        fontWeight: FontWeight.normal,
+        color: Colors.white54,
       ),
       headline4: TextStyle(
         fontSize: 28.0,

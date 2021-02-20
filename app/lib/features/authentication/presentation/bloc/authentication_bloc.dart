@@ -37,7 +37,6 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     if (event is GetLoggedInUserEvent) {
-      yield AuthenticationLoadingState();
       // Getting cached user credentials
       // On failure -> nothing is changed
       // On success -> the AuthenticationSuccessfulState is generated

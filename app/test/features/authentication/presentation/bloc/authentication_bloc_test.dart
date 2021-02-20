@@ -98,7 +98,6 @@ void main() {
         // Assert later
         final expected = [
           AuthenticationInitialState(),
-          AuthenticationLoadingState(),
           AuthenticationSuccessfulState(userCredentials: tUserCredentials),
         ];
         expectLater(bloc, emitsInOrder(expected));
