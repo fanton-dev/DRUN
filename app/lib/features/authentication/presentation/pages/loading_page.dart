@@ -6,7 +6,26 @@ class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Placeholder(),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              child: CircularProgressIndicator(
+                strokeWidth: 10.0,
+              ),
+              height: 100.0,
+              width: 100.0,
+            ),
+            SizedBox(height: 10.0),
+            Text(
+              'Loading...',
+              style: Theme.of(context).textTheme.headline2,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
