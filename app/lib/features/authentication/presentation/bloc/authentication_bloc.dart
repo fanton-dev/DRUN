@@ -99,7 +99,10 @@ class AuthenticationBloc
       // On success -> the AuthenticationSuccessfulState is generated
       yield* responseEither.fold(
         (failure) async* {
-          yield AuthenticationCodeInputErrorState(message: failure.message);
+          yield AuthenticationCodeInputErrorState(
+            phoneNumber: event.phoneNumber,
+            message: failure.message,
+          );
         },
         (userCredentials) async* {
           yield AuthenticationSuccessfulState(userCredentials: userCredentials);

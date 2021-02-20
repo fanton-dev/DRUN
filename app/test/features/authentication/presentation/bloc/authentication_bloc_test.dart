@@ -301,7 +301,10 @@ void main() {
         final expected = [
           AuthenticationInitialState(),
           AuthenticationLoadingState(),
-          AuthenticationCodeInputErrorState(message: ServerFailure().message),
+          AuthenticationCodeInputErrorState(
+            phoneNumber: tPhoneNumber,
+            message: ServerFailure().message,
+          ),
         ];
         expectLater(bloc, emitsInOrder(expected));
 

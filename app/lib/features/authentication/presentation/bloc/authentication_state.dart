@@ -26,9 +26,13 @@ class AuthenticationCodeInputState extends AuthenticationState {
 }
 
 class AuthenticationCodeInputErrorState extends AuthenticationState {
+  final String phoneNumber;
   final String message;
 
-  AuthenticationCodeInputErrorState({@required this.message});
+  AuthenticationCodeInputErrorState({
+    @required this.phoneNumber,
+    @required this.message,
+  });
 }
 
 class AuthenticationSuccessfulState extends AuthenticationState {

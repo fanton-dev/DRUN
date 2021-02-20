@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/presentation/util/input_validator.dart';
+import 'core/data/sources/network_info.dart';
 import 'features/authentication/data/repositories/user_authentication_repository_impl.dart';
 import 'features/authentication/data/sources/user_authentication_local_source.dart';
 import 'features/authentication/data/sources/user_authentication_remote_source.dart';
@@ -35,7 +36,7 @@ Future<void> init() async {
 }
 
 Future<void> initAuthentication() async {
-  // Bloc
+  // Presentation Bloc
   sl.registerFactory(
     () => AuthenticationBloc(
       getLoggedInUser: sl(),
@@ -74,6 +75,10 @@ Future<void> initHome() async {}
 Future<void> initOrder() async {}
 
 Future<void> initCore() async {
+  // Data sources
+  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+
+  // Presentation utils
   sl.registerLazySingleton(() => InputValidator());
 }
 
@@ -82,7 +87,7 @@ Future<void> initExternalDependencies() async {
   sl.registerLazySingleton(() => DataConnectionChecker());
 
   // HTTP Client
-  sl.registerLazySingleton(() => http.Client);
+  sl.registerLazySingleton(() => http.Client());
 
   // Shared preferences
   final sharedPreferences = await SharedPreferences.getInstance();
