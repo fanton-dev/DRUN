@@ -150,7 +150,7 @@ void main() {
     );
 
     test(
-      'should emit AuthenticationErrorState when the input is invalid',
+      'should emit AuthenticationPhoneInputErrorState when the input is invalid',
       () async {
         // Arrange
         when(mockInputValidator.stringAsPhoneNumber(any)).thenReturn(
@@ -160,7 +160,8 @@ void main() {
         // Assert later
         final expected = [
           AuthenticationInitialState(),
-          AuthenticationErrorState(message: InvalidInputFailure().message)
+          AuthenticationPhoneInputErrorState(
+              message: InvalidInputFailure().message)
         ];
         expectLater(bloc, emitsInOrder(expected));
 
@@ -216,7 +217,7 @@ void main() {
     );
 
     test(
-      'should emit AuthenticationLoadingState and AuthenticationErrorState when the usecase fails',
+      'should emit AuthenticationLoadingState and AuthenticationPhoneInputErrorState when the usecase fails',
       () async {
         // Arrange
         when(mockInputValidator.stringAsPhoneNumber(tPhoneNumber))
@@ -229,7 +230,7 @@ void main() {
         final expected = [
           AuthenticationInitialState(),
           AuthenticationLoadingState(),
-          AuthenticationErrorState(message: ServerFailure().message),
+          AuthenticationPhoneInputErrorState(message: ServerFailure().message),
         ];
         expectLater(bloc, emitsInOrder(expected));
 
@@ -290,7 +291,7 @@ void main() {
     );
 
     test(
-      'should emit AuthenticationLoadingState and AuthenticationErrorState when the usecase fails',
+      'should emit AuthenticationLoadingState and AuthenticationCodeInputErrorState when the usecase fails',
       () async {
         // Arrange
         when(mockVerifyAuthenticationSms(any))
@@ -300,7 +301,7 @@ void main() {
         final expected = [
           AuthenticationInitialState(),
           AuthenticationLoadingState(),
-          AuthenticationErrorState(message: ServerFailure().message),
+          AuthenticationCodeInputErrorState(message: ServerFailure().message),
         ];
         expectLater(bloc, emitsInOrder(expected));
 

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:DRUN/features/authentication/domain/entities/user_credentials.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -8,6 +7,7 @@ import 'package:meta/meta.dart';
 import '../../../../core/presentation/util/input_validator.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../domain/entities/authentication_sms_status.dart';
+import '../../domain/entities/user_credentials.dart';
 import '../../domain/usecases/get_logged_in_user.dart';
 import '../../domain/usecases/send_authentication_sms.dart';
 import '../../domain/usecases/verify_authentication_sms.dart';
@@ -62,7 +62,7 @@ class AuthenticationBloc
       //               for the sendAuthenticationSms usecase to complete.
       yield* inputEither.fold(
         (failure) async* {
-          yield AuthenticationErrorState(message: failure.message);
+          yield AuthenticationPhoneInputErrorState(message: failure.message);
         },
         (phoneNumber) async* {
           yield AuthenticationLoadingState();
@@ -75,7 +75,8 @@ class AuthenticationBloc
           // On success -> the AuthenticationCodeInputState is generated
           yield* responseEither.fold(
             (failure) async* {
-              yield AuthenticationErrorState(message: failure.message);
+              yield AuthenticationPhoneInputErrorState(
+                  message: failure.message);
             },
             (authenticationSmsStatus) async* {
               yield AuthenticationCodeInputState(
@@ -98,7 +99,7 @@ class AuthenticationBloc
       // On success -> the AuthenticationSuccessfulState is generated
       yield* responseEither.fold(
         (failure) async* {
-          yield AuthenticationErrorState(message: failure.message);
+          yield AuthenticationCodeInputErrorState(message: failure.message);
         },
         (userCredentials) async* {
           yield AuthenticationSuccessfulState(userCredentials: userCredentials);

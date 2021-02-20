@@ -11,18 +11,24 @@ class AuthenticationInitialState extends AuthenticationState {}
 
 class AuthenticationLoadingState extends AuthenticationState {}
 
-class AuthenticationErrorState extends AuthenticationState {
+class AuthenticationPhoneInputState extends AuthenticationState {}
+
+class AuthenticationPhoneInputErrorState extends AuthenticationState {
   final String message;
 
-  AuthenticationErrorState({@required this.message});
+  AuthenticationPhoneInputErrorState({@required this.message});
 }
-
-class AuthenticationPhoneInputState extends AuthenticationState {}
 
 class AuthenticationCodeInputState extends AuthenticationState {
   final AuthenticationSmsStatus authenticationSmsStatus;
 
   AuthenticationCodeInputState({@required this.authenticationSmsStatus});
+}
+
+class AuthenticationCodeInputErrorState extends AuthenticationState {
+  final String message;
+
+  AuthenticationCodeInputErrorState({@required this.message});
 }
 
 class AuthenticationSuccessfulState extends AuthenticationState {
