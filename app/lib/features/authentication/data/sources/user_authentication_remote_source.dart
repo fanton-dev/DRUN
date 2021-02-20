@@ -38,10 +38,10 @@ class UserAuthenticationRemoteSourceImpl
     String phoneNumber,
   ) async {
     final response = await httpClient.post(
-      '$SERVER_ADDRESS/users/authenticate/send-sms-code',
-      body: {
+      '$SERVER_ADDRESS/api/users/authenticate/send-sms-code',
+      body: jsonEncode({
         'phoneNumber': phoneNumber,
-      },
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -60,11 +60,11 @@ class UserAuthenticationRemoteSourceImpl
     String code,
   ) async {
     final response = await httpClient.post(
-      '$SERVER_ADDRESS/users/authenticate/verify-sms-code',
-      body: {
+      '$SERVER_ADDRESS/api/users/authenticate/verify-sms-code',
+      body: jsonEncode({
         'phoneNumber': phoneNumber,
         'code': code,
-      },
+      }),
       headers: {
         'Content-Type': 'application/json',
       },

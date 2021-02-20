@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:DRUN/core/constants/constants.dart';
 import 'package:DRUN/core/errors/exceptions.dart';
 import 'package:DRUN/features/home/data/models/registered_contact_model.dart';
@@ -65,9 +67,9 @@ void main() {
         // Assert
         verify(mockHttpClient.post(
           '$SERVER_ADDRESS/api/users/check-registered',
-          body: {
+          body: jsonEncode({
             'phoneNumbers': tPhoneNumbers,
-          },
+          }),
           headers: {
             'Content-Type': 'application/json',
           },

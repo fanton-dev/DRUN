@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:DRUN/core/constants/constants.dart';
 import 'package:DRUN/core/errors/exceptions.dart';
 import 'package:DRUN/features/authentication/data/models/authentication_sms_status_model.dart';
@@ -56,10 +58,10 @@ void main() {
 
         // Assert
         verify(mockHttpClient.post(
-          '$SERVER_ADDRESS/users/authenticate/send-sms-code',
-          body: {
+          '$SERVER_ADDRESS/api/users/authenticate/send-sms-code',
+          body: jsonEncode({
             'phoneNumber': tPhoneNumber,
-          },
+          }),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -125,11 +127,11 @@ void main() {
 
         // Assert
         verify(mockHttpClient.post(
-          '$SERVER_ADDRESS/users/authenticate/verify-sms-code',
-          body: {
+          '$SERVER_ADDRESS/api/users/authenticate/verify-sms-code',
+          body: jsonEncode({
             'phoneNumber': tPhoneNumber,
             'code': tCode,
-          },
+          }),
           headers: {
             'Content-Type': 'application/json',
           },

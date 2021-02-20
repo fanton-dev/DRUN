@@ -30,9 +30,9 @@ class ContactsRemoteSourceImpl implements ContactsRemoteSource {
   ) async {
     final response = await httpClient.post(
       '$SERVER_ADDRESS/api/users/check-registered',
-      body: {
+      body: jsonEncode({
         'phoneNumbers': phoneNumbers,
-      },
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
