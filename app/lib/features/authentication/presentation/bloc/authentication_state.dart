@@ -24,3 +24,9 @@ class AuthenticationCodeInputState extends AuthenticationState {
 
   AuthenticationCodeInputState({@required this.authenticationSmsStatus});
 }
+
+class AuthenticationSuccessfulState extends AuthenticationState {
+  final UserCredentials userCredentials;
+
+  AuthenticationSuccessfulState({@required this.userCredentials});
+}

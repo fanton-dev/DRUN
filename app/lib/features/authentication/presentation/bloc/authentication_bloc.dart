@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:DRUN/features/authentication/domain/entities/user_credentials.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -36,13 +37,17 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     if (event is GetLoggedInUserEvent) {
+      yield AuthenticationLoadingState();
       // Getting cached user credentials
       // On failure -> nothing is changed
-      // On success -> the HomeAuthenticatedState is generated
+      // On success -> the AuthenticationSuccessfulState is generated
       final cacheEither = await getLoggedInUser(NoParams());
-      if (cacheEither.isRight()) {
-        // yield HomeAuthenticatedState(Right(userCredentials));
-      }
+      yield* cacheEither.fold(
+        (failure) async* {},
+        (userCredentials) async* {
+          yield AuthenticationSuccessfulState(userCredentials: userCredentials);
+        },
+      );
     }
 
     if (event is StartAuthenticationEvent) {
@@ -90,13 +95,13 @@ class AuthenticationBloc
 
       // Handling usecase response
       // On failure -> the AuthenticationErrorState is generated
-      // On success -> the HomeAuthenticatedState is generated
+      // On success -> the AuthenticationSuccessfulState is generated
       yield* responseEither.fold(
         (failure) async* {
           yield AuthenticationErrorState(message: failure.message);
         },
         (userCredentials) async* {
-          // yield HomeAuthenticatedState(userCredentials: userCredentials);
+          yield AuthenticationSuccessfulState(userCredentials: userCredentials);
         },
       );
     }

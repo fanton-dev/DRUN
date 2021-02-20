@@ -7,7 +7,6 @@ import 'package:DRUN/features/authentication/domain/usecases/get_logged_in_user.
 import 'package:DRUN/features/authentication/domain/usecases/send_authentication_sms.dart';
 import 'package:DRUN/features/authentication/domain/usecases/verify_authentication_sms.dart';
 import 'package:DRUN/features/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:DRUN/features/home/presentation/bloc/home_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -90,7 +89,7 @@ void main() {
     );
 
     test(
-      'should emit HomeAuthenticatedState when there are UserCredentials cached',
+      'should emit AuthenticationSuccessfulState when there are UserCredentials cached',
       () async {
         // Arrange
         when(mockGetLoggedInUser(any))
@@ -99,9 +98,10 @@ void main() {
         // Assert later
         final expected = [
           AuthenticationInitialState(),
-          HomeAuthenticatedState(userCredentials: tUserCredentials),
+          AuthenticationLoadingState(),
+          AuthenticationSuccessfulState(userCredentials: tUserCredentials),
         ];
-        // expectLater(bloc, emitsInOrder(expected));
+        expectLater(bloc, emitsInOrder(expected));
 
         // Act
         bloc.add(GetLoggedInUserEvent());
@@ -270,7 +270,7 @@ void main() {
     );
 
     test(
-      'should emit AuthenticationLoadingState and HomeAuthenticatedState when data is gotten',
+      'should emit AuthenticationLoadingState and AuthenticationSuccessfulState when data is gotten',
       () async {
         // Arrange
         when(mockVerifyAuthenticationSms(any))
@@ -280,9 +280,9 @@ void main() {
         final expected = [
           AuthenticationInitialState(),
           AuthenticationLoadingState(),
-          HomeAuthenticatedState(userCredentials: tUserCredentials),
+          AuthenticationSuccessfulState(userCredentials: tUserCredentials),
         ];
-        // expectLater(bloc, emitsInOrder(expected));
+        expectLater(bloc, emitsInOrder(expected));
 
         // Act
         bloc.add(VerifyAuthenticationSmsEvent(tPhoneNumber, tCode));
@@ -302,7 +302,7 @@ void main() {
           AuthenticationLoadingState(),
           AuthenticationErrorState(message: ServerFailure().message),
         ];
-        // expectLater(bloc, emitsInOrder(expected));
+        expectLater(bloc, emitsInOrder(expected));
 
         // Act
         bloc.add(VerifyAuthenticationSmsEvent(tPhoneNumber, tCode));
