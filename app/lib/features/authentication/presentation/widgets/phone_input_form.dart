@@ -25,6 +25,12 @@ class _PhoneInputFormState extends State<PhoneInputForm> {
     super.initState();
   }
 
+  void _setPhoneNumber(String state) {
+    setState(() {
+      phoneNumber = state;
+    });
+  }
+
   void _setIsValidPhoneNumber(bool state) {
     setState(() {
       isValidPhoneNumber = state;
@@ -48,10 +54,11 @@ class _PhoneInputFormState extends State<PhoneInputForm> {
                     useEmoji: true,
                   ),
                   onInputChanged: (PhoneNumber phoneNumber) {
-                    this.phoneNumber = phoneNumber.toString();
+                    _setPhoneNumber(phoneNumber.toString());
                   },
-                  onInputValidated: (bool isValid) =>
-                      _setIsValidPhoneNumber(isValid),
+                  onInputValidated: (bool isValid) => _setIsValidPhoneNumber(
+                    isValid,
+                  ),
                   initialValue: PhoneNumber(
                     isoCode: isoCodeSnapshot.data ?? 'BG',
                   ),
