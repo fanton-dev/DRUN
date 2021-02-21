@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  orders-service:
+  order-service:
     build:
       context: "./services/orders-service"
     restart: "no"
@@ -108,14 +108,25 @@ services:
 
   nginx:
     image: nginx:stable
-    restart: "no"
+    restart: unless-stopped
     volumes:
-      - ./data/nginx/dev.conf:/etc/nginx/conf.d/dev.conf
+      - ./data/nginx/prod.conf:/etc/nginx/conf.d/prod.conf
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     depends_on:
-      - orders-service
+      - order-service
       - delivery-service
       - logger-service
       - users-service
     ports:
       - 80:80
       - 443:443
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

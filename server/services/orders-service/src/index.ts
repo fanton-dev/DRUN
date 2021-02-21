@@ -1,0 +1,1 @@
+console.log("Orders service started successfully.");
