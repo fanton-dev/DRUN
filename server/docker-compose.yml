@@ -13,7 +13,9 @@ services:
     ports:
       - 3001:3001
     volumes:
+      - ./core:/opt/app/core
       - ./services/orders-service:/opt/app
+      - /opt/app/node_modules
 
   orders-service-database:
     image: postgres
@@ -34,7 +36,9 @@ services:
     depends_on:
       - rabbitmq
     volumes:
+      - ./core:/opt/app/core
       - ./services/payment-service:/opt/app
+      - /opt/app/node_modules
 
   delivery-service:
     build:
@@ -47,7 +51,9 @@ services:
     ports:
       - 3002:3002
     volumes:
+      - ./core:/opt/app/core
       - ./services/delivery-service:/opt/app
+      - /opt/app/node_modules
 
   logger-service:
     build:
@@ -61,7 +67,9 @@ services:
     ports:
       - 3003:3003
     volumes:
+      - ./core:/opt/app/core
       - ./services/logger-service:/opt/app
+      - /opt/app/node_modules
   
   logger-service-database:
     image: postgres
@@ -85,7 +93,9 @@ services:
     ports:
       - 3004:3004
     volumes:
+      - ./core:/opt/app/core
       - ./services/users-service:/opt/app
+      - /opt/app/node_modules
 
   users-service-database:
     image: postgres
