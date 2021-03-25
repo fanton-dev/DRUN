@@ -14,6 +14,4 @@ RUN npm ci
 
 EXPOSE 3004
 
-CMD [ "npm", "run", "db:migrate" ]
-
-ENTRYPOINT [ "npm", "run", "watch" ]
+CMD npm run db:migrate ; npm run watch
