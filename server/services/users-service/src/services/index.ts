@@ -1,10 +1,12 @@
+import sharedQueue from '@core/shared-queue';
+import database from '@src/database';
+import buildVerifyAuthenticationSms
+  from '@src/services//verify-authentication-sms';
+import buildSendAuthenticationSms
+  from '@src/services/send-authentication-sms';
+import buildVerifyUserToken from '@src/services/verify-user-token';
+import smsApi from '@src/sms-api';
 import crypto from 'crypto';
-import smsApi from '../sms-api';
-import database from '../database';
-import sharedQueue from '../../core/shared-queue';
-import buildSendAuthenticationSms from './send-authentication-sms';
-import buildVerifyAuthenticationSms from './verify-authentication-sms';
-import buildVerifyUserToken from './verify-user-token';
 
 const sendAuthenticationSms = buildSendAuthenticationSms({
   smsApi,
@@ -14,21 +16,21 @@ const sendAuthenticationSms = buildSendAuthenticationSms({
 const verifyAuthenticationSms = buildVerifyAuthenticationSms({
   smsApi,
   sharedQueue,
-  getUsersRepository: database.getUsersRepository,
+  database,
   generateToken: () => crypto.randomBytes(32).toString('hex'),
 });
 
 const isUserIdToTokenValid = buildVerifyUserToken({
-  getUsersRepository: database.getUsersRepository,
+  database,
 });
 
-const usecases = Object.freeze({
+const services = Object.freeze({
   sendAuthenticationSms,
   verifyAuthenticationSms,
   isUserIdToTokenValid,
 });
 
-export default usecases;
+export default services;
 export {
   sendAuthenticationSms,
   verifyAuthenticationSms,

@@ -1,25 +1,25 @@
-import notFound from '../../core/controllers/not-found';
+import notFound from '@core/controllers/not-found';
+import services from '@src/services';
 import buildPostAuthenticateSendSmsCode
   from './post-authenticate-send-sms-code';
 import buildPostAuthenticateVerifySmsCode
   from './post-authenticate-verify-sms-code';
-import usecases from '../usecases';
 
 const postAuthenticateSendSmsCode = buildPostAuthenticateSendSmsCode({
-  sendAuthenticationSms: usecases.sendAuthenticationSms,
+  sendAuthenticationSms: services.sendAuthenticationSms,
 });
 
 const postAuthenticateVerifySmsCode = buildPostAuthenticateVerifySmsCode({
-  verifyAuthenticationSms: usecases.verifyAuthenticationSms,
+  verifyAuthenticationSms: services.verifyAuthenticationSms,
 });
 
-const userController = Object.freeze({
+const controllers = Object.freeze({
   postAuthenticateSendSmsCode: postAuthenticateSendSmsCode,
   postAuthenticateVerifySmsCode: postAuthenticateVerifySmsCode,
   notFound,
 });
 
-export default userController;
+export default controllers;
 export {
   postAuthenticateSendSmsCode,
   postAuthenticateVerifySmsCode,

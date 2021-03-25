@@ -1,9 +1,9 @@
+import {UserExport} from '@core/@types/entity-exports';
+import {SharedQueue} from '@core/@types/shared-queue';
+import {SMSApi} from '@core/@types/sms-api';
 import config from 'config';
-import {Repository} from 'typeorm';
-import {SMSApi} from '../../core/@types/sms-api';
-import {SharedQueue} from '../../core/@types/shared-queue';
-import User from '../database/entities/user';
-
+import {Knex} from 'knex';
+import makeUser from '../user';
 
 /**
  * Verifies a authentication SMS code and stores new users into the database.
@@ -13,7 +13,6 @@ import User from '../database/entities/user';
  *   smsApi: SMSApi,
  *   sharedQueue: SharedQueue,
  *   getUsersRepository: Function,
- *   generateToken: Function,
  * }} {
  *   smsApi,
  *   sharedQueue,
@@ -25,12 +24,11 @@ import User from '../database/entities/user';
 export default function buildVerifyAuthenticationSms({
   smsApi,
   sharedQueue,
-  getUsersRepository,
-  generateToken,
+  database,
 }: {
   smsApi: SMSApi;
   sharedQueue: SharedQueue;
-  getUsersRepository(): Repository<User>;
+  database: Knex;
   generateToken: () => string;
 }): Function {
   return async function verifyAuthenticationSms(
@@ -51,16 +49,24 @@ export default function buildVerifyAuthenticationSms({
       throw new Error('Invalid verification code.');
     }
 
-    let isNew = false;
-    let user = await getUsersRepository().findOne({phoneNumber: phoneNumber});
+    const isNew = false;
+    let userModel: UserExport;
+    let user = await database('users').where({phoneNumber: phoneNumber});
+    console.log(user);
+    userModel = makeUser({
+      phoneNumber,
+    });
     if (!user) {
       // Storing new user into the database.
-      user = new User({
-        token: generateToken(),
-        phoneNumber: phoneNumber,
+      userModel = makeUser({
+        phoneNumber,
       });
-      user = await getUsersRepository().save(user);
-      isNew = true;
+
+      user = await database('users').insert({
+        id: userModel.getId(),
+        phoneNumber: userModel.getPhoneNumber,
+        token: userModel.getToken,
+      });
 
       // Notifying logger for a registered user
       sharedQueue.emit([
@@ -71,6 +77,7 @@ export default function buildVerifyAuthenticationSms({
       });
     }
 
+
     // Emitting an 'USER_LOGGED_IN' event in shared queue on valid code
     sharedQueue.emit([
       config.get('INBOUND_LOGGER_SERVICE_QUEUE'),
@@ -79,6 +86,10 @@ export default function buildVerifyAuthenticationSms({
       body: {phoneNumber: phoneNumber},
     });
 
-    return {'isNew': isNew, 'userId': user.id, 'userToken': user.token};
+    return {
+      'isNew': isNew,
+      'userId': userModel.getId(),
+      'userToken': userModel.getToken(),
+    };
   };
 }

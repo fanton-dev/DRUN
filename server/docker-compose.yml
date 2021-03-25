@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
     depends_on:
-      - orders-service-database
+      - database
       - rabbitmq
     ports:
       - 3001:3001
@@ -16,16 +16,6 @@ services:
       - ./core:/opt/app/core
       - ./services/orders-service:/opt/app
       - /opt/app/node_modules
-
-  orders-service-database:
-    image: postgres
-    restart: "no"
-    logging:
-      driver: none
-    ports:
-      - 3101:5432
-    env_file:
-      - .env
 
   payment-service:
     build:
@@ -62,7 +52,7 @@ services:
     env_file:
       - .env
     depends_on:
-      - logger-service-database
+      - database
       - rabbitmq
     ports:
       - 3003:3003
@@ -70,16 +60,6 @@ services:
       - ./core:/opt/app/core
       - ./services/logger-service:/opt/app
       - /opt/app/node_modules
-  
-  logger-service-database:
-    image: postgres
-    restart: "no"
-    logging:
-      driver: none
-    ports:
-      - 3103:5432
-    env_file:
-      - .env
 
   users-service:
     build:
@@ -88,22 +68,23 @@ services:
     env_file:
       - .env
     depends_on:
-      - users-service-database
+      - database
       - rabbitmq
     ports:
       - 3004:3004
     volumes:
+      - ./services/users-service:/opt/app/services/users-service
       - ./core:/opt/app/core
-      - ./services/users-service:/opt/app
-      - /opt/app/node_modules
+      - /opt/app/core/node_modules
+      - /opt/app/services/users-service/node_modules
 
-  users-service-database:
+  database:
     image: postgres
     restart: "no"
-    logging:
-      driver: none
+    volumes:
+      - ./data/database:/docker-entrypoint-initdb.d
     ports:
-      - 3104:5432
+      - 5432:5432
     env_file:
       - .env
 

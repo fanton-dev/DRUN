@@ -1,5 +1,5 @@
-import {SMSApi} from '../../core/@types/sms-api';
-import {SharedQueue} from '../../core/@types/shared-queue';
+import {SharedQueue} from '@core/@types/shared-queue';
+import {SMSApi} from '@core/@types/sms-api';
 import config from 'config';
 
 /**

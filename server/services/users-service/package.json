@@ -9,14 +9,12 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/index.ts",
-    "watch": "ts-node-dev --poll --respawn src/index.ts",
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "watch": "ts-node-dev -r tsconfig-paths/register --poll --respawn src/index.ts",
     "test": "jest",
     "lint": "eslint \"**/*.{js,ts}\"",
     "lint:fix": "eslint --fix \"**/*.{js,ts}\"",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "db:migrate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run",
-    "db:migrate:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert"
+    "db:migrate": "npx knex migrate:latest init --knexfile \"./src/database/knexfile.ts\""
   },
   "devDependencies": {
     "@babel/core": "^7.12.17",
@@ -41,16 +39,14 @@
   },
   "dependencies": {
     "amqplib": "^0.7.0",
-    "body-parser": "^1.19.0",
     "config": "^3.3.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "knex": "^0.95.6",
     "moment": "^2.29.1",
     "pg": "^8.5.1",
-    "reflect-metadata": "^0.1.13",
     "ts-node": "^9.1.1",
     "twilio": "^3.56.0",
-    "typeorm": "^0.2.31",
     "uuid": "^8.3.2"
   }
 }

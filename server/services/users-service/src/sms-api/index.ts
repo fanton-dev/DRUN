@@ -7,7 +7,7 @@ const twilioClient = twilio(
     <string> config.get('TWILIO_AUTH_TOKEN'),
 );
 
-const smsApi = buildSmsApi({
+const smsApi: any = buildSmsApi({
   smsClient: twilioClient,
   serviceId: <string> config.get('TWILIO_SERVICE_ID'),
 });

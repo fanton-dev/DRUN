@@ -1,11 +1,5 @@
+import {SMSApi} from '@core/@types/sms-api';
 import {Twilio} from 'twilio';
-import {
-  VerificationInstance,
-} from 'twilio/lib/rest/verify/v2/service/verification';
-import {
-  VerificationCheckInstance,
-} from 'twilio/lib/rest/verify/v2/service/verificationCheck';
-import {SMSApi} from '../../core/@types/sms-api';
 
 /**
  * SMS API interactions interface.
@@ -35,7 +29,7 @@ export default function buildSmsApi({
   async function sendCode(
       phoneNumber: string,
       channel: 'sms' | 'call',
-  ): Promise<VerificationInstance> {
+  ): Promise<any> {
     return await new Promise((resolve, reject) => {
       smsClient.verify
           .services(serviceId)
@@ -59,7 +53,7 @@ export default function buildSmsApi({
   async function verifyCode(
       phoneNumber: string,
       code: string,
-  ): Promise<VerificationCheckInstance> {
+  ): Promise<any> {
     return await new Promise((resolve, reject) => {
       smsClient.verify
           .services(serviceId)

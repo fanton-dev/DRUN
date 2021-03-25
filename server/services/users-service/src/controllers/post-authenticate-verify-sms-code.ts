@@ -1,4 +1,4 @@
-import {ControllerRequest} from '../../core/@types/controllers';
+import {ControllerRequest} from '@core/@types/controllers';
 
 /**
  * Express controller for handling of POST "users/authenticate/verify-sms-code"

@@ -2,18 +2,18 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
-    "rootDir": ".",
+    "rootDir": "../..",
     "baseUrl": ".",
     "outDir": "dist",
     "esModuleInterop": true,
-    "strict": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "strictPropertyInitialization": false,
+    // "emitDecoratorMetadata": true,
+    // "experimentalDecorators": true,
+    // "strictPropertyInitialization": false,
+    "paths": {
+      "@core/*": ["../../core/*"],
+      "@src/*": ["./src/*"],
+      "@root/*": ["./*"]
+    }
   },
-  "ts-node": {
-    "files": true
-  },
-  "include": ["src", "core", "test"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

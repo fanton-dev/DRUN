@@ -1,19 +1,14 @@
-import 'reflect-metadata';
+import {QueueMessage} from '@core/@types/shared-queue';
+import makeExpressCallback from '@core/controllers/express-callback';
+import sharedQueue from '@core/shared-queue';
+import controllers from '@src/controllers';
+import {isUserIdToTokenValid} from '@src/services';
 import config from 'config';
 import express from 'express';
-import bodyParser from 'body-parser';
-import controllers from './controllers';
-import sharedQueue from '../core/shared-queue';
-import makeExpressCallback from '../core/controllers/express-callback';
-import {isUserIdToTokenValid} from './usecases';
-import {QueueMessage} from '../core/@types/shared-queue';
-import {initConnection} from './database';
 
-initConnection().then(async (conn) => await conn.runMigrations());
 
 const apiRoot = config.get('API_ROOT');
 const app = express();
-app.use(bodyParser.json());
 
 app.post(
     `${apiRoot}/users/authenticate/send-sms-code`,
