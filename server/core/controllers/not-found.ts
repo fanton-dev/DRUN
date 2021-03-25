@@ -1,4 +1,4 @@
-import {ControllerResponse} from '../@types/controllers';
+import {ControllerResponse} from '@core/@types/controllers';
 
 /**
  * Express controller for non-existent endpoints.

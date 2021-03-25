@@ -1,5 +1,5 @@
+import {ControllerResponse} from '@core/@types/controllers';
 import {Request, RequestHandler, Response} from 'express';
-import {ControllerResponse} from '../@types/controllers';
 
 /**
  * Creates an express callback from a given controller.

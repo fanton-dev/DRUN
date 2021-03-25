@@ -1,6 +1,6 @@
 import {Connection} from 'amqplib';
-import * as Bluebird from 'bluebird';
 import {Options} from 'amqplib/properties';
+import * as Bluebird from 'bluebird';
 
 /**
  * Queue Library object structure.

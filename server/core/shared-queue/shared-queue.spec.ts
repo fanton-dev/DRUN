@@ -1,14 +1,14 @@
-import config from 'config';
 import amqp from 'mock-amqplib';
-import {SharedQueue} from '../@types/queue';
+import {SharedQueue} from '../@types/shared-queue';
 import buildSharedQueue from './shared-queue';
+
 describe('shared-queue', () => {
   let sharedQueue: SharedQueue;
 
   beforeEach(async () => {
     sharedQueue = buildSharedQueue({
       queueLibrary: amqp,
-      queueUrl: config.get('RABBITMQ_URL'),
+      queueUrl: 'RABBITMQ_URL',
     });
   });
 

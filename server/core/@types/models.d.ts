@@ -7,7 +7,7 @@ export interface OrderModel {
   id?: string;
   sender: PersonModel;
   receiver: PersonModel;
-  paymentCardToken: String;
+  paymentCardToken: string;
   source: SourceModel;
   createdOn?: number;
 }
@@ -66,8 +66,21 @@ export interface PaymentCardModel {
  */
 export interface UserModel {
   id?: string;
-  token: string;
+  token?: string;
   phoneNumber: string;
-  createdAt?: string;
+}
+
+/**
+ * PaymentModel object structure.
+ *
+ * @exports
+ * @interface PaymentModel
+ */
+export interface PaymentModel {
+  id?: string;
+  orderId: string;
+  paymentCardToken: string;
+  createdOn?: number;
+  completedOn?: number | undefined;
 }
 

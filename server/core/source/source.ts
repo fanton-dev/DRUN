@@ -1,5 +1,5 @@
-import { SourceExport } from "core/@types/entity-exports";
-import { SourceModel } from "core/@types/models";
+import {SourceExport} from '@core/@types/entity-exports';
+import {SourceModel} from '@core/@types/models';
 
 /**
  * Request ip/browser source object.
@@ -13,7 +13,9 @@ import { SourceModel } from "core/@types/models";
 export default function buildMakeSource({
   isValidIp,
 }: {isValidIp: Function}): Function {
-  return function makeSource({ip, browser, referrer}: SourceModel): SourceExport {
+  return function makeSource({
+    ip, browser, referrer,
+  }: SourceModel): SourceExport {
     if (!ip) {
       throw new Error('Source must have an IP.');
     }

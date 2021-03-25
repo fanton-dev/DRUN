@@ -1,6 +1,5 @@
-import {Validator} from '../@types/validator';
-import {Location} from '../@types/location';
-import {PaymentCardModel} from '../@types/payment-card';
+import {Validator} from '@core/@types/entity-exports';
+import {LocationModel, PaymentCardModel} from '@core/@types/models';
 
 /**
  * Validator entity, providing the means for testing passed identifier,
@@ -35,9 +34,9 @@ export default function buildValidator({
   /**
    * Validates whether a location object is in a valid format or not.
    *
-   * @param {Location} location - location object to be verified
+   * @param {LocationModel} location - location object to be verified
    */
-  function validateLocation(location: Location): void {
+  function validateLocation(location: LocationModel): void {
     if (!location) {
       throw new Error('Location not defined.');
     }
@@ -71,16 +70,16 @@ export default function buildValidator({
   /**
    * Validates whether a route can be completed by a drone.
    *
-   * @param {Location} homeLocation
-   * @param {Location} senderLocation
-   * @param {Location} receiverLocation
+   * @param {LocationModel} homeLocation
+   * @param {LocationModel} senderLocation
+   * @param {LocationModel} receiverLocation
    * @param {number} maxDistance
    * @return {number} - total route distance in kilometers
    */
   function validateRoute(
-      homeLocation: Location,
-      senderLocation: Location,
-      receiverLocation: Location,
+      homeLocation: LocationModel,
+      senderLocation: LocationModel,
+      receiverLocation: LocationModel,
       maxDistance: number,
   ): number {
     // Home location validation
@@ -123,13 +122,13 @@ export default function buildValidator({
      *
      * Reference: https://en.wikipedia.org/wiki/Haversine_formula
      *
-     * @param {Location} locationA
-     * @param {Location} locationB
+     * @param {LocationModel} locationA
+     * @param {LocationModel} locationB
      * @return {number} - distance between the locations in kilometers
      */
     function calculateDistance(
-        locationA: Location,
-        locationB: Location,
+        locationA: LocationModel,
+        locationB: LocationModel,
     ): number {
       const R = 6371; // 1 kilometer
       const toRad = (value: number) => value * Math.PI / 180;

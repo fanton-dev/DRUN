@@ -1,5 +1,3 @@
-import {ParamsDictionary} from 'express-serve-static-core';
-
 /**
  * Controller Request object structure.
  *
@@ -9,7 +7,7 @@ import {ParamsDictionary} from 'express-serve-static-core';
 export interface ControllerRequest {
   headers: any;
   body: any;
-  params?: ParamsDictionary;
+  params?: any;
   ip?: string;
   method?: string;
   path?: string;
