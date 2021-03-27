@@ -26,9 +26,10 @@ services:
     depends_on:
       - rabbitmq
     volumes:
+      - ./services/payment-service:/opt/app/services/payment-service
       - ./core:/opt/app/core
-      - ./services/payment-service:/opt/app
-      - /opt/app/node_modules
+      - /opt/app/core/node_modules
+      - /opt/app/services/payment-service/node_modules
 
   delivery-service:
     build:
@@ -57,9 +58,10 @@ services:
     ports:
       - 3003:3003
     volumes:
+      - ./services/logger-service:/opt/app/services/logger-service
       - ./core:/opt/app/core
-      - ./services/logger-service:/opt/app
-      - /opt/app/node_modules
+      - /opt/app/core/node_modules
+      - /opt/app/services/logger-service/node_modules
 
   users-service:
     build:
