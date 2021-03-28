@@ -1,9 +1,9 @@
 import {Knex} from 'knex';
 
 const up = function(knex: Knex) {
-  return knex.schema.createTable('person', (table) => {
+  return knex.schema.createTable('users', (table) => {
     table.uuid('id').primary();
-    table.string('phoneNumber').notNullable().unique();
+    table.string('phone_number').notNullable().unique();
     table.string('token').notNullable();
     table.timestamps(true, true);
   });

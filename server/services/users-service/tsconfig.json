@@ -6,9 +6,6 @@
     "baseUrl": ".",
     "outDir": "dist",
     "esModuleInterop": true,
-    // "emitDecoratorMetadata": true,
-    // "experimentalDecorators": true,
-    // "strictPropertyInitialization": false,
     "paths": {
       "@core/*": ["../../core/*"],
       "@src/*": ["./src/*"],

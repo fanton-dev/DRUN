@@ -51,12 +51,10 @@ export default function buildVerifyAuthenticationSms({
 
     const isNew = false;
     let userModel: UserExport;
-    let user = await database('users').where({phoneNumber: phoneNumber});
+    let user = await database('users').where({phone_number: phoneNumber});
+
     console.log(user);
-    userModel = makeUser({
-      phoneNumber,
-    });
-    if (!user) {
+    if (user.length === 0) {
       // Storing new user into the database.
       userModel = makeUser({
         phoneNumber,
@@ -64,8 +62,8 @@ export default function buildVerifyAuthenticationSms({
 
       user = await database('users').insert({
         id: userModel.getId(),
-        phoneNumber: userModel.getPhoneNumber,
-        token: userModel.getToken,
+        phone_number: userModel.getPhoneNumber(),
+        token: userModel.getToken(),
       });
 
       // Notifying logger for a registered user

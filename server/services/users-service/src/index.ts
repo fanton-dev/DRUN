@@ -3,12 +3,14 @@ import makeExpressCallback from '@core/controllers/express-callback';
 import sharedQueue from '@core/shared-queue';
 import controllers from '@src/controllers';
 import {isUserIdToTokenValid} from '@src/services';
+import bodyParser from 'body-parser';
 import config from 'config';
 import express from 'express';
 
 
-const apiRoot = config.get('API_ROOT');
+const apiRoot = <string> config.get('API_ROOT');
 const app = express();
+app.use(bodyParser.json());
 
 app.post(
     `${apiRoot}/users/authenticate/send-sms-code`,

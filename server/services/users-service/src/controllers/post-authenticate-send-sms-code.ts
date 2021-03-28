@@ -15,6 +15,7 @@ export default function buildPostAuthenticateSendSmsCode({
   return async function postAuthenticateSendSms(
       controllerRequest: ControllerRequest,
   ) {
+    console.log(controllerRequest.body);
     try {
       const authenticationSmsStatus = await sendAuthenticationSms(
           controllerRequest.body['phoneNumber'],
