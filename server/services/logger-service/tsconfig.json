@@ -1,16 +1,17 @@
 {
-    "compilerOptions": {
-      "target": "esnext",
-      "module": "commonjs",
-      "rootDir": ".",
-      "outDir": "dist",
-      "esModuleInterop": true,
-      "strict": true,
-      "allowJs": true
-    },
-    "ts-node": {
-      "files": true
-    },
-    "include": ["src"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "rootDir": "../..",
+    "baseUrl": ".",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "paths": {
+      "@core/*": ["../../core/*"],
+      "@src/*": ["./src/*"],
+      "@test/*": ["./test/*"],
+      "@root/*": ["./*"]
+    }
+  },
+  "exclude": ["node_modules/**", "**/*.spec.ts"]
 }
