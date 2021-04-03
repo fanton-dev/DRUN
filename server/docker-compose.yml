@@ -13,9 +13,10 @@ services:
     ports:
       - 3001:3001
     volumes:
+      - ./services/orders-service:/opt/app/services/orders-service
       - ./core:/opt/app/core
-      - ./services/orders-service:/opt/app
-      - /opt/app/node_modules
+      - /opt/app/core/node_modules
+      - /opt/app/services/orders-service/node_modules
 
   payment-service:
     build:
@@ -42,13 +43,14 @@ services:
     ports:
       - 3002:3002
     volumes:
+      - ./services/delivery-service:/opt/app/services/delivery-service
       - ./core:/opt/app/core
-      - ./services/delivery-service:/opt/app
-      - /opt/app/node_modules
+      - /opt/app/core/node_modules
+      - /opt/app/services/delivery-service/node_modules
 
   logger-service:
     build:
-      context: "./services/delivery-service"
+      context: "./services/logger-service"
     restart: "no"
     env_file:
       - .env

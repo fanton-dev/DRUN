@@ -15,5 +15,6 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "new-cap": 0
     }
 }
