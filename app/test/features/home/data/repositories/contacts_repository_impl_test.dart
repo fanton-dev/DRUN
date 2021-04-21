@@ -3,7 +3,7 @@ import 'package:DRUN/core/errors/exceptions.dart';
 import 'package:DRUN/core/errors/failures.dart';
 import 'package:DRUN/features/home/data/models/local_contact_model.dart';
 import 'package:DRUN/features/home/data/models/registered_contact_model.dart';
-import 'package:DRUN/features/home/data/respository/contacts_repository_impl.dart';
+import 'package:DRUN/features/home/data/repository/contacts_repository_impl.dart';
 import 'package:DRUN/features/home/data/sources/contacts_local_source.dart';
 import 'package:DRUN/features/home/data/sources/contacts_remote_source.dart';
 import 'package:DRUN/features/home/domain/entities/complete_contact.dart';

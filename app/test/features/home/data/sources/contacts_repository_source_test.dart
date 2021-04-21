@@ -4,7 +4,6 @@ import 'package:DRUN/core/constants/constants.dart';
 import 'package:DRUN/core/errors/exceptions.dart';
 import 'package:DRUN/features/home/data/models/registered_contact_model.dart';
 import 'package:DRUN/features/home/data/sources/contacts_remote_source.dart';
-import 'package:DRUN/features/home/domain/entities/registered_contact.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
