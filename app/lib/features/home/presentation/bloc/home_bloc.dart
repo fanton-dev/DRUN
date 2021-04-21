@@ -40,21 +40,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     if (event is HomeContactSelectedEvent) {
-      CompleteContact selectedContact = event.contacts
-          .where(
-            (element) => element.userId == event.selectedUserId,
-          )
-          .first;
+      try {
+        CompleteContact selectedContact = event.contacts
+            .where(
+              (element) => element.userId == event.selectedUserId,
+            )
+            .first;
 
-      if (selectedContact == null) {
-        Failure failure = new ContactSelectionFailure();
-        yield HomeFailureState(message: failure.message);
+        yield HomeContactSelectedState(
+          userCredentials: event.userCredentials,
+          selectedContact: selectedContact,
+        );
+      } on StateError {
+        yield HomeFailureState(message: ContactSelectionFailure().message);
       }
-
-      yield HomeContactSelectedState(
-        userCredentials: event.userCredentials,
-        selectedContact: selectedContact,
-      );
     }
   }
 
