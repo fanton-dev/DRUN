@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:meta/meta.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -9,7 +8,7 @@ import '../repositories/contacts_repository.dart';
 class GetContacts extends UseCase<List<CompleteContact>, NoParams> {
   final ContactsRepository repository;
 
-  GetContacts({@required this.repository}) : assert(repository != null);
+  GetContacts(this.repository) : assert(repository != null);
 
   @override
   Future<Either<Failure, List<CompleteContact>>> call(NoParams params) async {

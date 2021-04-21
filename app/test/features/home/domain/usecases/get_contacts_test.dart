@@ -15,7 +15,7 @@ void main() {
 
   setUp(() {
     mockContactsRepository = MockContactsRepository();
-    usecase = GetContacts(repository: mockContactsRepository);
+    usecase = GetContacts(mockContactsRepository);
   });
 
   final tLocalContacts = <LocalContact>[
