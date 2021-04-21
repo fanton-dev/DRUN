@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/authentication/domain/entities/user_credentials.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/pages.dart';
+import 'features/home/presentation/pages/pages.dart';
 import 'features/home/presentation/bloc/home_bloc.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
@@ -69,11 +70,13 @@ BlocProvider<HomeBloc> buildHome(UserCredentials userCredentials) {
     create: (_) => sl<HomeBloc>(),
     child: BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
+        print(state);
         if (state is HomeInitialState) {
           BlocProvider.of<HomeBloc>(context)
               .add(GetContactsEvent(userCredentials));
         } else if (state is HomeAuthenticatedState) {
-          return Placeholder();
+          print(state.contacts);
+          return HomePage();
         } else if (state is HomeFailureState) {
           return Placeholder();
         } else if (state is HomeContactSelectedState) {
