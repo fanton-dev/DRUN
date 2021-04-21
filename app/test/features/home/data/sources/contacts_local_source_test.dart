@@ -6,9 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockRequestContactsPermissions extends Mock {
-  Future<PermissionStatus> call();
-}
+class MockPermissionHandler extends Mock implements PermissionHandler {}
 
 class MockGetContacts extends Mock {
   Future<Iterable<Contact>> call();
@@ -16,14 +14,14 @@ class MockGetContacts extends Mock {
 
 void main() {
   ContactsLocalSourceImpl dataSource;
-  Future<PermissionStatus> Function() mockRequestContactsPermissions;
+  PermissionHandler mockPermissionHandler;
   Future<Iterable<Contact>> Function() mockGetContacts;
 
   setUp(() {
-    mockRequestContactsPermissions = MockRequestContactsPermissions();
+    mockPermissionHandler = MockPermissionHandler();
     mockGetContacts = MockGetContacts();
     dataSource = ContactsLocalSourceImpl(
-      requestContactsPermissions: mockRequestContactsPermissions,
+      permissionHandler: mockPermissionHandler,
       getContacts: mockGetContacts,
     );
   });
@@ -55,7 +53,7 @@ void main() {
       () async {
         // Arrange
         when(
-          mockRequestContactsPermissions(),
+          mockPermissionHandler.checkPermissionStatus(any),
         ).thenAnswer((_) async => PermissionStatus.granted);
         when(mockGetContacts()).thenAnswer((_) async => tLocalContactsRaw);
 
@@ -72,7 +70,7 @@ void main() {
       () async {
         // Arrange
         when(
-          mockRequestContactsPermissions(),
+          mockPermissionHandler.checkPermissionStatus(any),
         ).thenAnswer((_) async => PermissionStatus.denied);
 
         // Act

@@ -13,20 +13,32 @@ abstract class ContactsLocalSource {
 }
 
 class ContactsLocalSourceImpl implements ContactsLocalSource {
-  final Future<PermissionStatus> Function() requestContactsPermissions;
+  final PermissionHandler permissionHandler;
   final Future<Iterable<Contact>> Function() getContacts;
 
   ContactsLocalSourceImpl({
-    @required this.requestContactsPermissions,
+    @required this.permissionHandler,
     @required this.getContacts,
-  })  : assert(requestContactsPermissions != null),
+  })  : assert(permissionHandler != null),
         assert(getContacts != null);
 
   @override
   Future<List<LocalContactModel>> getLocalContactsFromAddressBook() async {
-    if (await requestContactsPermissions().isGranted) {
+    PermissionStatus permission = await permissionHandler.checkPermissionStatus(
+      PermissionGroup.contacts,
+    );
+
+    if (permission == PermissionStatus.granted) {
       final addressBook = await getContacts();
       return addressBook
+          .where((e) {
+            try {
+              e.phones.first;
+              return true;
+            } on StateError {
+              return false;
+            }
+          })
           .map((e) => LocalContactModel.fromContactsService(e))
           .toList();
     } else {
