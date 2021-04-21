@@ -41,7 +41,7 @@ void main() {
   });
 
   test(
-    'initialState should be AuthenticationInitial',
+    'initialState should be AuthenticationInitialState',
     () async {
       expect(bloc.initialState, AuthenticationInitialState());
     },

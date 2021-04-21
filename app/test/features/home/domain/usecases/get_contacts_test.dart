@@ -24,7 +24,7 @@ void main() {
     LocalContact(name: 'Oshte Gosho', phoneNumber: '+359888888888'),
   ];
 
-  final tRegisteredContacts = <CompleteContact>[
+  final tCompleteContacts = <CompleteContact>[
     CompleteContact(
       name: 'Gosho Losho',
       phoneNumber: '+359735780085',
@@ -60,13 +60,13 @@ void main() {
           .thenAnswer((_) async => Right(tLocalContacts));
 
       when(mockContactsRepository.getRegisteredUsersInLocalContacts(any))
-          .thenAnswer((_) async => Right(tRegisteredContacts));
+          .thenAnswer((_) async => Right(tCompleteContacts));
 
       // Act
       final result = await usecase(NoParams());
 
       // Assert
-      expect(result, Right(tRegisteredContacts));
+      expect(result, Right(tCompleteContacts));
       verify(mockContactsRepository.getRegisteredUsersInLocalContacts(
         tLocalContacts,
       ));
