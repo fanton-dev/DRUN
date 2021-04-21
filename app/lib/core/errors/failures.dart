@@ -36,6 +36,11 @@ class PermissionFailure extends Failure {
   String get message => 'Insufficient permissions.';
 }
 
+class ContactSelectionFailure extends Failure {
+  @override
+  String get message => 'Failure during contact selection.';
+}
+
 class PaymentCardFailure extends Failure {
   @override
   String get message => 'Invalid payment card information.';
