@@ -24,6 +24,7 @@ dependencies:
   permission_handler: ^4.4.0+hotfix.2
   pin_code_fields: ^6.1.0
   shared_preferences: ^0.5.3+4
+  stripe_payment: ^1.0.11
 
 dev_dependencies:
   flutter_test:
