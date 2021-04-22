@@ -10,9 +10,11 @@ import '../../../../fixtures/fixture_parser.dart';
 void main() {
   final tDeliveryOrderModel = DeliveryOrderModel(
     senderUserId: '4ade5874-c573-4c8f-b2b8-7db5fccd983b',
-    senderLocation: Location(latitude: 42.662388, longitude: 23.373416),
+    senderLocationCoordinates:
+        LocationCoordinates(latitude: 42.662388, longitude: 23.373416),
     receiverUserId: '35040675-6bdb-4d26-8d38-bc46bdeaf56f',
-    receiverLocation: Location(latitude: 42.652900, longitude: 23.354952),
+    receiverLocationCoordinates:
+        LocationCoordinates(latitude: 42.652900, longitude: 23.354952),
     paymentCardToken: 'tok_1IMSCX2eZvKYlo2CE3RnWinh',
   );
 

@@ -34,9 +34,9 @@ class OrdersRepositoryImpl implements OrdersRepository {
   }
 
   @override
-  Future<Either<Failure, Location>> getCurrentLocation() async {
+  Future<Either<Failure, LocationCoordinates>> getCurrentLocation() async {
     try {
-      final currentLocation = await localSource.getCurrentLocation();
+      final currentLocation = await localSource.getCurrentLocationCoordinates();
       return Right(currentLocation);
     } on PermissionException {
       return Left(PermissionFailure());

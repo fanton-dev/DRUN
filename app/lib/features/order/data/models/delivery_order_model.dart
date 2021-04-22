@@ -1,32 +1,32 @@
-import 'package:DRUN/features/order/domain/entities/location.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/entities/delivery_order.dart';
+import '../../domain/entities/location.dart';
 import 'location_model.dart';
 
 class DeliveryOrderModel extends DeliveryOrder {
   final String senderUserId;
-  final Location senderLocation;
+  final LocationCoordinates senderLocationCoordinates;
   final String receiverUserId;
-  final Location receiverLocation;
+  final LocationCoordinates receiverLocationCoordinates;
   final String paymentCardToken;
 
   DeliveryOrderModel({
     @required this.senderUserId,
-    @required this.senderLocation,
+    @required this.senderLocationCoordinates,
     @required this.receiverUserId,
-    @required this.receiverLocation,
+    @required this.receiverLocationCoordinates,
     @required this.paymentCardToken,
   })  : assert(senderUserId != null),
-        assert(senderLocation != null),
+        assert(senderLocationCoordinates != null),
         assert(receiverUserId != null),
-        assert(receiverLocation != null),
+        assert(receiverLocationCoordinates != null),
         assert(paymentCardToken != null),
         super(
           senderUserId: senderUserId,
-          senderLocation: senderLocation,
+          senderLocationCoordinates: senderLocationCoordinates,
           receiverUserId: receiverUserId,
-          receiverLocation: receiverLocation,
+          receiverLocationCoordinates: receiverLocationCoordinates,
           paymentCardToken: paymentCardToken,
         );
 
@@ -34,11 +34,15 @@ class DeliveryOrderModel extends DeliveryOrder {
     return {
       'sender': {
         'id': this.senderUserId,
-        'location': LocationModel.fromEntity(this.senderLocation).toJSON(),
+        'location': LocationCoordinatesModel.fromEntity(
+          this.senderLocationCoordinates,
+        ).toJSON(),
       },
       'receiver': {
         'id': this.receiverUserId,
-        'location': LocationModel.fromEntity(this.receiverLocation).toJSON(),
+        'location': LocationCoordinatesModel.fromEntity(
+          this.receiverLocationCoordinates,
+        ).toJSON(),
       },
       'paymentCardToken': this.paymentCardToken,
     };

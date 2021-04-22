@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-class Location extends Equatable {
+class LocationCoordinates extends Equatable {
   final num latitude;
   final num longitude;
 
-  Location({
+  LocationCoordinates({
     @required this.latitude,
     @required this.longitude,
   })  : assert(latitude != null),

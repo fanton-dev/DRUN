@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../fixtures/fixture_parser.dart';
 
 void main() {
-  final tLocationModel = LocationModel(
+  final tLocationCoordinatesModel = LocationCoordinatesModel(
     latitude: 42.662388,
     longitude: 23.373416,
   );
@@ -17,8 +17,8 @@ void main() {
     () async {
       // Assert
       expect(
-        tLocationModel,
-        isA<Location>(),
+        tLocationCoordinatesModel,
+        isA<LocationCoordinates>(),
       );
     },
   );
@@ -27,7 +27,7 @@ void main() {
     'should convert to JSON',
     () async {
       // Act
-      final result = tLocationModel.toJSON();
+      final result = tLocationCoordinatesModel.toJSON();
 
       // Assert
       expect(result, json.decode(fixture('location.json')));

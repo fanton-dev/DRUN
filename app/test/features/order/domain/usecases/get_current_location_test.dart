@@ -9,15 +9,18 @@ import 'package:mockito/mockito.dart';
 class MockOrderRepository extends Mock implements OrdersRepository {}
 
 void main() {
-  GetCurrentLocation usecase;
+  GetCurrentLocationCoordinates usecase;
   MockOrderRepository mockOrderRepository;
 
   setUp(() {
     mockOrderRepository = MockOrderRepository();
-    usecase = GetCurrentLocation(ordersRepository: mockOrderRepository);
+    usecase = GetCurrentLocationCoordinates(
+      ordersRepository: mockOrderRepository,
+    );
   });
 
-  final tLocation = Location(latitude: 42.662388, longitude: 23.373416);
+  final tLocation =
+      LocationCoordinates(latitude: 42.662388, longitude: 23.373416);
 
   test(
     'should get current location from the repository',

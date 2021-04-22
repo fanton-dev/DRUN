@@ -5,21 +5,21 @@ import 'location.dart';
 
 class DeliveryOrder extends Equatable {
   final String senderUserId;
-  final Location senderLocation;
+  final LocationCoordinates senderLocationCoordinates;
   final String receiverUserId;
-  final Location receiverLocation;
+  final LocationCoordinates receiverLocationCoordinates;
   final String paymentCardToken;
 
   DeliveryOrder({
     @required this.senderUserId,
-    @required this.senderLocation,
+    @required this.senderLocationCoordinates,
     @required this.receiverUserId,
-    @required this.receiverLocation,
+    @required this.receiverLocationCoordinates,
     @required this.paymentCardToken,
   })  : assert(senderUserId != null),
-        assert(senderLocation != null),
+        assert(senderLocationCoordinates != null),
         assert(receiverUserId != null),
-        assert(receiverLocation != null),
+        assert(receiverLocationCoordinates != null),
         assert(paymentCardToken != null);
 
   @override
@@ -27,7 +27,7 @@ class DeliveryOrder extends Equatable {
         senderUserId,
         receiverUserId,
         receiverUserId,
-        receiverLocation,
+        receiverLocationCoordinates,
         paymentCardToken,
       ];
 }

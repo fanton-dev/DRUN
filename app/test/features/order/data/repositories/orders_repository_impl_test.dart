@@ -33,13 +33,16 @@ void main() {
     );
   });
 
-  final tLocation = Location(latitude: 42.662388, longitude: 23.373416);
+  final tLocationCoordinates =
+      LocationCoordinates(latitude: 42.662388, longitude: 23.373416);
   final tPaymentCardToken = '4ade5874-c573-4c8f-b2b8-7db5fccd983b';
   final tDeliveryOrderModel = DeliveryOrderModel(
     senderUserId: '4ade5874-c573-4c8f-b2b8-7db5fccd983b',
-    senderLocation: Location(latitude: 42.662388, longitude: 23.373416),
+    senderLocationCoordinates:
+        LocationCoordinates(latitude: 42.662388, longitude: 23.373416),
     receiverUserId: '35040675-6bdb-4d26-8d38-bc46bdeaf56f',
-    receiverLocation: Location(latitude: 42.652900, longitude: 23.354952),
+    receiverLocationCoordinates:
+        LocationCoordinates(latitude: 42.652900, longitude: 23.354952),
     paymentCardToken: 'tok_1IMSCX2eZvKYlo2CE3RnWinh',
   );
   final tDeliveryOrderId = '905c801d-c0cc-47db-851e-9b1aaf3adb13';
@@ -87,16 +90,16 @@ void main() {
       'should return current device location',
       () async {
         // Arrange
-        when(mockOrdersLocalSource.getCurrentLocation())
-            .thenAnswer((_) async => tLocation);
+        when(mockOrdersLocalSource.getCurrentLocationCoordinates())
+            .thenAnswer((_) async => tLocationCoordinates);
 
         // Act
         final result = await repository.getCurrentLocation();
 
         // Assert
-        verify(mockOrdersLocalSource.getCurrentLocation());
+        verify(mockOrdersLocalSource.getCurrentLocationCoordinates());
         verifyZeroInteractions(mockOrdersRemoteSource);
-        expect(result, Right(tLocation));
+        expect(result, Right(tLocationCoordinates));
       },
     );
 
@@ -104,14 +107,14 @@ void main() {
       'should return permission failure when local contacts cannot be loaded',
       () async {
         // Arrange
-        when(mockOrdersLocalSource.getCurrentLocation())
+        when(mockOrdersLocalSource.getCurrentLocationCoordinates())
             .thenThrow(PermissionException());
 
         // Act
         final result = await repository.getCurrentLocation();
 
         // Assert
-        verify(mockOrdersLocalSource.getCurrentLocation());
+        verify(mockOrdersLocalSource.getCurrentLocationCoordinates());
         verifyZeroInteractions(mockOrdersRemoteSource);
         expect(result, Left(PermissionFailure()));
       },

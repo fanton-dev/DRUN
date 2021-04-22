@@ -5,7 +5,7 @@ import '../entities/delivery_order.dart';
 import '../entities/location.dart';
 
 abstract class OrdersRepository {
-  Future<Either<Failure, Location>> getCurrentLocation();
+  Future<Either<Failure, LocationCoordinates>> getCurrentLocation();
 
   Future<Either<Failure, String>> getPaymentCardToken();
 
