@@ -1,3 +1,4 @@
+import 'package:location/location.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/entities/location.dart';
@@ -19,6 +20,15 @@ class LocationCoordinatesModel extends LocationCoordinates {
     return LocationCoordinatesModel(
       latitude: locationCoordinates.latitude,
       longitude: locationCoordinates.longitude,
+    );
+  }
+
+  factory LocationCoordinatesModel.fromLocationService(
+    LocationData locationData,
+  ) {
+    return LocationCoordinatesModel(
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
     );
   }
 

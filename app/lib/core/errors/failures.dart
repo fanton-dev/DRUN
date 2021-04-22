@@ -41,6 +41,11 @@ class ContactSelectionFailure extends Failure {
   String get message => 'Failure during contact selection.';
 }
 
+class LocationFailure extends Failure {
+  @override
+  String get message => 'Location service failure.';
+}
+
 class PaymentCardFailure extends Failure {
   @override
   String get message => 'Invalid payment card information.';
