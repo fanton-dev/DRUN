@@ -1,5 +1,6 @@
 import 'package:DRUN/core/errors/exceptions.dart';
 import 'package:DRUN/features/order/data/models/location_model.dart';
+import 'package:meta/meta.dart';
 import 'package:location/location.dart';
 
 import '../../domain/entities/location.dart';
@@ -13,10 +14,12 @@ abstract class OrdersLocalSource {
 }
 
 class OrdersLocalSourceImpl implements OrdersLocalSource {
+  final Location location;
+
+  OrdersLocalSourceImpl({@required this.location});
+
   @override
   Future<LocationCoordinates> getCurrentLocationCoordinates() async {
-    Location location = new Location();
-
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
     LocationData _locationData;
