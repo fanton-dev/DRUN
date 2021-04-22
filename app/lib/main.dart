@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'core/presentation/pages/pages.dart';
 import 'features/authentication/domain/entities/user_credentials.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/pages.dart';
-import 'features/home/presentation/pages/pages.dart';
 import 'features/home/presentation/bloc/home_bloc.dart';
+import 'features/home/presentation/pages/pages.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 import 'theme.dart';
@@ -74,11 +75,14 @@ BlocProvider<HomeBloc> buildHome(UserCredentials userCredentials) {
         if (state is HomeInitialState) {
           BlocProvider.of<HomeBloc>(context)
               .add(GetContactsEvent(userCredentials));
+          return LoadingPage();
         } else if (state is HomeAuthenticatedState) {
-          print(state.contacts);
-          return HomePage();
+          return HomePage(
+            userCredentials: state.userCredentials,
+            contacts: state.contacts,
+          );
         } else if (state is HomeFailureState) {
-          return Placeholder();
+          return HomeFailurePage(error: state.message);
         } else if (state is HomeContactSelectedState) {
           return Placeholder();
         }
