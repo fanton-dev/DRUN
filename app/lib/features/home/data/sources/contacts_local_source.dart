@@ -24,11 +24,12 @@ class ContactsLocalSourceImpl implements ContactsLocalSource {
 
   @override
   Future<List<LocalContactModel>> getLocalContactsFromAddressBook() async {
-    PermissionStatus permission = await permissionHandler.checkPermissionStatus(
+    Map<PermissionGroup, PermissionStatus> permissions;
+    permissions = await permissionHandler.requestPermissions([
       PermissionGroup.contacts,
-    );
+    ]);
 
-    if (permission == PermissionStatus.granted) {
+    if (permissions[PermissionGroup.contacts] == PermissionStatus.granted) {
       final addressBook = await getContacts();
       return addressBook
           .where((e) {
