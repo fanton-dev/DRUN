@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:meta/meta.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -10,9 +9,9 @@ class GetCurrentLocationCoordinates
     extends UseCase<LocationCoordinates, NoParams> {
   final OrdersRepository ordersRepository;
 
-  GetCurrentLocationCoordinates({
-    @required this.ordersRepository,
-  }) : assert(ordersRepository != null);
+  GetCurrentLocationCoordinates(
+    this.ordersRepository,
+  ) : assert(ordersRepository != null);
 
   @override
   Future<Either<Failure, LocationCoordinates>> call(NoParams params) async {
