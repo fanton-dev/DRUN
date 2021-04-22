@@ -13,7 +13,7 @@ void main() {
 
   setUp(() {
     mockOrderRepository = MockOrderRepository();
-    usecase = GetPaymentCardToken(ordersRepository: mockOrderRepository);
+    usecase = GetPaymentCardToken(mockOrderRepository);
   });
 
   final tPaymentCardToken = 'tok_1IMSCX2eZvKYlo2CE3RnWinh';

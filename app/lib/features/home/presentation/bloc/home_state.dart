@@ -9,6 +9,12 @@ abstract class HomeState extends Equatable {
 
 class HomeInitialState extends HomeState {}
 
+class HomeFailureState extends HomeState {
+  final String message;
+
+  HomeFailureState({@required this.message});
+}
+
 class HomeAuthenticatedState extends HomeState {
   final UserCredentials userCredentials;
   final List<CompleteContact> contacts;
@@ -17,12 +23,6 @@ class HomeAuthenticatedState extends HomeState {
     @required this.userCredentials,
     @required this.contacts,
   });
-}
-
-class HomeFailureState extends HomeState {
-  final String message;
-
-  HomeFailureState({@required this.message});
 }
 
 class HomeContactSelectedState extends HomeState {

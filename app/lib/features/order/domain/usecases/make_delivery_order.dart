@@ -10,9 +10,9 @@ import '../repositories/orders_repository.dart';
 class MakeDeliveryOrder extends UseCase<String, DeliveryOrderParams> {
   final OrdersRepository ordersRepository;
 
-  MakeDeliveryOrder({
-    @required this.ordersRepository,
-  }) : assert(ordersRepository != null);
+  MakeDeliveryOrder(
+    this.ordersRepository,
+  ) : assert(ordersRepository != null);
 
   @override
   Future<Either<Failure, String>> call(DeliveryOrderParams params) async {

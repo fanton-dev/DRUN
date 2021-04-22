@@ -14,7 +14,7 @@ void main() {
 
   setUp(() {
     mockOrderRepository = MockOrderRepository();
-    usecase = MakeDeliveryOrder(ordersRepository: mockOrderRepository);
+    usecase = MakeDeliveryOrder(mockOrderRepository);
   });
 
   final tDeliveryOrder = DeliveryOrder(
