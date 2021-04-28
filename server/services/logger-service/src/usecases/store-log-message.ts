@@ -1,7 +1,7 @@
 import {
   OrderLogsDatabaseController,
   QueueMessage,
-} from '../../core/@types/global';
+} from '../../../core/@types/global';
 
 /**
  * Stores a log message in the database corespondent database table.

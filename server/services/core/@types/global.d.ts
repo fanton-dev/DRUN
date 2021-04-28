@@ -5,6 +5,13 @@ import {QueryConfig, QueryResult, QueryResultRow} from 'pg';
 import * as Bluebird from 'bluebird';
 import Stripe from 'stripe';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
+import Twilio from 'twilio';
+import {
+  VerificationInstance,
+} from 'twilio/lib/rest/verify/v2/service/verification';
+import {
+  VerificationCheckInstance,
+} from 'twilio/lib/rest/verify/v2/service/verificationCheck';
 
 /**
  * Validator object structure.
@@ -322,6 +329,38 @@ export interface DeliveryDatabaseSchema {
 /* eslint-enable camelcase */
 
 /**
+ * User object database schema.
+ *
+ * @export
+ * @interface User
+ */
+export interface User {
+  id?: string;
+  token?: string;
+  phoneNumber: string;
+}
+
+/**
+ * User export object database schema.
+ *
+ * @export
+ * @interface UserExport
+ */
+export interface UserExport {
+  getId(): string;
+  getToken(): string;
+  getPhoneNumber(): string;
+}
+
+/* eslint-disable camelcase */
+export interface UserDatabaseSchema {
+  id: string;
+  token: string;
+  phone_number: string;
+}
+/* eslint-enable camelcase */
+
+/**
  * HTTP Request object structure.
  *
  * @exports
@@ -556,6 +595,22 @@ export interface OrderLogsDatabaseController {
   }: QueueMessage<any>): Promise<{ id: string } | { error: string; }>;
 }
 
+export interface UserDatabaseController {
+  insert({
+    id,
+    token,
+    phoneNumber,
+  }: User): Promise<{ id: string }>;
+
+  findById(
+    userId: string,
+  ): Promise<User>;
+
+  findByPhoneNumber(
+    phoneNumber: string,
+  ): Promise<User>;
+}
+
 /**
  * Database Query Results object structure.
  *
@@ -627,4 +682,61 @@ export interface RequestLibrary {
     data?: any,
     config?: AxiosRequestConfig
   ): Promise<R>;
+}
+
+/**
+ * SMS Client object structure.
+ *
+ * @export
+ * @interface SMSClient
+ */
+export interface SMSClient {
+  verify: Twilio.Twilio['verify'];
+}
+
+/**
+ * SMS Verification Instance object structure.
+ *
+ * @export
+ * @interface SMSVerificationInstance
+ * @extends {VerificationInstance}
+ */
+export interface SMSVerificationInstance extends VerificationInstance {}
+
+/**
+ * SMS Verification Instance object structure.
+ *
+ * @export
+ * @interface SMSVerificationInstance
+ * @extends {VerificationInstance}
+ */
+export interface SMSVerificationCheckInstance
+extends VerificationCheckInstance {}
+
+/**
+ * SMS API object structure.
+ *
+ * @export
+ * @interface SMSApi
+ */
+export interface SMSApi {
+  sendCode(
+    phoneNumber: string,
+    channel: 'sms' | 'call',
+): Promise<SMSVerificationInstance>;
+
+  verifyCode(
+    phoneNumber: string,
+    code: string,
+  ): Promise<SMSVerificationCheckInstance>;
+}
+
+export interface UserTokenVerificationRequest {
+  id: string;
+  token: string;
+}
+
+export interface UserTokenVerificationResponse
+extends UserTokenVerificationRequest {
+  isValid: boolean;
 }

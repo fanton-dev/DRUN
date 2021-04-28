@@ -6,6 +6,9 @@ const config = Object.freeze({
   postgresUser: String(process.env.POSTGRES_USER),
   postgresPassword: String(process.env.POSTGRES_PASSWORD),
   stripeSecretKey: String(process.env.STRIPE_SECRET_KEY),
+  twilioServiceId: String(process.env.TWILIO_SERVICE_ID),
+  twilioAccountSid: String(process.env.TWILIO_ACCOUNT_SID),
+  twilioAuthToken: String(process.env.TWILIO_AUTH_TOKEN),
 
   rabbitMqUrl: String(process.env.RABBITMQ_URL),
   rabbitMqUrlTest: String(process.env.RABBITMQ_URL_TEST),
@@ -21,6 +24,7 @@ const config = Object.freeze({
   apiRoot: String(process.env.API_ROOT),
 
   rabbitReconnectInterval: String(process.env.RABBIT_RECONNECT_INTERVAL),
+  inboundOrderServiceQueue: String(process.env.INBOUND_ORDER_SERVICE_QUEUE),
   inboundPaymentServiceQueue: String(process.env.INBOUND_PAYMENT_SERVICE_QUEUE),
   inboundDeliveryServiceQueue: String(
       process.env.INBOUND_DELIVERY_SERVICE_QUEUE,

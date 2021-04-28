@@ -44,7 +44,7 @@ export default function buildCreateOrder({
         config.inboundLoggerServiceQueue,
       ], {
         subject: 'ORDER_DECLINED',
-        body: e.message,
+        body: {orderId: orderInfo.id, error: e.message},
       });
       throw e;
     }

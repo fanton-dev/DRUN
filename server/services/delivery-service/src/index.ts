@@ -44,7 +44,7 @@ setTimeout(() => sharedQueue.listen(
           break;
       }
     },
-), 10000);
+), 20000);
 
 
 app.listen(3002, () => {

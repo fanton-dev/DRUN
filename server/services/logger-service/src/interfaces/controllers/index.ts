@@ -1,6 +1,6 @@
 import {retrieveOrderLogs} from '../../usecases';
 import makeGetOrderLogs from './get-order-logs';
-import notFound from '../../../core/interfaces/controllers/not-found';
+import notFound from '../../../../core/interfaces/controllers/not-found';
 
 const getOrderLogs = makeGetOrderLogs({retrieveOrderLogs});
 

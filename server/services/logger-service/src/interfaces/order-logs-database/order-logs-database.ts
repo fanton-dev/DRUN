@@ -5,7 +5,7 @@ import {
   OrderDatabaseSchema,
   QueueMessage,
   OrderLogsDatabaseSchema,
-} from '../../../core/@types/global';
+} from '../../../../core/@types/global';
 
 /**
  * Database interactions interface.
@@ -40,7 +40,7 @@ export default function makeOrdersDatabase({
   ): Promise<Array<any> | { error: string; }> {
     const resultRows: void | DatabaseQueryResults<OrderLogsDatabaseSchema> =
     await databaseClient.query(`
-      SELECT (subject, body) FROM ${databaseTable} WHERE order_id = $1
+      SELECT * FROM ${databaseTable} WHERE order_id = $1
     `, [orderId],
     ).catch((e: Error) => console.log(e));
 
@@ -58,7 +58,7 @@ export default function makeOrdersDatabase({
   /**
    * Inserts an entry in the database.
    *
-   * @param {OrderWithoutPaymentCard} {
+   * @param {QueueMessage<any>} {
    *     subject,
    *     body,
    *   } - message to be logged

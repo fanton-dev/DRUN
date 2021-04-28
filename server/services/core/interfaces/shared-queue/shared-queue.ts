@@ -30,16 +30,17 @@ export default function makeSharedQueue({
       queueNames: Array<string>,
       message: QueueMessage<T>,
   ): Promise<void> {
-    const connection = await queueLibrary.connect(queueUrl);
-    const channel = await connection.createChannel();
-    Promise.all(queueNames.map(async (queueName) => {
+    queueNames.forEach(async (queueName) => {
+      const connection = await queueLibrary.connect(queueUrl);
+      const channel = await connection.createChannel();
       await channel.assertQueue(queueName, {durable: true});
-      await channel.sendToQueue(
+      channel.sendToQueue(
           queueName,
           Buffer.from(JSON.stringify(message)),
           {persistent: true},
       );
-    })).then(async () => await connection.close());
+      setTimeout(async () => await connection.close(), 500);
+    });
   }
 
   /**

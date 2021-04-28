@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
-    id UUID PRIMARY KEY,
-    phone_number TEXT NOT NULL,
-    joined_on TIMESTAMPTZ NOT NULL
+  id UUID PRIMARY KEY,
+  token TEXT NOT NULL UNIQUE,
+  phone_number TEXT NOT NULL UNIQUE
 );
 
 -- TO-DO REFERENCES users(id)

@@ -1,6 +1,6 @@
 import {Pool as PostgresPool} from 'pg';
-import makeOrderLogsDatabase from './order-logs-database';
-import config from '../../../core/config';
+import makeOrdersDatabase from './users-database';
+import config from '../../../../core/config';
 
 const databasePool = new PostgresPool({
   host: config.postgresUrl,
@@ -10,9 +10,9 @@ const databasePool = new PostgresPool({
   database: config.postgresDb,
 });
 
-const orderLogsDatabase = makeOrderLogsDatabase({
+const ordersDatabase = makeOrdersDatabase({
   databaseClient: databasePool,
-  databaseTable: 'order_logs',
+  databaseTable: 'users',
 });
 
-export default orderLogsDatabase;
+export default ordersDatabase;

@@ -69,9 +69,9 @@ export default function buildCreatePayment({
         config.inboundLoggerServiceQueue,
       ], {
         subject: 'PAYMENT_DECLINED',
-        body: e.message,
+        body: {orderId: orderInfo.id, error: e.message},
       });
-      throw e;
+      return;
     }
 
     // Normalizing the entity
