@@ -1,62 +1,94 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:DRUN/screens/setup.dart';
-import 'package:DRUN/screens/home.dart';
+import 'core/presentation/pages/pages.dart';
+import 'features/authentication/domain/entities/user_credentials.dart';
+import 'features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'features/authentication/presentation/pages/pages.dart';
+import 'features/home/presentation/bloc/home_bloc.dart';
+import 'features/home/presentation/pages/pages.dart';
+import 'injection_container.dart' as di;
+import 'injection_container.dart';
+import 'theme.dart';
 
-void main() => runApp(DRUN());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
+  runApp(MyApp());
+}
 
-class DRUN extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    debugPaintSizeEnabled = false;
     return MaterialApp(
       title: 'DRUN',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        accentColor: Colors.indigoAccent,
+      theme: buildLightThemeData(),
+      darkTheme: buildDarkThemeData(),
+      themeMode: ThemeMode.system,
+      home: SafeArea(
+        child: Scaffold(body: buildAuthentication(context)),
       ),
-      home: App(),
     );
   }
 }
 
-class App extends StatefulWidget {
-  App({Key key}) : super(key: key);
-
-  @override
-  _AppState createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
-  FirebaseUser user;
-
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
-
-  Future<FirebaseUser> getCurrentUser() async {
-    FirebaseUser _user = await _firebaseAuth.currentUser();
-    return _user;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getCurrentUser(),
-      builder: (context, AsyncSnapshot<FirebaseUser> userSnapshot) {
-        if (userSnapshot.hasData) {
-          return HomeScreen(
-            user: userSnapshot.data,
+BlocProvider<AuthenticationBloc> buildAuthentication(BuildContext context) {
+  return BlocProvider(
+    create: (_) => sl<AuthenticationBloc>(),
+    child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      builder: (context, state) {
+        if (state is AuthenticationInitialState) {
+          return InitialPage();
+        } else if (state is AuthenticationLoadingState) {
+          return LoadingPage();
+        } else if (state is AuthenticationPhoneInputState) {
+          return PhoneInputPage();
+        } else if (state is AuthenticationPhoneInputErrorState) {
+          return PhoneInputPage(error: state.message);
+        } else if (state is AuthenticationCodeInputState) {
+          return CodeInputPage(
+            phoneNumber: state.authenticationSmsStatus.phoneNumber,
           );
-        } else {
-          return SetupScreen();
+        } else if (state is AuthenticationCodeInputErrorState) {
+          return CodeInputPage(
+            phoneNumber: state.phoneNumber,
+            error: state.message,
+          );
+        } else if (state is AuthenticationSuccessfulState) {
+          return buildHome(state.userCredentials);
         }
+
+        return Placeholder();
       },
-    );
-  }
+    ),
+  );
+}
+
+BlocProvider<HomeBloc> buildHome(UserCredentials userCredentials) {
+  return BlocProvider(
+    create: (_) => sl<HomeBloc>(),
+    child: BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        print(state);
+        if (state is HomeInitialState) {
+          BlocProvider.of<HomeBloc>(context)
+              .add(GetContactsEvent(userCredentials));
+          return LoadingPage();
+        } else if (state is HomeAuthenticatedState) {
+          return HomePage(
+            userCredentials: state.userCredentials,
+            contacts: state.contacts,
+          );
+        } else if (state is HomeFailureState) {
+          return HomeFailurePage(error: state.message);
+        } else if (state is HomeContactSelectedState) {
+          return Placeholder();
+        }
+
+        return Placeholder();
+      },
+    ),
+  );
 }
