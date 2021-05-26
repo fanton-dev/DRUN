@@ -23,7 +23,7 @@ export default function buildStoreLogMessage({
       case 'DELIVERY_DECLINED':
       case 'DELIVERY_COMPLETE':
       case 'DELIVERY_FAILED': {
-        return await database.insert({
+        return await database('order_logs').insert({
           orderId: message.body.orderId,
           subject: message.subject,
         });

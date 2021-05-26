@@ -11,7 +11,7 @@ import {PaymentModel} from '@core/@types/models';
  * } - dependency injection
  * @return {Function}
  */
-export default function buildMakePayment({
+export default function buildPayment({
   validator,
   generateIdentifier,
 }: {validator: Validator, generateIdentifier: () => string}): Function {
@@ -22,7 +22,7 @@ export default function buildMakePayment({
     createdOn = Date.now(),
     completedOn = undefined,
   }: PaymentModel): PaymentExport {
-    // Payment card validation
+    // Identifier validation
     validator.validateIdentifier(orderId);
 
     // TODO: paymentCardToken validation

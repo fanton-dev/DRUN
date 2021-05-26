@@ -1,5 +1,5 @@
 import {
-  DeliveryExport, DroneExport, LocationExport, Validator
+  DeliveryExport, DroneExport, LocationExport, Validator,
 } from '@core/@types/entity-exports';
 import {DeliveryModel} from '@core/@types/models';
 

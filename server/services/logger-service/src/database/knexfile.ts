@@ -9,7 +9,7 @@ export default {
       host: <string> process.env.POSTGRES_HOST,
       user: <string> process.env.POSTGRES_USER,
       password: <string> process.env.POSTGRES_PASSWORD,
-      database: <string> process.env.POSTGRES_DB_LOGS_SERVICE,
+      database: <string> process.env.POSTGRES_DB_LOGGER_SERVICE,
     },
     pool: {
       min: 2,
@@ -26,7 +26,7 @@ export default {
       host: <string> process.env.POSTGRES_HOST,
       user: <string> process.env.POSTGRES_USER,
       password: <string> process.env.POSTGRES_PASSWORD,
-      database: <string> process.env.POSTGRES_DB_LOGS_SERVICE,
+      database: <string> process.env.POSTGRES_DB_LOGGER_SERVICE,
     },
     pool: {
       min: 2,

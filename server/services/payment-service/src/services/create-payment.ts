@@ -2,11 +2,12 @@ import {PaymentExport} from '@core/@types/entity-exports';
 import {OrderModel} from '@core/@types/models';
 import {PaymentApi} from '@core/@types/payment-api';
 import {SharedQueue} from '@core/@types/shared-queue';
+import makePayment from '@src/payment';
 import config from 'config';
 
 /**
- * Handles a user payment from a credit/debit card, stores data about the
- * payment and notifies the delivery service about it.
+ * Handles a user payment from a credit/debit card and notifies
+ * the delivery service about it.
  *
  * @export
  * @param {{
@@ -34,6 +35,11 @@ export default function buildCreatePayment({
     let payment: PaymentExport;
 
     try {
+      payment = makePayment({
+        orderId: orderInfo.id,
+        paymentCardToken: orderInfo.paymentCardToken,
+      });
+
       await paymentApi.charge(
           payment.getPaymentCardToken(),
           `DRUN Delivery shipping tax (${payment.getOrderId()}).`,

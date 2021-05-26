@@ -9,7 +9,9 @@ import {ControllerRequest} from '@core/@types/controllers';
  */
 export default function buildGetOrder({
   retrieveOrder,
-}: {retrieveOrder: Function}): Function {
+}: {
+  retrieveOrder: Function
+}): (controllerRequest: ControllerRequest) => object {
   return async function getOrder(controllerRequest: ControllerRequest) {
     try {
       const orderId = controllerRequest.params?.id;

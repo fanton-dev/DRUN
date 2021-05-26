@@ -12,7 +12,7 @@ import {Knex} from 'knex';
 export default function buildRetrieveOrderLogs({
   database,
 }: {database: Knex}): Function {
-  return async function retrieveOrder(orderId: string) {
+  return async function retrieveOrderLogs(orderId: string) {
     return await database.where({orderId: orderId});
   };
 }

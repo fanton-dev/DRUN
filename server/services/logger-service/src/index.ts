@@ -14,7 +14,7 @@ app.get(`${apiRoot}/logs/order`, makeExpressCallback(getOrderLogs));
 app.use(makeExpressCallback(notFound));
 
 setTimeout(() => sharedQueue.listen(
-    config.inboundLoggerServiceQueue,
+    config.get('INBOUND_LOGGER_SERVICE_QUEUE'),
     async (message: QueueMessage<any>) => storeLogMessage(message),
 ), 20000);
 

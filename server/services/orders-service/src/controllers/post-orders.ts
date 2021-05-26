@@ -11,12 +11,15 @@ import {ControllerRequest} from '@core/@types/controllers';
  */
 export default function buildPostOrder({
   createOrder,
-}: {createOrder: Function}): Function {
+}: {
+  createOrder: Function
+}): (controllerRequest: ControllerRequest) => object {
   return async function postOrder(controllerRequest: ControllerRequest) {
     try {
       const {source = {}, ...orderInfo} = controllerRequest.body;
       source.ip = controllerRequest.ip;
       source.browser = controllerRequest.headers['User-Agent'];
+
       if (controllerRequest.headers['Referer']) {
         source.referrer = controllerRequest.headers['Referer'];
       }

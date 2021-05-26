@@ -4,7 +4,7 @@ import makeExpressCallback from '@core/controllers/express-callback';
 import sharedQueue from '@core/shared-queue';
 import {
   deleteDrone,
-  notFound, postCompleteDelivery, postDrone
+  notFound, postCompleteDelivery, postDrone,
 } from '@src/controllers';
 import {createDelivery} from '@src/services';
 import bodyParser from 'body-parser';

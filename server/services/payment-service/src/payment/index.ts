@@ -1,8 +1,8 @@
 import validator from '@core/validator';
 import {v4 as uuidv4} from 'uuid';
-import buildMakePayment from './payment';
+import buildPayment from './payment';
 
-const makePayment = buildMakePayment({
+const makePayment = buildPayment({
   validator: validator,
   generateIdentifier: uuidv4,
 });

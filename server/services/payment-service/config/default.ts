@@ -8,3 +8,6 @@ export const RABBITMQ_URL = process.env.RABBITMQ_URL;
 
 export const INBOUND_PAYMENT_SERVICE_QUEUE =
     process.env.INBOUND_PAYMENT_SERVICE_QUEUE;
+
+export const INBOUND_LOGGER_SERVICE_QUEUE =
+    process.env.INBOUND_LOGGER_SERVICE_QUEUE;

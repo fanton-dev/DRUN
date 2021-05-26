@@ -17,7 +17,7 @@ import {UserModel} from '@core/@types/models';
  * } - dependency injection
  * @return {Function}
  */
-export default function buildMakeUser({
+export default function buildUser({
   validator,
   generateIdentifier,
   generateToken,
