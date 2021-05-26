@@ -39,7 +39,7 @@ export default function buildCompleteDelivery({
       // To-do update order in the database
     } catch (e) {
       sharedQueue.emit([
-        config.inboundLoggerServiceQueue,
+        config.get('INBOUND_LOGGER_SERVICE_QUEUE'),
       ], {
         subject: 'DELIVERY_FAILED',
         body: {orderId: deliveryId, error: e.message},
@@ -49,7 +49,7 @@ export default function buildCompleteDelivery({
 
     // Notifying the logger service on success
     sharedQueue.emit([
-      config.inboundLoggerServiceQueue,
+      config.get('INBOUND_LOGGER_SERVICE_QUEUE'),
     ], {
       subject: 'DELIVERY_COMPLETE',
       body: {orderId: deliveryId},

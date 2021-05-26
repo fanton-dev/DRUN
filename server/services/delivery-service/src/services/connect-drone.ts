@@ -41,7 +41,7 @@ export default function buildConnectDrone({
       connectedDronesList.push(drone);
     } catch (e) {
       sharedQueue.emit([
-        config.inboundLoggerServiceQueue,
+        config.get('INBOUND_LOGGER_SERVICE_QUEUE'),
       ], {
         subject: 'DRONE_DENIED',
         body: {error: e.message},
@@ -51,7 +51,7 @@ export default function buildConnectDrone({
 
     // Notifying the logger service on success
     sharedQueue.emit([
-      config.inboundLoggerServiceQueue,
+      config.get('INBOUND_LOGGER_SERVICE_QUEUE'),
     ], {
       subject: 'DRONE_CONNECTED',
       body: {id: drone.getId(), droneInfo},

@@ -1,6 +1,6 @@
 import {DroneExport} from '@core/@types/entity-exports';
 import {SharedQueue} from '@core/@types/shared-queue';
-import {config} from 'config';
+import config from 'config';
 
 /**
  * Disconnects a drone from the server.
@@ -36,7 +36,7 @@ export default function buildDisconnectDrone({
       )[0];
     } catch (e) {
       sharedQueue.emit([
-        config.inboundLoggerServiceQueue,
+        config.get('INBOUND_LOGGER_SERVICE_QUEUE'),
       ], {
         subject: 'DRONE_NOTFOUND',
         body: {error: e.message},
