@@ -1,7 +1,7 @@
+import {DeliveryModel} from '@core/@types/models';
+import makeDrone from '@src/drone';
 import {v4 as uuidv4} from 'uuid';
 import makeFakeDrone from './drone';
-import makeDrone from '../../src/entities/drone';
-import {Delivery} from '../../../core/@types/global';
 
 /**
  * Provides a builder for fake testing delivery entities.
@@ -10,7 +10,7 @@ import {Delivery} from '../../../core/@types/global';
  * @param {object} [overrides] - data override for fake delivery
  * @return {Delivery} - fake delivery object
  */
-export default function makeFakeDelivery(overrides?: object): Delivery {
+export default function makeFakeDelivery(overrides?: object): DeliveryModel {
   const delivery = {
     orderId: uuidv4(),
     drone: makeDrone(makeFakeDrone()),

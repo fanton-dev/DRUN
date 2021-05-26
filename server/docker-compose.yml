@@ -1,117 +1,100 @@
-version: "3.3"
+version: "3"
 
 services:
-  order-service:
-    image: order-service
+  orders-service:
     build:
-      context: .
-    command: bash -c "npm run start:dev"
-    restart: unless-stopped
+      context: "./services/orders-service"
+    restart: "no"
     env_file:
       - .env
     depends_on:
       - database
-      - queue
+      - rabbitmq
     ports:
       - 3001:3001
     volumes:
-      - ./services/order-service/src:/usr/src/app/service/src:cached
-      - ./services/core:/usr/src/app/core:cached
+      - ./services/orders-service:/opt/app/services/orders-service
+      - ./core:/opt/app/core
+      - /opt/app/core/node_modules
+      - /opt/app/services/orders-service/node_modules
 
   payment-service:
-    image: payment-service
     build:
-      context: .
-    command: bash -c "npm run start:dev"
-    restart: unless-stopped
+      context: "./services/payment-service"
+    restart: "no"
     env_file:
       - .env
     depends_on:
-      - database
-      - queue
+      - rabbitmq
     volumes:
-      - ./services/payment-service/src:/usr/src/app/service/src:cached
-      - ./services/core:/usr/src/app/core:cached
+      - ./services/payment-service:/opt/app/services/payment-service
+      - ./core:/opt/app/core
+      - /opt/app/core/node_modules
+      - /opt/app/services/payment-service/node_modules
 
   delivery-service:
-    image: delivery-service
     build:
-      context: .
-    command: bash -c "npm run start:dev"
-    restart: unless-stopped
+      context: "./services/delivery-service"
+    restart: "no"
     env_file:
       - .env
     depends_on:
-      - database
-      - queue
+      - rabbitmq
     ports:
       - 3002:3002
     volumes:
-      - ./services/delivery-service/src:/usr/src/app/service/src:cached
-      - ./services/core:/usr/src/app/core:cached
+      - ./services/delivery-service:/opt/app/services/delivery-service
+      - ./core:/opt/app/core
+      - /opt/app/core/node_modules
+      - /opt/app/services/delivery-service/node_modules
 
   logger-service:
-    image: logger-service
     build:
-      context: .
-    command: bash -c "npm run start:dev"
-    restart: unless-stopped
+      context: "./services/logger-service"
+    restart: "no"
     env_file:
       - .env
     depends_on:
       - database
-      - queue
+      - rabbitmq
     ports:
       - 3003:3003
     volumes:
-      - ./services/logger-service/src:/usr/src/app/service/src:cached
-      - ./services/core:/usr/src/app/core:cached
+      - ./services/logger-service:/opt/app/services/logger-service
+      - ./core:/opt/app/core
+      - /opt/app/core/node_modules
+      - /opt/app/services/logger-service/node_modules
 
-  user-service:
-    image: user-service
+  users-service:
     build:
-      context: .
-    command: bash -c "npm run start:dev"
-    restart: unless-stopped
+      context: "./services/users-service"
+    restart: "no"
     env_file:
       - .env
     depends_on:
       - database
-      - queue
+      - rabbitmq
     ports:
       - 3004:3004
     volumes:
-      - ./services/user-service/src:/usr/src/app/service/src:cached
-      - ./services/core:/usr/src/app/core:cached
-  
-  discord-service:
-    image: discord-service
-    build:
-      context: .
-    command: bash -c "npm run start:dev"
-    restart: unless-stopped
-    env_file:
-      - .env
-    depends_on:
-      - database
-      - queue
-    volumes:
-      - ./services/discord-service/src:/usr/src/app/service/src:cached
-      - ./services/core:/usr/src/app/core:cached
+      - ./services/users-service:/opt/app/services/users-service
+      - ./core:/opt/app/core
+      - /opt/app/core/node_modules
+      - /opt/app/services/users-service/node_modules
 
   database:
     image: postgres
-    restart: unless-stopped
+    restart: "no"
+    volumes:
+      - ./data/database:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
     env_file:
       - .env
-    volumes:
-      - ./data/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
-  queue:
+  rabbitmq:
     image: rabbitmq:management
-    restart: unless-stopped
+    restart: "no"
     logging:
       driver: none
     ports:
@@ -120,26 +103,14 @@ services:
 
   nginx:
     image: nginx:stable
-    restart: unless-stopped
+    restart: "no"
     volumes:
-      - ./data/nginx:/etc/nginx/conf.d
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      - ./data/nginx/dev.conf:/etc/nginx/conf.d/dev.conf
     depends_on:
-      - order-service
-      - payment-service
+      - orders-service
       - delivery-service
       - logger-service
-      - user-service
+      - users-service
     ports:
       - 80:80
       - 443:443
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-
-  certbot:
-    image: certbot/certbot
-    restart: unless-stopped
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

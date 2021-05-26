@@ -1,13 +1,16 @@
-import {Order, QueueMessage} from '../../core/@types/global';
-import config from '../../core/config';
-import sharedQueue from '../../core/interfaces/shared-queue';
-import {createPayment} from './usecases';
+import {OrderModel} from '@core/@types/models';
+import {QueueMessage} from '@core/@types/shared-queue';
+import sharedQueue from '@core/shared-queue';
+import config from 'config';
+import services from './services';
 
 setTimeout(() => sharedQueue.listen(
-    config.inboundPaymentServiceQueue,
-    async (message: QueueMessage<Order>) => {
-      if (message.subject === 'ORDER_ACCEPTED') createPayment(message.body);
+    config.get('INBOUND_PAYMENT_SERVICE_QUEUE'),
+    async (message: QueueMessage<OrderModel>) => {
+      if (message.subject === 'ORDER_ACCEPTED') {
+        services.createPayment(message.body);
+      }
     },
 ), 20000);
 
-console.log('Payment service started...');
+console.log('Payment service started successfully.');

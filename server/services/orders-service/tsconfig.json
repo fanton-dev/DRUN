@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "rootDir": "../..",
+    "baseUrl": ".",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "paths": {
+      "@core/*": ["../../core/*"],
+      "@src/*": ["./src/*"],
+      "@root/*": ["./*"],
+      "@test/*": ["./test/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

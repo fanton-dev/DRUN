@@ -1,18 +1,17 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import makeExpressCallback from '../../core/express-callback';
+import {OrderModel, PaymentModel} from '@core/@types/models';
+import {QueueMessage} from '@core/@types/shared-queue';
+import makeExpressCallback from '@core/controllers/express-callback';
+import sharedQueue from '@core/shared-queue';
 import {
-  postDrone,
   deleteDrone,
-  postCompleteDelivery,
-  notFound,
-} from './interfaces/controllers';
-import config from '../../core/config';
-import sharedQueue from '../../core/interfaces/shared-queue';
-import {Order, Payment, QueueMessage} from '../../core/@types/global';
-import {createDelivery} from './usecases';
+  notFound, postCompleteDelivery, postDrone,
+} from '@src/controllers';
+import {createDelivery} from '@src/services';
+import bodyParser from 'body-parser';
+import config from 'config';
+import express from 'express';
 
-const apiRoot = config.apiRoot;
+const apiRoot = config.get('API_ROOT');
 const app = express();
 app.use(bodyParser.json());
 
@@ -21,10 +20,10 @@ app.delete(`${apiRoot}/drones`, makeExpressCallback(deleteDrone));
 app.post(`${apiRoot}/drones`, makeExpressCallback(postCompleteDelivery));
 app.use(makeExpressCallback(notFound));
 
-const ordersToProcess: Array<Order> = [];
+const ordersToProcess: Array<OrderModel> = [];
 setTimeout(() => sharedQueue.listen(
-    config.inboundDeliveryServiceQueue,
-    async (message: QueueMessage<Order | Payment>) => {
+    config.get('INBOUND_DELIVERY_SERVICE_QUEUE'),
+    async (message: QueueMessage<OrderModel | PaymentModel>) => {
       switch (message.subject) {
         case 'ORDER_ACCEPTED':
           // @ts-ignore - only order service emits Order objects
@@ -48,7 +47,7 @@ setTimeout(() => sharedQueue.listen(
 
 
 app.listen(3002, () => {
-  console.log('Delivery service started on "/api/deliveries"...');
+  console.log('Delivery service started successfully.');
 });
 
 export default app;

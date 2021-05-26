@@ -1,5 +1,5 @@
+import {DroneModel} from '@core/@types/models';
 import faker from 'faker';
-import {Drone} from '../../../core/@types/global';
 
 /**
  * Provides a builder for fake testing drone entities.
@@ -8,7 +8,7 @@ import {Drone} from '../../../core/@types/global';
  * @param {object} [overrides] - data override for fake drone
  * @return {Drone} - fake drone object
  */
-export default function makeFakeDrone(overrides?: object): Drone {
+export default function makeFakeDrone(overrides?: object): DroneModel {
   const drone = {
     source: {
       ip: faker.internet.ip(),
