@@ -6,7 +6,7 @@ COPY ./package*.json ./
 
 RUN npm ci
 
-WORKDIR /opt/app/services/logger-service
+WORKDIR /opt/app/services/delivery-service
 
 COPY ./package*.json ./
 
