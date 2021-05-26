@@ -12,7 +12,8 @@ import {SourceModel} from '@core/@types/models';
  */
 export default function buildMakeSource({
   isValidIp,
-}: {isValidIp: Function}): Function {
+}: {isValidIp: (ip: string) => boolean}): (
+  {ip, browser, referrer}: SourceModel) => SourceExport {
   return function makeSource({
     ip, browser, referrer,
   }: SourceModel): SourceExport {

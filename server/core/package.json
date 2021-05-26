@@ -3,6 +3,7 @@
     "amqplib": "^0.8.0",
     "config": "^3.3.6",
     "express": "^4.17.1",
+    "ip-regex": "^4.3.0",
     "moment": "^2.29.1",
     "stripe": "^8.149.0",
     "twilio": "^3.63.0",

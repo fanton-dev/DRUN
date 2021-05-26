@@ -1,3 +1,5 @@
+import {DroneExport} from './entity-exports';
+
 /**
  * OrderModel object structure.
  *
@@ -84,3 +86,32 @@ export interface PaymentModel {
   completedOn?: number | undefined;
 }
 
+/**
+ * DroneModel object structure.
+ *
+ * @exports
+ * @interface DroneModel
+ */
+export interface DroneModel {
+  id?: string;
+  source: SourceModel;
+  homeLocation: LocationModel;
+  isBusy?: boolean;
+  connectedOn?: number;
+}
+
+/**
+ * DeliveryModel object structure.
+ *
+ * @exports
+ * @interface DeliveryModel
+ */
+export interface DeliveryModel {
+  id?: string;
+  orderId: string;
+  drone?: DroneExport;
+  senderLocation: LocationModel;
+  receiverLocation: LocationModel;
+  createdOn?: number;
+  completedOn?: number | undefined;
+}
