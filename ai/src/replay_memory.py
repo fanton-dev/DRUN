@@ -6,7 +6,14 @@ import numpy as np
 
 Experience = namedtuple(
     "Experience",
-    ("observation", "position", "action", "next_observation", "next_position", "reward", "done")
+    (
+        "observation",
+        "position",
+        "action",
+        "next_observation",
+        "next_position",
+        "reward"
+    )
 )
 
 

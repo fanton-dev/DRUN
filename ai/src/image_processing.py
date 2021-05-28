@@ -14,7 +14,7 @@ def preprocess_frame(frame):
     grayscale_frame = np.mean(frame, -1)
 
     # Normalize Pixel Values
-    normalized_frame = grayscale_frame/255.0
+    normalized_frame = np.true_divide(grayscale_frame, 255)
 
     return normalized_frame
 

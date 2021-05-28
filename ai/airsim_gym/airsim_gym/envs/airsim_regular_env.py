@@ -49,12 +49,12 @@ class AirSimRegularEnv(gym.Env):
 
         collided = self.client.get_collisions().has_collided
         self.position = self.client.get_pose().position
-        self.normalized_position = self.client.calculate_normalized_point(
-            [self.position.x_val, self.position.y_val],
-            self.home,
-            self.goal,
-            self.coordinate_scale_factor,
-        )
+        # self.normalized_position = self.client.calculate_normalized_point(
+        #     [self.position.x_val, self.position.y_val],
+        #     self.home,
+        #     self.goal,
+        #     self.coordinate_scale_factor,
+        # )
 
         if collided:
             done = True
@@ -107,6 +107,7 @@ class AirSimRegularEnv(gym.Env):
         self.goal = new_goal.copy()
 
     def get_state(self):
+        s = self.client.get_observation_regular()
         return (
             self.client.get_observation_regular(),
             self.client.calculate_normalized_point(

@@ -21,9 +21,11 @@ class EpsilonGreedy():
         # First we randomize a number
         exp_exp_tradeoff = np.random.rand()
 
+        # Exploration rate is decayed
         explore_probability = self.get_exploration_rate(current_step)
 
         if explore_probability < exp_exp_tradeoff:
+            # A random action is sampled (exploration)
             action = env.action_space.sample()
 
         else:

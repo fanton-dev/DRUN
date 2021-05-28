@@ -24,8 +24,8 @@ class AirSimDepthEnv(gym.Env):
         self.action_space = gym.spaces.Discrete(4)
 
         self._seed()
-        self.home = [0.0, 0.0, -30.0]
-        self.goal = [100.0, -100.0]
+        self.home = [0.0, 7.0, -10.0]
+        self.goal = [100.0, -1.0]
         self.position = self.home
 
         self.current_episode = 0
@@ -45,10 +45,25 @@ class AirSimDepthEnv(gym.Env):
 
         current_move = [0 for _ in range(8)]
         current_move[action] = 1
-        self.client.move(*current_move, duration=1)
+        
+        if (action == 0):
+            print("Forward")
+        if (action == 1):
+            print("Backward")
+        if (action == 2):
+            print("Left")
+        if (action == 3):
+            print("Right")
+        self.client.move(*current_move, duration=4)
 
         collided = self.client.get_collisions().has_collided
-        self.position = self.client.get_pose().position
+        position_raw = self.client.get_pose().position
+        self.position = [
+            position_raw.x_val,
+            position_raw.y_val
+        ]
+        normalized_position = self.client.calculate_normalized_point(
+                self.position, self.home, self.goal, 1.1)
 
         if collided:
             done = True
@@ -65,30 +80,30 @@ class AirSimDepthEnv(gym.Env):
         self.history["reward"].append(reward)
         self.history["distance"].append(distance)
 
-        info = {
-            "x_position": self.position.x_val,
-            "y_position": self.position.y_val
-        }
         self.state = self.client.get_observation_depth()
 
-        return self.state, reward, done, info
+        return self.state, normalized_position, reward, done
 
     def reset(self):
         self.client.simulation_reset()
-        self.client.set_pose(position=(0, 0, -30))
+        self.client.set_pose(position=self.home)
         self.client.takeoff()
 
         self.current_episode += 1
         self.current_step = 0
         self.history = self.default_history.copy()
 
-        return self.client.get_observation_depth()
+        return self.get_state()
 
     def render(self, mode="none") -> None:
         pass
 
     def get_state(self):
-        return self.client.get_observation_depth()
+        return (
+            self.client.get_observation_regular(),
+            self.client.calculate_normalized_point(
+                self.position, self.home, self.goal, 1.1),
+        )
 
     def set_home(self, new_home: List[int]) -> None:
         """Changes the environment home.
@@ -116,8 +131,8 @@ class AirSimDepthEnv(gym.Env):
         return reward, distance_now
 
     def _calculate_distance(self, goal):
-        distance = np.power((goal[0]-self.position.x_val), 2)
-        distance += np.power((goal[1]-self.position.y_val), 2)
+        distance = np.power((goal[0]-self.position[0]), 2)
+        distance += np.power((goal[1]-self.position[1]), 2)
         return np.sqrt(distance)
 
     def _seed(self, seed=None):

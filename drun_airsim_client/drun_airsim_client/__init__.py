@@ -12,6 +12,7 @@ from airsim import (
     ImageRequest,
     ImageType
 )
+from airsim.utils import list_to_2d_float_array
 import numpy as np
 
 
@@ -211,11 +212,22 @@ class DRUNAirSimClient(MultirotorClient):
         Returns:
             np.ndarray: Image array.
         """
-        image_raw = self.simGetImages(
-            [ImageRequest(0, ImageType.DepthVis, False, False)]
-        )[0]
-        image_array = np.fromstring(image_raw.image_data_uint8, dtype=np.uint8)
-        return image_array.reshape(image_raw.height, image_raw.width)
+        image_raw, = self.simGetImages(
+            [ImageRequest(0, ImageType.DepthPerspective, True, False)]
+        )
+
+        # Convert image to 2D
+        image_array = list_to_2d_float_array(
+            image_raw.image_data_float,
+            image_raw.width,
+            image_raw.height,
+        )
+        image_array = image_array.reshape(image_raw.height, image_raw.width, 1)
+
+        # Set max camera depth to 100 meters and scale values from 0 to 1
+        image_array = np.interp(image_array, (0, 100), (0, 1))
+
+        return image_array
 
     def get_observation_segmentation(self) -> np.ndarray:
         """Returns segmentation FPV camera observation.
@@ -239,7 +251,7 @@ class DRUNAirSimClient(MultirotorClient):
 
         normal_x = abs((X[0] - A[0] * scale) / ((A[0] - B[0]) * scale))
         normal_y = abs((X[1] - A[1] * scale) / ((A[1] - B[1]) * scale))
-        return (normal_x, normal_y)
+        return [normal_x, normal_y]
 
     @staticmethod
     def calculate_goal_orientation(A: List[float], B: List[float]) -> float:
