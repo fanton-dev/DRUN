@@ -1,0 +1,15 @@
+[submodule "ai"]
+	path = ai
+	url = https://github.com/braind3d/DRUN-ai
+[submodule "server"]
+	path = server
+	url = https://github.com/braind3d/DRUN-server
+[submodule "app"]
+	path = app
+	url = https://github.com/braind3d/DRUN-app
+[submodule "hardware"]
+	path = hardware
+	url = https://github.com/braind3d/DRUN-hardware
+[submodule "infrastructure"]
+	path = infrastructure
+	url = https://github.com/braind3d/DRUN-infrastructure
