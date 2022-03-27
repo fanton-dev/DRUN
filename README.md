@@ -6,19 +6,19 @@
 </p>
 
 <p align="center">
-<a href="https://github.com/braind3d/DRUN">
+<a href="https://github.com/fanton-dev/DRUN">
 <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgjbae1212%2Fhit-counter&count_bg=%23011043&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=true" alt="Hits">
 </a>
 
-<a href="https://github.com/braind3d/DRUN/issues?q=is%3Aissue+is%3Aopen">
-<img src="https://img.shields.io/github/issues-raw/braind3d/DRUN?color=011043&style=flat-square" alt="Open issues status badge">
+<a href="https://github.com/fanton-dev/DRUN/issues?q=is%3Aissue+is%3Aopen">
+<img src="https://img.shields.io/github/issues-raw/fanton-dev/DRUN?color=011043&style=flat-square" alt="Open issues status badge">
 </a>
 
-<a href="https://github.com/braind3d/DRUN/issues?q=is%3Aissue+is%3Aclosed">
-<img src="https://img.shields.io/github/issues-closed-raw/braind3d/DRUN?color=011043&style=flat-square" alt="Closed issues status badge">
+<a href="https://github.com/fanton-dev/DRUN/issues?q=is%3Aissue+is%3Aclosed">
+<img src="https://img.shields.io/github/issues-closed-raw/fanton-dev/DRUN?color=011043&style=flat-square" alt="Closed issues status badge">
 </a>
 
-<a href="https://github.com/braind3d/DRUN/fork">
+<a href="https://github.com/fanton-dev/DRUN/fork">
 <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?color=011043&style=flat-square" alt="Contributions welcome badge">
 </a>
 
@@ -55,7 +55,7 @@ For each of the components' directories there is a corresponding `README.md` wit
 </p>
 
 ## Contributions
-1. Fork it (<https://github.com/braind3d/DRUN/fork>)
+1. Fork it (<https://github.com/fanton-dev/DRUN/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -a`)
 4. Push to the branch (`git push origin feature/fooBar`)

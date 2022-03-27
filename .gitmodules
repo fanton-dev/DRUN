@@ -1,15 +1,20 @@
 [submodule "ai"]
 	path = ai
-	url = https://github.com/braind3d/DRUN-ai
+	url = https://github.com/fanton-dev/DRUN-ai
+	branch = main
 [submodule "server"]
 	path = server
-	url = https://github.com/braind3d/DRUN-server
+	url = https://github.com/fanton-dev/DRUN-server
+	branch = main
 [submodule "app"]
 	path = app
-	url = https://github.com/braind3d/DRUN-app
+	url = https://github.com/fanton-dev/DRUN-app
+	branch = main
 [submodule "hardware"]
 	path = hardware
-	url = https://github.com/braind3d/DRUN-hardware
+	url = https://github.com/fanton-dev/DRUN-hardware
+	branch = main
 [submodule "infrastructure"]
 	path = infrastructure
-	url = https://github.com/braind3d/DRUN-infrastructure
+	url = https://github.com/fanton-dev/DRUN-infrastructure
+	branch = main
